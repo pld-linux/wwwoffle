@@ -2,7 +2,7 @@ Summary:	WWW Offline Explorer - Caching Web Proxy Server
 Summary(pl):	Eksplorator Offline World Wide Web
 Name:		wwwoffle
 Version:	2.6c
-Release:	1
+Release:	2
 License:	GPL
 Group:		Networking/Daemons
 Group(de):	Netzwerkwesen/Server
@@ -119,10 +119,15 @@ echo files are available from within your documentation directory.
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_sbindir}/*
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}
-%attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/%{name}
+%attr(600,root,root) %config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/%{name}.conf
 %{_mandir}/man[158]/*
 %dir %{_var}/cache/%{name}
 %{_var}/cache/%{name}/[!o]*
 %dir %{_var}/cache/%{name}/outgoing
-%config(missingok) %{_var}/cache/%{name}/outgoing/*
+%config(missingok) %{_var}/cache/%{name}/outgoing/O98hgItueyIbW8udnZuMjpg
+%config(missingok) %{_var}/cache/%{name}/outgoing/Oh-W1UuCia4-wLoZYEnRrXw
+%config(missingok) %{_var}/cache/%{name}/outgoing/Ox3oAN7UMcBN5bQi-qYGkoA
+%config(missingok) %{_var}/cache/%{name}/outgoing/U98hgItueyIbW8udnZuMjpg
+%config(missingok) %{_var}/cache/%{name}/outgoing/Uh-W1UuCia4-wLoZYEnRrXw
+%config(missingok) %{_var}/cache/%{name}/outgoing/Ux3oAN7UMcBN5bQi-qYGkoA
