@@ -1,0 +1,109 @@
+--- wwwoffle-2.7h/src/Makefile.in.orig	2002-10-27 14:33:11.000000000 +0100
++++ wwwoffle-2.7h/src/Makefile.in	2003-08-05 20:32:42.000000000 +0200
+@@ -42,7 +42,7 @@
+ LEX=@LEX@
+ 
+ # Optimal flex options for a very fast but large HTML parser.
+-FLEXFLAGS=-i -L -pp -B -F -8 -s
++FLEXFLAGS=-i -L -p -B -F -8 -s
+ 
+ # Use this if you have flex but want a smaller but slower HTML parser.
+ #FLEXFLAGS=-i -L -pp -B
+--- wwwoffle-2.7h/src/html.l.orig	2003-01-03 09:52:24.000000000 +0100
++++ wwwoffle-2.7h/src/html.l	2003-08-05 20:32:01.000000000 +0200
+@@ -780,7 +780,7 @@
+ 
+ #ifndef html_yywrap
+ /*+ Needed in lex but does nothing. +*/
+-#define html_yywrap() 1
++int html_yywrap (void) { return 1; }
+ #endif
+ 
+ /*+ Reset the current string. +*/
+--- wwwoffle-2.7h/src/xml.l.orig	2001-08-04 13:05:04.000000000 +0200
++++ wwwoffle-2.7h/src/xml.l	2003-08-05 20:40:33.000000000 +0200
+@@ -32,7 +32,7 @@
+ #include "document.h"
+ 
+ extern int xml_yylex(void);
+-#define xml_yywrap() 1
++int xml_yywrap(void) { return 1; }
+ 
+ /*+ The file descriptor that we are reading from. +*/
+ static int xml_yyfd=-1;
+@@ -55,7 +55,7 @@
+  xml_yyfd=fd;
+  if(!first)
+     xml_yyrestart(NULL);
+- BEGIN(INITIAL);
++ BEGIN(0);
+  xml_yylex();
+ 
+  first=0;
+@@ -84,26 +84,26 @@
+ <ENTITY>{W}*             { }
+ <ENTITY>"SYSTEM"{W}+{Q}  { BEGIN(ENTITY_URL); }
+ <ENTITY>"PUBLIC"{W}+{Q}{NQ}*{Q}{W}*{Q} { BEGIN(ENTITY_URL); }
+-<ENTITY>">"              { BEGIN(INITIAL); }
++<ENTITY>">"              { BEGIN(0); }
+ <ENTITY>.|\r|\n          { }
+ 
+  /* Urls from entities. */
+-<ENTITY_URL>{F}+         { AddReference(xml_yytext,RefInlineObject); BEGIN(INITIAL); }
+-<ENTITY_URL>.|\r|\n      { BEGIN(INITIAL); }
++<ENTITY_URL>{F}+         { AddReference(xml_yytext,RefInlineObject); BEGIN(0); }
++<ENTITY_URL>.|\r|\n      { BEGIN(0); }
+ 
+  /* DOCTYPE */
+ <DOCTYPE>{W}*            { }
+ <DOCTYPE>"SYSTEM"{W}+{Q} { BEGIN(ENTITY_URL); }
+-<DOCTYPE>">"             { BEGIN(INITIAL); }
++<DOCTYPE>">"             { BEGIN(0); }
+ <DOCTYPE>.|\r|\n         { }
+ 
+  /* Urls from entities. */
+-<DOCTYPE_URL>{F}+        { AddReference(xml_yytext,RefInlineObject); BEGIN(INITIAL); }
+-<DOCTYPE_URL>.|\r|\n     { BEGIN(INITIAL); }
++<DOCTYPE_URL>{F}+        { AddReference(xml_yytext,RefInlineObject); BEGIN(0); }
++<DOCTYPE_URL>.|\r|\n     { BEGIN(0); }
+  /* Comments */
+ 
+ <COMMENT>[^->]+          { }
+-<COMMENT>"-->"           { BEGIN(INITIAL); }
++<COMMENT>"-->"           { BEGIN(0); }
+ <COMMENT>.|\r|\n         { }
+ 
+ %%
+--- wwwoffle-2.7h/src/vrml.l.orig	2001-07-20 21:06:37.000000000 +0200
++++ wwwoffle-2.7h/src/vrml.l	2003-08-05 20:55:31.000000000 +0200
+@@ -36,7 +36,7 @@
+ #include "document.h"
+ 
+ extern int vrml_yylex(void);
+-#define vrml_yywrap() 1
++int vrml_yywrap(void) { return 1; }
+ 
+ /*+ The file descriptor that we are reading from. +*/
+ static int vrml_yyfd=-1;
+--- wwwoffle-2.7h/src/htmlmodify.l.orig	2002-10-28 20:00:35.000000000 +0100
++++ wwwoffle-2.7h/src/htmlmodify.l	2003-08-05 20:56:06.000000000 +0200
+@@ -1432,7 +1432,7 @@
+ 
+ #ifndef htmlmodify_yywrap
+ /*+ Needed in lex but does nothing. +*/
+-#define htmlmodify_yywrap() 1
++int htmlmodify_yywrap(void) { return 1; }
+ #endif
+ 
+ /*+ Reset the current string. +*/
+--- wwwoffle-2.7h/src/messages.l.orig	2002-11-03 18:38:15.000000000 +0100
++++ wwwoffle-2.7h/src/messages.l	2003-08-05 20:56:32.000000000 +0200
+@@ -66,7 +66,7 @@
+ 
+ 
+ extern int msg_yylex(void);
+-#define msg_yywrap() 1
++int msg_yywrap(void) { return 1; }
+ 
+ 
+ static void html_message_body(char *template, va_list ap);

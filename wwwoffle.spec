@@ -11,6 +11,7 @@ Source0:	ftp://ftp.ibiblio.org/pub/Linux/apps/www/servers/%{name}-%{version}.tgz
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-replacement.patch
+Patch1:		%{name}-flex.patch
 URL:		http://www.gedanken.demon.co.uk/wwwoffle/
 BuildRequires:	flex
 BuildRequires:	zlib-devel
@@ -85,6 +86,7 @@ dial-up.
 %prep
 %setup -q
 %patch0 -p1
+%patch1 -p1
 
 %build
 %configure2_13 \
