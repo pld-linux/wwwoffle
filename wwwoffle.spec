@@ -135,14 +135,11 @@ ln -s %{_datadir}/%{name} $RPM_BUILD_ROOT%{_var}/cache/%{name}/html
 
 # changes for wwwoffle-namazu
 mv -f \
-	$RPM_BUILD_ROOT%{_var}/cache/%{name}/search/namazu/conf/* \
+	$RPM_BUILD_ROOT%{_var}/cache/%{name}/search/namazu/conf/*rc \
 		$RPM_BUILD_ROOT%{_sysconfdir}/%{name}/namazu/
 mv -f \
 	$RPM_BUILD_ROOT%{_var}/cache/%{name}/search/namazu/scripts/wwwoffle-mknmz-* \
 		$RPM_BUILD_ROOT%{_bindir}/	
-#mv -f \
-#	$RPM_BUILD_ROOT%{_var}/cache/%{name}/search/namazu/scripts/wwwoffle-namazu \
-#		$RPM_BUILD_ROOT%{_libexecdir}/%{name}/
 
 install src/uncompress-cache $RPM_BUILD_ROOT%{_bindir}
 install -s src/convert-cache conf
