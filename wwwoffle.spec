@@ -32,7 +32,7 @@ stron przeznaczonych do ¶ci±gniêcia po nawi±zaniu po³±czenia.
 %build
 make all \
 	INSTDIR=%{_prefix} \
-	SPOOLDIR=/var/chache/wwwoffle \
+	SPOOLDIR=/var/cache/wwwoffle \
 	CONFDIR=%{_sysconfdir} \
 	CFLAGS="$RPM_OPT_FLAGS" \
 	LDFLAGS="-s"
@@ -48,7 +48,7 @@ make install \
 	BINDIR=%{_bindir} \
 	SBINDIR=%{_sbindir} \
 	MANDIR=%{_mandir} \
-	SPOOLDIR=/var/chache/wwwoffle
+	SPOOLDIR=/var/cache/wwwoffle
 
 strip $RPM_BUILD_ROOT{%{_bindir},%{_sbindir}}/*
 
@@ -71,4 +71,4 @@ rm -rf $RPM_BUILD_ROOT
 
 %{_mandir}/man*/*
 
-/var/chache/%{name}
+/var/cache/%{name}
