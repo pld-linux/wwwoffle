@@ -4,75 +4,11 @@ diff -urN wwwoffle-2.7e.old/cache/html/en/local/dontget/replacement.html wwwoffl
 @@ -0,0 +1,2 @@
 +<HTML>
 +</HTML>
-diff -urN wwwoffle-2.7e.old/conf/wwwoffle.conf wwwoffle-2.7e/conf/wwwoffle.conf
---- wwwoffle-2.7e.old/conf/wwwoffle.conf	Sun Mar 10 16:54:34 2002
-+++ wwwoffle-2.7e/conf/wwwoffle.conf	Wed Apr 10 01:55:58 2002
-@@ -533,7 +533,7 @@
- #
- # [<URL-SPEC>] replacement-dontget-image = (URL)
- #         The replacement image to use for URLs that are in the DontGet section
--#         of the configuration file (default=/local/dontget/replacement.gif).
-+#         of the configuration file (default=/local/dontget/replacement.png).
- #
- # [<URL-SPEC>] replace-webbug-images = yes | no
- #         Replaces image URLs that are 1 pixel square with a static URL
-@@ -543,7 +543,7 @@
- #
- # [<URL-SPEC>] replacement-webbug-image = (URL)
- #         The replacement image to use for images that are 1 pixel square
--#         (default=/local/dontget/replacement.gif).
-+#         (default=/local/dontget/replacement.png).
- #
- # [<URL-SPEC>] disable-animated-gif = yes | no
- #         Disables the animation in animated GIF files (default=no).
-@@ -582,10 +582,10 @@
- 
-  disable-dontget-links     = no
-  replace-dontget-images    = no
-- replacement-dontget-image = /local/dontget/replacement.gif
-+ replacement-dontget-image = /local/dontget/replacement.png
- 
-  replace-webbug-images     = no
-- replacement-webbug-image  = /local/dontget/replacement.gif
-+ replacement-webbug-image  = /local/dontget/replacement.png
- 
-  demoronise-ms-chars       = no
- 
-@@ -763,10 +763,10 @@
- {
-  location-error = no
- 
--# <*://*/*.gif> replacement = /local/dontget/replacement.gif
-+# <*://*/*.gif> replacement = /local/dontget/replacement.png
- # <*://*/*.png> replacement = /local/dontget/replacement.png
- # <*://*/*.js>  replacement = /local/dontget/replacement.js
--# replacement = /local/dontget/replacement.gif
-+# replacement = /local/dontget/replacement.html
- 
- #### Example ####
- # Don't get from any hosts in the barfoo.com domain.
 diff -urN wwwoffle-2.7e.old/conf/wwwoffle.conf.template wwwoffle-2.7e/conf/wwwoffle.conf.template
 --- wwwoffle-2.7e.old/conf/wwwoffle.conf.template	Sat Mar  9 11:46:22 2002
 +++ wwwoffle-2.7e/conf/wwwoffle.conf.template	Wed Apr 10 01:56:04 2002
-@@ -149,10 +149,10 @@
- 
-  disable-dontget-links     = no
-  replace-dontget-images    = no
-- replacement-dontget-image = /local/dontget/replacement.gif
-+ replacement-dontget-image = /local/dontget/replacement.png
- 
-  replace-webbug-images     = no
-- replacement-webbug-image  = /local/dontget/replacement.gif
-+ replacement-webbug-image  = /local/dontget/replacement.png
- 
-  demoronise-ms-chars       = no
- 
-@@ -226,10 +226,10 @@
- {
-  location-error = no
- 
--# <*://*/*.gif> replacement = /local/dontget/replacement.gif
-+# <*://*/*.gif> replacement = /local/dontget/replacement.png
+@@ -230,7 +230,7 @@
+ # <*://*/*.gif> replacement = /local/dontget/replacement.gif
  # <*://*/*.png> replacement = /local/dontget/replacement.png
  # <*://*/*.js>  replacement = /local/dontget/replacement.js
 -# replacement = /local/dontget/replacement.gif
