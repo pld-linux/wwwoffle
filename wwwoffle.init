@@ -17,27 +17,27 @@
 [ -f /etc/sysconfig/wwwoffled ] && . /etc/sysconfig/wwwoffled
 
 # Check that networking is up.
-if [ "${NETWORKING}" = "no" ]; then
-	echo "WARNING: Networking is down. Wwwoffle can't be runed."
+if is_no "${NETWORKING}"; then
+        msg_Network_Down wwwoffle
 	exit 1
 fi
-
 
 # See how we were called.
 case "$1" in
   start)
 	# Check if the service is already running?
 	if [ ! -f /var/lock/subsys/wwwoffled ]; then
-		show Starting wwwoffled
+		msg_starting wwwoffle
 		daemon wwwoffled
 	else
-		echo "wwwoffled already is running"
+		msg_Already_Running wwwoffled
+		exit 1
 	fi
 	touch /var/lock/subsys/wwwoffled
         ;;
   stop)
         # Stop daemons.
-        show Shutting down wwwoffled
+        msg_stopping wwwoffle
 	killproc wwwoffled
         ;;
   restart)
@@ -52,14 +52,15 @@ case "$1" in
 		deltext
 		ok		
 	else
-		echo "wwwoffled is not running"
+		msg_Not_Running wwwoffled
+		exit 1
 	fi
 	;;
   status)
 	status wwwoffled
         ;;
   *)
-        echo "Usage: wwwoffle {start|stop|status|restart|reload}"
+        msg_Usage "$0 {start|stop|status|restart|reload}"
         exit 1
 esac
 
