@@ -36,7 +36,7 @@ case "$1" in
 		daemon wwwoffled
 		RETVAL=$?
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/wwwoffle
-		if [ -n "$ACTION" ] && [ $RELVAL -eq 0 ]; then
+		if [ -n "$ACTION" ] && [ $RETVAL -eq 0 ]; then
 			wwwoffle "$ACTION" 2>&1 > /dev/null &
 		fi
 	else
