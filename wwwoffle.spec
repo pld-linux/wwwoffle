@@ -2,7 +2,7 @@ Summary:	WWW Offline Explorer - Caching Web Proxy Server (IPv6)
 Summary(pl):	Eksplorator Offline World Wide Web ze wsparciem dla IPv6
 Name:		wwwoffle
 Version:	2.6b
-Release:	0
+Release:	1
 License:	GPL
 Group:		Networking/Daemons
 Group(pl):	Sieciowe/Serwery
@@ -99,9 +99,10 @@ Serwer proxy HTTP/FTP dla komputerów z dostêpem do internetu typu dial-up.
 %attr(754,root,root) %{_sysconfdir}/rc.d/init.d/%{name}
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_sbindir}/*
-%attr(640,root,root) %config(noreplace) %{_sysconfdir}/sysconfig/wwwoffle
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/sysconfig/wwwoffle
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.conf
 %{_mandir}/man[158]/*
+%dir %{_var}/cache/%{name}
 %{_var}/cache/%{name}/[!o]*
 %dir %{_var}/cache/%{name}/outgoing
 %config(missingok) %{_var}/cache/%{name}/outgoing/*
