@@ -59,7 +59,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %attr(700,root,root) /etc/rc.d/init.d/wwwoffle.init
 %attr(755,root,root) %{_bindir}/*
-%attr(755,root,root) /usr/sbin/*
+%attr(755,root,root) %{_sbindir}/*
 
 %{_mandir}/man*/*
 
