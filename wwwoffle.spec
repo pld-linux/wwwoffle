@@ -5,7 +5,8 @@ Version:	2.7e
 Release:	1
 License:	GPL
 Group:		Networking/Daemons
-Source0:	ftp://ftp.demon.co.uk/pub/unix/httpd/%{name}-%{version}.tgz
+#Source0:	ftp://ftp.demon.co.uk/pub/unix/httpd/%{name}-%{version}.tgz
+Source0:	ftp://ftp.ibiblio.org/pub/Linux/apps/www/servers/%{name}-%{version}.tgz
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-replacement.patch
