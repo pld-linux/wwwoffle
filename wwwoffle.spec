@@ -9,6 +9,7 @@ Group(pl):	Sieciowe/Serwery
 Source0:	http://www.gedanken.demon.co.uk/download-wwwoffle/%{name}-%{version}.tgz
 Source1:	wwwoffle.init
 Patch:		wwwoffle-DESTDIR.patch
+Requires:	rc-scripts
 URL:		http://www.gedanken.demon.co.uk/wwwoffle/
 Buildroot:	/tmp/%{name}-%{version}-root
 
