@@ -29,8 +29,8 @@ stron przeznaczonych do ¶ci±gniêcia po nawi±zaniu po³±czenia.
 make 	INSTDIR=$RPM_BUILD_ROOT/usr \
 	SPOOLDIR=$RPM_BUILD_ROOT/var/spool/wwwoffle \
 	CONFDIR=$RPM_BUILD_ROOT/etc \
-	CFLAGS=$RPM_OPT_FLAGS \
-	LDFLAGS="" \
+	CFLAGS="$RPM_OPT_FLAGS" \
+	LDFLAGS="-s" \
 	all
 
 %install
