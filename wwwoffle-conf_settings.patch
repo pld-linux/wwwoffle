@@ -1,0 +1,42 @@
+--- wwwoffle-2.8.orig/conf/wwwoffle.conf	Fri Sep  5 19:49:04 2003
++++ wwwoffle-2.8/conf/wwwoffle.conf	Sun Oct 12 16:55:50 2003
+@@ -116,15 +116,15 @@
+ StartUp
+ {
+  bind-ipv4         = 0.0.0.0
+-#bind-ipv6         = ::
++#bind-ipv6         = ::
+ 
+  http-port         = 8080
+  wwwoffle-port     = 8081
+ 
+  spool-dir         = SPOOLDIR
+ 
+-#run-uid           = daemon
+-#run-gid           = daemon
++ run-uid           = wwwoffle
++ run-gid           = wwwoffle
+ 
+  use-syslog        = yes
+ 
+--- wwwoffle-2.8.orig/conf/wwwoffle.conf.template	Sun Aug  3 18:27:17 2003
++++ wwwoffle-2.8/conf/wwwoffle.conf.template	Sun Oct 12 16:56:12 2003
+@@ -12,15 +12,15 @@
+ StartUp
+ {
+  bind-ipv4         = 0.0.0.0
+-#bind-ipv6         = ::
++#bind-ipv6         = ::
+ 
+  http-port         = 8080
+  wwwoffle-port     = 8081
+ 
+  spool-dir         = SPOOLDIR
+ 
+-#run-uid           = daemon
+-#run-gid           = daemon
++ run-uid           = wwwoffle
++ run-gid           = wwwoffle
+ 
+  use-syslog        = yes
+ 
