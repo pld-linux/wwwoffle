@@ -40,6 +40,7 @@ case "$1" in
         # Stop daemons.
         msg_stopping wwwoffle
 	killproc wwwoffled
+	rm  -f /var/lock/subsys/wwwoffled 2>&1 > /dev/null
 	
         ;;
   restart)
