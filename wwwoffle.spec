@@ -156,6 +156,50 @@ test -h %{_var}/cache/%{name}/html || rm -rf %{_var}/cache/%{name}/html
 %lang(ru) %{_datadir}/%{name}/ru
 %defattr(664,http,http,775)
 %dir %{_var}/cache/%{name}
-%{_var}/cache/%{name}/[!o]*
+#%{_var}/cache/%{name}/[!o]*
+%dir %{_var}/cache/%{name}/html
+%dir %{_var}/cache/%{name}/temp
+%dir %{_var}/cache/%{name}/prevtime1
+%dir %{_var}/cache/%{name}/prevtime2
+%dir %{_var}/cache/%{name}/prevtime3
+%dir %{_var}/cache/%{name}/prevtime4
+%dir %{_var}/cache/%{name}/prevtime5
+%dir %{_var}/cache/%{name}/prevtime6
+%dir %{_var}/cache/%{name}/prevtime7
+%dir %{_var}/cache/%{name}/lasttime
+%dir %{_var}/cache/%{name}/lastout
+%dir %{_var}/cache/%{name}/monitor
+%dir %{_var}/cache/%{name}/local
+%dir %{_var}/cache/%{name}/ftp
+%dir %{_var}/cache/%{name}/prevout1
+%dir %{_var}/cache/%{name}/prevout2
+%dir %{_var}/cache/%{name}/prevout3
+%dir %{_var}/cache/%{name}/prevout4
+%dir %{_var}/cache/%{name}/prevout5
+%dir %{_var}/cache/%{name}/prevout6
+%dir %{_var}/cache/%{name}/prevout7
 %dir %{_var}/cache/%{name}/outgoing
 %config(missingok) %{_var}/cache/%{name}/outgoing/*
+#%{_var}/cache/%{name}/!search
+%dir %{_var}/cache/%{name}/search/
+# executable scripts:
+%attr(655,http,http) %config(noreplace) %verify(not md5 size mtime) %{_var}/cache/%{name}/search/namazu/scripts/*
+%attr(655,http,http) %config(noreplace) %verify(not md5 size mtime) %{_var}/cache/%{name}/search/mnogosearch/scripts/*
+%attr(655,http,http) %config(noreplace) %verify(not md5 size mtime) %{_var}/cache/%{name}/search/htdig/scripts/*
+
+%dir %{_var}/cache/%{name}/search/namazu
+%dir %{_var}/cache/%{name}/search/namazu/db
+%dir %{_var}/cache/%{name}/search/namazu/conf
+%attr(644,http,http) %config(noreplace) %verify(not md5 size mtime) %{_var}/cache/%{name}/search/namazu/conf/*
+
+%dir %{_var}/cache/%{name}/search/htdig
+%dir %{_var}/cache/%{name}/search/htdig/db/
+%dir %{_var}/cache/%{name}/search/htdig/db-lasttime
+%dir %{_var}/cache/%{name}/search/htdig/tmp
+%dir %{_var}/cache/%{name}/search/htdig/conf
+%attr(644,http,http) %config(noreplace) %verify(not md5 size mtime) %{_var}/cache/%{name}/search/htdig/conf/*
+
+%dir %{_var}/cache/%{name}/search/mnogosearch
+%dir %{_var}/cache/%{name}/search/mnogosearch/db
+%dir %{_var}/cache/%{name}/search/mnogosearch/conf
+%attr(644,http,http) %config(noreplace) %verify(not md5 size mtime) %{_var}/cache/%{name}/search/mnogosearch/conf/*
