@@ -84,8 +84,8 @@ dial-up.
 	LDFLAGS="%{rpmldflags}"
 
 %install
-%{__rm} -rf $RPM_BUILD_ROOT
-%{__install} -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig}
+rm -rf $RPM_BUILD_ROOT
+install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig}
 
 %{__make} install \
 	INSTDIR=$RPM_BUILD_ROOT%{_prefix} \
@@ -96,10 +96,10 @@ dial-up.
 	MANDIR=$RPM_BUILD_ROOT%{_mandir} \
 	BINDIR=$RPM_BUILD_ROOT%{_bindir} \
 	SBINDIR=$RPM_BUILD_ROOT%{_sbindir}
-%{__install} %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
-%{__install} %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
+install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 
-%{__gzip} -9nf ANNOUNCE CHANGES.CONF CONVERT ChangeLog* FAQ NEWS \
+gzip -9nf ANNOUNCE CHANGES.CONF CONVERT ChangeLog* FAQ NEWS \
 	README README.* convert-cache upgrade-config*
 
 %triggerpostun -- wwwoffle < 2.6
@@ -111,7 +111,7 @@ echo NEWS and following at a pinch for details. All the necessary
 echo files are available from within your documentation directory.
 
 %clean
-%{__rm} -rf $RPM_BUILD_ROOT
+rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
