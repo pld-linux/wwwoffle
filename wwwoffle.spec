@@ -95,6 +95,7 @@ dial-up.
 	CONFDIR=%{_sysconfdir} \
 	CFLAGS="%{rpmcflags}" \
 	LDFLAGS="%{rpmldflags}" \
+	USE_ZLIB=1 \
 	USE_IPV6=1
 
 %install
