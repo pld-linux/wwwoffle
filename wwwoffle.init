@@ -17,10 +17,15 @@
 [ -f /etc/sysconfig/wwwoffled ] && . /etc/sysconfig/wwwoffled
 
 # Check that networking is up.
-if is_no "${NETWORKING}"; then
-        msg_network_down wwwoffle
-	exit 1
+if is_yes "${NETWORKING}"; then
+	if [ ! -f /var/lock/subsys/network ]; then
+		msg_network_down wwwoffle
+		exit 1
+	fi
+else
+	exit 0
 fi
+
 
 # See how we were called.
 case "$1" in
@@ -35,25 +40,28 @@ case "$1" in
 		msg_already_running wwwoffled
 		exit 1
 	fi
-        ;;
+	;;
   stop)
-        # Stop daemons.
-        msg_stopping wwwoffle
-	killproc wwwoffled
-	rm  -f /var/lock/subsys/wwwoffle 2>&1 > /dev/null
-	
-        ;;
-  restart)
-        $0 stop
-	$0 start
-        ;;
-  reload)
 	if [ -f /var/lock/subsys/wwwoffle ]; then
-		show Reload wwwoffled
-		busy
+		# Stop daemons.
+		msg_stopping wwwoffle
+		killproc wwwoffled
+		RETVAL=$?
+		rm -f /var/lock/subsys/wwwoffle 2>&1 > /dev/null
+	else
+		msg_not_running wwwoffled
+		exit 1
+	fi
+	;;
+  restart)
+	$0 stop
+	$0 start
+	;;
+  reload|force-reload)
+	if [ -f /var/lock/subsys/wwwoffle ]; then
+		msg_reloading wwwoffled
 		killproc wwwoffled -HUP
-		deltext
-		ok		
+		RETVAL=$?
 	else
 		msg_not_running wwwoffled
 		exit 1
@@ -61,10 +69,10 @@ case "$1" in
 	;;
   status)
 	status wwwoffled
-        ;;
+	;;
   *)
-        msg_usage "$0 {start|stop|status|restart|reload}"
-        exit 1
+	msg_usage "$0 {start|stop|restart|reload|force-reload|status}"
+	exit 1
 esac
 
 exit $RETVAL
