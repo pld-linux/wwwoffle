@@ -21,15 +21,15 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 %description
 A proxy HTTP/FTP server for computers with dial-up internet access.
 - Caching of pages viewed while connected for review later.
-- Browsing of cached pages while not connected, with the ability
-  to follow links and mark other pages for download.
+- Browsing of cached pages while not connected, with the ability to
+  follow links and mark other pages for download.
 - Downloading of specified pages non-interactively.
 - Monitoring of pages for regular download.
 - Multiple indices of pages stored in cache for easy selection.
 - Interactive or command line option to select pages for fetching
   individually or recursively.
-- All options controlled using a simple configuration file with a
-  web page to edit it.
+- All options controlled using a simple configuration file with a web
+  page to edit it.
 
 %description -l de
 Ein (HTTP/FTP) Proxy Server für Computer mit Wählverbindungen ins
