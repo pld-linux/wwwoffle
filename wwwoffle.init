@@ -45,7 +45,6 @@ case "$1" in
 		# Stop daemons.
 		msg_stopping wwwoffle
 		killproc wwwoffled
-		RETVAL=$?
 		rm -f /var/lock/subsys/wwwoffle 2>&1 > /dev/null
 	else
 		msg_not_running wwwoffled
