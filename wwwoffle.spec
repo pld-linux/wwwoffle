@@ -12,7 +12,7 @@ Source0:	ftp://ftp.demon.co.uk/pub/unix/httpd/%{name}-%{version}.tgz
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-replacement.patch
-Patch1:		%{name}-install_dirs.patch
+Patch1:		%{name}-DESTDIR.patch
 Patch2:		%{name}-ipv6.patch
 Patch3:		%{name}-ftp.patch
 BuildRequires:	flex
@@ -90,7 +90,6 @@ dial-up.
 
 %build
 %{__make} all \
-	INSTDIR=%{_prefix} \
 	SPOOLDIR=%{_var}/cache/%{name} \
 	CONFDIR=%{_sysconfdir} \
 	CFLAGS="%{rpmcflags}" \
@@ -103,14 +102,11 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig}
 
 %{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT \
 	INSTDIR=$RPM_BUILD_ROOT%{_prefix} \
 	SPOOLDIR=%{_var}/cache/%{name} \
-	SPOOLDIR_BUILD=$RPM_BUILD_ROOT%{_var}/cache/%{name} \
 	CONFDIR=%{_sysconfdir} \
-	CONFDIR_BUILD=$RPM_BUILD_ROOT%{_sysconfdir} \
-	MANDIR=$RPM_BUILD_ROOT%{_mandir} \
-	BINDIR=$RPM_BUILD_ROOT%{_bindir} \
-	SBINDIR=$RPM_BUILD_ROOT%{_sbindir}
+	MANDIR=$RPM_BUILD_ROOT%{_mandir}
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 
