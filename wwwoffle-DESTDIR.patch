@@ -75,7 +75,7 @@ diff -urN wwwoffle-2.7a.old/cache/Makefile.in wwwoffle-2.7a/cache/Makefile.in
 -	cd $(SPOOLDIR)/search && ./fixup-install.sh $(SPOOLDIR) $(LOCALHOST):$(HTTP_PORT) && rm fixup-install.sh
 +	[ ! -x $(DESTDIR)$(SPOOLDIR)/search ] || mv $(DESTDIR)$(SPOOLDIR)/search $(DESTDIR)$(SPOOLDIR)/search.old
 +	$(TAR) cf $(DESTDIR)$(SPOOLDIR)/search.tar search && cd $(DESTDIR)$(SPOOLDIR) && $(TAR) xpf search.tar && rm search.tar
-+	cd $(DESTDIR)$(SPOOLDIR)/search && ./fixup-install.sh $(DESTDIR)$(SPOOLDIR) $(LOCALHOST):$(HTTP_PORT) && rm fixup-install.sh
++	cd $(DESTDIR)$(SPOOLDIR)/search && ./fixup-install.sh $(SPOOLDIR) $(LOCALHOST):$(HTTP_PORT) && rm fixup-install.sh
  # Now fix the permissions that tar preserved, we needed to use 'tar xpf' to get round root's umask.
  # These two will fail unless you are root, that is OK because the owner is already you.
 -	-chown -R 0 $(SPOOLDIR)/search > /dev/null 2>&1
