@@ -1,8 +1,8 @@
 Summary:	WWW Offline Explorer - Caching Web Proxy Server (IPv6)
 Summary(pl):	Eksplorator Offline World Wide Web (IPv6)
 Name:		wwwoffle
-Version:	2.6d
-Release:	3
+Version:	2.7a
+Release:	1
 License:	GPL
 Group:		Networking/Daemons
 URL:		http://www.gedanken.demon.co.uk/wwwoffle/
@@ -11,11 +11,9 @@ Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-replacement.patch
 Patch1:		%{name}-DESTDIR.patch
-Patch2:		%{name}-ipv6.patch
-Patch3:		%{name}-ftp.patch
 BuildRequires:	flex
 BuildRequires:	zlib-devel
-Prereq:		rc-scripts >= 0.2.0
+PreReq:		rc-scripts >= 0.2.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -83,10 +81,9 @@ dial-up.
 %setup -q
 %patch0 -p1
 %patch1 -p1
-%patch2 -p1
-%patch3 -p1
 
 %build
+%configure2_13
 %{__make} all \
 	SPOOLDIR=%{_var}/cache/%{name} \
 	CONFDIR=%{_sysconfdir} \
@@ -101,20 +98,33 @@ install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT \
-	INSTDIR=$RPM_BUILD_ROOT%{_prefix} \
 	SPOOLDIR=%{_var}/cache/%{name} \
-	CONFDIR=%{_sysconfdir} \
-	MANDIR=$RPM_BUILD_ROOT%{_mandir}
+	CONFDIR=%{_sysconfdir}
+
+install src/uncompress-cache $RPM_BUILD_ROOT%{_bindir}
+install -s src/convert-cache conf
+
+install -d $RPM_BUILD_ROOT%{_mandir}/fr/man5
+install doc/fr/wwwoffle.conf.man $RPM_BUILD_ROOT%{_mandir}/fr/man5/wwwoffle.conf.5
+rm -f doc/fr/wwwoffle.conf.man*
+
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 
-gzip -9nf ANNOUNCE CHANGES.CONF CONVERT ChangeLog* FAQ NEWS \
-	README README.* convert-cache upgrade-config*
+gzip -9nf doc/de/{CHANGES.CONF,INSTALL,LSM,NEWS,README.1st}
+mv doc/es/contrib/README doc/es/README-contrib
+mv doc/es/testprogs/README doc/es/README-testprogs
+rm -rf doc/es/{contrib,testprogs}
+gzip -9nf doc/es/*
+gzip -9nf doc/fr/*
+gzip -9nf doc/pl/*
+gzip -9nf doc/{ANNOUNCE,CHANGES.CONF,CONVERT,FAQ,NEWS,README*} \
+	ChangeLog* conf/{convert-cache,upgrade-config*}
 
-%triggerpostun -- wwwoffle < 2.6
+%triggerpostun -- wwwoffle < 2.7
 
 echo Note!  Your existing cache and config file look earlier than
-echo 2.6 version. There have been several major changes in config
+echo 2.7 version. There have been several major changes in config
 echo file and some minor changes in cache handling. Read the file
 echo NEWS and following at a pinch for details. All the necessary
 echo files are available from within your documentation directory.
@@ -124,14 +134,30 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc *.gz
+%lang(de) %doc doc/de
+%lang(es) %doc doc/es
+%lang(fr) %doc doc/fr
+%lang(pl) %doc doc/pl
+%doc doc/*.gz *.gz conf/*.gz
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_sbindir}/*
 %attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/%{name}
 %attr(600,root,root) %config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/%{name}.conf
 %{_mandir}/man[158]/*
+%lang(fr) %{_mandir}/fr/man5/*
 %dir %{_var}/cache/%{name}
-%{_var}/cache/%{name}/[!o]*
+%{_var}/cache/%{name}/[!ho]*
+%dir %{_var}/cache/%{name}/html
+%{_var}/cache/%{name}/html/default
+%{_var}/cache/%{name}/html/en
+%lang(de) %{_var}/cache/%{name}/html/de
+%lang(es) %{_var}/cache/%{name}/html/es
+%lang(fr) %{_var}/cache/%{name}/html/fr
+%lang(it) %{_var}/cache/%{name}/html/it
+%lang(nl) %{_var}/cache/%{name}/html/nl
+%lang(pl) %{_var}/cache/%{name}/html/pl
+%lang(ru) %{_var}/cache/%{name}/html/ru
+%{_var}/cache/%{name}/http
 %dir %{_var}/cache/%{name}/outgoing
 %config(missingok) %{_var}/cache/%{name}/outgoing/*
