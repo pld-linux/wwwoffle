@@ -2,13 +2,15 @@ Summary:	WWW Offline Explorer - Caching Web Proxy Server (IPv6)
 Summary(pl):	Eksplorator Offline World Wide Web ze wsparciem dla IPv6
 Name:		wwwoffle
 Version:	2.6b
-Release:	1
+Release:	2
 License:	GPL
 Group:		Networking/Daemons
 Group(pl):	Sieciowe/Serwery
 Source0:	ftp://ftp.demon.co.uk/pub/unix/httpd/%{name}-%{version}.tgz
-Source1:	wwwoffle.init
-Source2:	wwwoffle.sysconfig
+Source1:	%{name}.init
+Source2:	%{name}.sysconfig
+Patch0:		%{name}-replacement.patch
+Patch1:		%{name}-install_dirs.patch
 URL:		http://www.gedanken.demon.co.uk/wwwoffle/
 BuildRequires:	flex
 Prereq:		rc-scripts >= 0.2.0
@@ -65,6 +67,8 @@ Serwer proxy HTTP/FTP dla komputerów z dostêpem do internetu typu dial-up.
 
 %prep
 %setup -q
+%patch0 -p1
+%patch1 -p1
 
 %build
 %{__make} all \
@@ -76,17 +80,19 @@ Serwer proxy HTTP/FTP dla komputerów z dostêpem do internetu typu dial-up.
 
 %install
 %{__rm} -rf $RPM_BUILD_ROOT
-%{__install} -d $RPM_BUILD_ROOT%{_sysconfdir}/{rc.d/init.d,sysconfig}
+%{__install} -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig}
 
 %{__make} install \
 	INSTDIR=$RPM_BUILD_ROOT%{_prefix} \
-	CONFDIR=$RPM_BUILD_ROOT%{_sysconfdir} \
+	INST_CONFDIR=$RPM_BUILD_ROOT%{_sysconfdir} \
+	CONFDIR=%{_sysconfdir} \
 	BINDIR=$RPM_BUILD_ROOT%{_bindir} \
 	SBINDIR=$RPM_BUILD_ROOT%{_sbindir} \
 	MANDIR=$RPM_BUILD_ROOT%{_mandir} \
-	SPOOLDIR=$RPM_BUILD_ROOT%{_var}/cache/wwwoffle
-%{__install} %{SOURCE1} $RPM_BUILD_ROOT%{_sysconfdir}/rc.d/init.d/%{name}
-%{__install} %{SOURCE2} $RPM_BUILD_ROOT%{_sysconfdir}/sysconfig/wwwoffle
+	INST_SPOOLDIR=$RPM_BUILD_ROOT%{_var}/cache/wwwoffle \
+	SPOOLDIR=%{_var}/cache/wwwoffle
+%{__install} %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
+%{__install} %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/wwwoffle
 
 %{__gzip} -9nf ANNOUNCE CHANGES.CONF CONVERT ChangeLog* FAQ NEWS README*
 
@@ -96,10 +102,10 @@ Serwer proxy HTTP/FTP dla komputerów z dostêpem do internetu typu dial-up.
 %files
 %defattr(644,root,root,755)
 %doc {ANNOUNCE,CHANGES.CONF,CONVERT,ChangeLog*,FAQ,NEWS,README*}.gz
-%attr(754,root,root) %{_sysconfdir}/rc.d/init.d/%{name}
+%attr(754,root,root) /etc/rc.d/init.d/%{name}
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_sbindir}/*
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/sysconfig/wwwoffle
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/wwwoffle
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.conf
 %{_mandir}/man[158]/*
 %dir %{_var}/cache/%{name}
