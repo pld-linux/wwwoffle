@@ -1,7 +1,7 @@
 Summary:	WWW Offline Explorer - Caching Web Proxy Server
 Summary(pl):	WWW Offline Explorer
 Name:		wwwoffle
-Version:	2.4d
+Version:	2.5
 Release:	1
 Copyright:	GPL
 Group:		Networking/Daemons
@@ -13,7 +13,7 @@ Requires:	rc-scripts
 URL:		http://www.gedanken.demon.co.uk/wwwoffle/
 Buildroot:	/tmp/%{name}-%{version}-root
 
-%define	_sysconfdir	/etc
+%define		_sysconfdir	/etc
 
 %description
 The wwwoffled program is a simple proxy server with special features
