@@ -29,16 +29,18 @@ case "$1" in
 	if [ ! -f /var/lock/subsys/wwwoffled ]; then
 		msg_starting wwwoffle
 		daemon wwwoffled
+		RETVAL=$?
+		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/wwwoffled
 	else
 		msg_Already_Running wwwoffled
 		exit 1
 	fi
-	touch /var/lock/subsys/wwwoffled
         ;;
   stop)
         # Stop daemons.
         msg_stopping wwwoffle
 	killproc wwwoffled
+	
         ;;
   restart)
         $0 stop
@@ -64,5 +66,4 @@ case "$1" in
         exit 1
 esac
 
-exit 0
-
+exit $RETVAL
