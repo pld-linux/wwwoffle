@@ -156,7 +156,7 @@ test -h %{_var}/cache/%{name}/html || rm -rf %{_var}/cache/%{name}/html
 %lang(ru) %{_datadir}/%{name}/ru
 %defattr(664,http,http,775)
 %dir %{_var}/cache/%{name}
-#%{_var}/cache/%{name}/[!o]*
+#%%{_var}/cache/%{name}/[!o]*
 %dir %{_var}/cache/%{name}/ftp
 %{_var}/cache/%{name}/html
 %dir %{_var}/cache/%{name}/http
