@@ -1,0 +1,13 @@
+diff -urN wwwoffle-2.6d.old/sockets6.c wwwoffle-2.6d/sockets6.c
+--- wwwoffle-2.6d.old/sockets6.c	Fri Aug 10 23:28:52 2001
++++ wwwoffle-2.6d/sockets6.c	Fri Aug 10 23:33:32 2001
+@@ -508,9 +508,9 @@
+  static char _host[NI_MAXHOST],_ip[INET6_ADDRSTRLEN],_port[12];
+  static char _unknown_host[]="unknown",_unknown_port[]="0";
+ 
+- *host="unknown";
+- *ip="unknown";
+- *port="0";
++ if (host) *host="unknown";
++ if (ip) *ip="unknown";
++ if (port) *port="0";
