@@ -1,13 +1,14 @@
 Summary:	WWW Offline Explorer - Caching Web Proxy Server
 Summary(pl):	WWW Offline Explorer
 Name:		wwwoffle
-Version:	2.5
+Version:	2.5b
 Release:	1
 Copyright:	GPL
 Group:		Networking/Daemons
 Group(pl):	Sieciowe/Serwery
 Source0:	http://www.gedanken.demon.co.uk/download-wwwoffle/%{name}-%{version}.tgz
 Source1:	wwwoffle.init
+Source2:	wwwoffle.sysconfig
 Patch:		wwwoffle-DESTDIR.patch
 Requires:	rc-scripts
 URL:		http://www.gedanken.demon.co.uk/wwwoffle/
@@ -39,7 +40,7 @@ make all \
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/etc/rc.d/init.d
+install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig}
 
 make install \
 	DESTDIR=$RPM_BUILD_ROOT \
@@ -53,6 +54,7 @@ make install \
 strip $RPM_BUILD_ROOT{%{_bindir},%{_sbindir}}/*
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
+install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/wwwoffle
 
 gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man*/* \
 	README* NEWS ChangeLog CHANGES.CONF
@@ -66,6 +68,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(600,root,root) %config %{_sysconfdir}/%{name}.conf
 
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
+%attr(640,root,root) %config(noreplace) /etc/sysconfig/wwwoffle
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_sbindir}/*
 
