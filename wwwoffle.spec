@@ -35,7 +35,7 @@ stron przeznaczonych do ¶ci±gniêcia po nawi±zaniu po³±czenia.
 %patch2 -p1
 
 %build
-make all \
+%{__make} all \
 	INSTDIR=%{_prefix} \
 	SPOOLDIR=%{_var}/cache/wwwoffle \
 	CONFDIR=%{_sysconfdir} \
@@ -46,7 +46,7 @@ make all \
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig}
 
-make install \
+%{__make} install \
 	INSTDIR=$RPM_BUILD_ROOT%{_prefix} \
 	CONFDIR=$RPM_BUILD_ROOT%{_sysconfdir} \
 	BINDIR=$RPM_BUILD_ROOT%{_bindir} \
