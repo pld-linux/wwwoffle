@@ -155,13 +155,18 @@ mv doc/es/contrib/README doc/es/README-contrib
 mv doc/es/testprogs/README doc/es/README-testprogs
 rm -rf doc/es/{contrib,testprogs}
 
-%triggerpostun -- wwwoffle < 2.7
+%triggerpostun -- %{name} < 2.7
 
 echo Note!  Your existing cache and config file look earlier than
 echo 2.7 version. There have been several major changes in config
 echo file and some minor changes in cache handling. Read the file
 echo NEWS and following at a pinch for details. All the necessary
 echo files are available from within your documentation directory.
+
+%triggerpostun -- %{name} < 2.8
+
+chown wwwoffle:wwwoffle -R \
+	%{_var}/cache/%{name}/{ftp,http,lastout,lasttime,local,monitor,outgoing,temp,prevout[1-7],prevtime[1-7]}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -237,30 +242,18 @@ fi
 %defattr(664,wwwoffle,wwwoffle,775)
 %dir %{_var}/cache/%{name}
 #%%{_var}/cache/%{name}/[!o]*
-%dir %{_var}/cache/%{name}/ftp
 %{_var}/cache/%{name}/html
+%dir %{_var}/cache/%{name}/ftp
 %dir %{_var}/cache/%{name}/http
 %dir %{_var}/cache/%{name}/lastout
 %dir %{_var}/cache/%{name}/lasttime
 %dir %{_var}/cache/%{name}/local
 %dir %{_var}/cache/%{name}/monitor
-%dir %{_var}/cache/%{name}/prevout1
-%dir %{_var}/cache/%{name}/prevout2
-%dir %{_var}/cache/%{name}/prevout3
-%dir %{_var}/cache/%{name}/prevout4
-%dir %{_var}/cache/%{name}/prevout5
-%dir %{_var}/cache/%{name}/prevout6
-%dir %{_var}/cache/%{name}/prevout7
-%dir %{_var}/cache/%{name}/prevtime1
-%dir %{_var}/cache/%{name}/prevtime2
-%dir %{_var}/cache/%{name}/prevtime3
-%dir %{_var}/cache/%{name}/prevtime4
-%dir %{_var}/cache/%{name}/prevtime5
-%dir %{_var}/cache/%{name}/prevtime6
-%dir %{_var}/cache/%{name}/prevtime7
-%dir %{_var}/cache/%{name}/temp
 %dir %{_var}/cache/%{name}/outgoing
 %config(missingok) %{_var}/cache/%{name}/outgoing/*
+%dir %{_var}/cache/%{name}/prevout[1-7]
+%dir %{_var}/cache/%{name}/prevtime[1-7]
+%dir %{_var}/cache/%{name}/temp
 %dir %{_var}/cache/%{name}/search
 %dir %{_var}/cache/%{name}/search/htdig
 %dir %{_var}/cache/%{name}/search/htdig/db
