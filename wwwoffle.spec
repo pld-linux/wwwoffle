@@ -1,16 +1,16 @@
-Summary:     WWW Offline Explorer - Caching Web Proxy Server
-Summary(pl): WWW Offline Explorer
-Name:        wwwoffle
-Version:     2.3a
-Release:     2
-Copyright:   GPL
-Group:       Networking/Daemons
-Group(pl):   Sieciowe/Serwery
-Source:      http://www.gedanken.demon.co.uk/wwwoffle/version-%{version}/wwwoffle-%{version}.tgz
-Patch:       wwwoffle-%{version}.makefile.patch
-Vendor:      Andrew M. Bishop <amb@gedanken.demon.co.uk>
-URL:         http://www.gedanken.demon.co.uk/wwwoffle/
-Buildroot:   /tmp/%{name}-%{version}-root
+Summary:	WWW Offline Explorer - Caching Web Proxy Server
+Summary(pl):	WWW Offline Explorer
+Name:		wwwoffle
+Version:	2.4b
+Release:	1
+Copyright:	GPL
+Group:		Networking/Daemons
+Group(pl):	Sieciowe/Serwery
+Vendor:		Andrew M. Bishop <amb@gedanken.demon.co.uk>
+Source:		http://www.gedanken.demon.co.uk/download-wwwoffle/%{name}-%{version}.tgz
+Patch:		wwwoffle-%{version}.makefile.patch
+URL:		http://www.gedanken.demon.co.uk/wwwoffle/
+Buildroot:	/tmp/%{name}-%{version}-root
 
 %description
 The wwwoffled program is a simple proxy server with special features
@@ -27,9 +27,9 @@ stron przeznaczonych do ¶ci±gniêcia po nawi±zaniu po³±czenia.
 %patch -p1
 
 %build
-make 	INSTDIR=$RPM_BUILD_ROOT/usr \
-	SPOOLDIR=$RPM_BUILD_ROOT/var/spool/wwwoffle \
-	CONFDIR=$RPM_BUILD_ROOT/etc \
+make 	INSTDIR=/usr \
+	SPOOLDIR=/var/spool/wwwoffle \
+	CONFDIR=/etc \
 	CFLAGS="$RPM_OPT_FLAGS" \
 	LDFLAGS="-s" \
 	all
@@ -46,8 +46,8 @@ make 	INSTDIR=$RPM_BUILD_ROOT/usr \
 
 strip ${RPM_BUILD_ROOT}/usr/{bin,sbin}/*
 
-gzip -9nf $RPM_BUILD_ROOT/usr/man/man*/*
-gzip -9nf README* NEWS ChangeLog CHANGES.CONF
+gzip -9nf $RPM_BUILD_ROOT/usr/man/man*/* \
+	README* NEWS ChangeLog CHANGES.CONF
 
 %clean
 rm -rf $RPM_BUILD_ROOT
@@ -56,13 +56,21 @@ rm -rf $RPM_BUILD_ROOT
 %defattr(644,root,root,755)
 %doc {README*,NEWS,ChangeLog,CHANGES.CONF}.gz
 %attr(600,root,root) %config /etc/wwwoffle.conf
+
 %attr(700,root,root) /etc/rc.d/init.d/wwwoffle.init
 %attr(755,root,root) /usr/bin/*
 %attr(755,root,root) /usr/sbin/*
+
 /usr/man/man*/*
+
 /var/spool/wwwoffle
 
 %changelog
+* Sun Mar 21 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
+  [2.4b-1]
+- changed base Source Url to:
+  http://www.gedanken.demon.co.uk/download-wwwoffle/
+
 * Thu Mar 18 1999 Micha³ Kuratczyk <kura@pld.org.pl>
   [2.3a-2]
 - added gzipping documentation and man pages
