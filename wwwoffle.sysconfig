@@ -2,3 +2,10 @@
 
 # Nice level for apache
 SERVICE_RUN_NICE_LEVEL="+5"
+
+# Perform action after (re)start passed to wwwoffle program.
+# For valid options see wwwoffle(1) manpage.
+# For many actions are not supported. 
+# For example:
+# ACTION="-online"
+ACTION=""
