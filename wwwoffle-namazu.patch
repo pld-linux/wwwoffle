@@ -44,7 +44,7 @@ diff -urN wwwoffle-2.8.orig/cache/search/namazu/scripts/wwwoffle-mknmz-full wwwo
 -mknmz-wwwoffle -f search/namazu/conf/mknmzrc \
 -               -T search/namazu/conf \
 +mknmz-wwwoffle -f /etc/wwwoffle/namazu/mknmzrc \
-+               -T /etc/wwwoffle/namazu \
++               -T /usr/share/namazu/template \
                 -O search/namazu/db \
                 -V \
                 http ftp \
@@ -70,7 +70,7 @@ diff -urN wwwoffle-2.8.orig/cache/search/namazu/scripts/wwwoffle-mknmz-lasttime 
 -mknmz-wwwoffle -f search/namazu/conf/mknmzrc \
 -               -T search/namazu/conf \
 +mknmz-wwwoffle -f /etc/wwwoffle/namazu/mknmzrc \
-+               -T /etc/wwwoffle/namazu \
++               -T /usr/share/namazu/template \
                 -O search/namazu/db \
                 -V \
                 lasttime \
