@@ -5,8 +5,6 @@ Version:	2.6d
 Release:	3
 License:	GPL
 Group:		Networking/Daemons
-Group(de):	Netzwerkwesen/Server
-Group(pl):	Sieciowe/Serwery
 URL:		http://www.gedanken.demon.co.uk/wwwoffle/
 Source0:	ftp://ftp.demon.co.uk/pub/unix/httpd/%{name}-%{version}.tgz
 Source1:	%{name}.init
