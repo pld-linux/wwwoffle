@@ -1,8 +1,8 @@
-Summary:	WWW Offline Explorer - Caching Web Proxy Server
-Summary(pl):	Eksplorator Offline World Wide Web
+Summary:	WWW Offline Explorer - Caching Web Proxy Server (IPv6)
+Summary(pl):	Eksplorator Offline World Wide Web (IPv6)
 Name:		wwwoffle
-Version:	2.6c
-Release:	2
+Version:	2.6d
+Release:	1
 License:	GPL
 Group:		Networking/Daemons
 Group(de):	Netzwerkwesen/Server
@@ -14,13 +14,22 @@ Patch0:		%{name}-replacement.patch
 Patch1:		%{name}-install_dirs.patch
 URL:		http://www.gedanken.demon.co.uk/wwwoffle/
 BuildRequires:	flex
+BuildRequires:	zlib-devel
 Prereq:		rc-scripts >= 0.2.0
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-The wwwoffled program is a simple proxy server with special features
-for use with dial-up internet links. This means that it is possible to
-browse web pages and read them without having to remain connected.
+A proxy HTTP/FTP server for computers with dial-up internet access.
+- Caching of pages viewed while connected for review later.
+- Browsing of cached pages while not connected, with the ability
+  to follow links and mark other pages for download.
+- Downloading of specified pages non-interactively.
+- Monitoring of pages for regular download.
+- Multiple indices of pages stored in cache for easy selection.
+- Interactive or command line option to select pages for fetching
+  individually or recursively.
+- All options controlled using a simple configuration file with a
+  web page to edit it.
 
 %description -l de
 Ein (HTTP/FTP) Proxy Server für Computer mit Wählverbindungen ins
@@ -81,7 +90,8 @@ dial-up.
 	SPOOLDIR=%{_var}/cache/%{name} \
 	CONFDIR=%{_sysconfdir} \
 	CFLAGS="%{rpmcflags}" \
-	LDFLAGS="%{rpmldflags}"
+	LDFLAGS="%{rpmldflags}" \
+	USE_IPV6=1
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -104,7 +114,7 @@ gzip -9nf ANNOUNCE CHANGES.CONF CONVERT ChangeLog* FAQ NEWS \
 
 %triggerpostun -- wwwoffle < 2.6
 
-echo Your existing cache and config file are looking earlier than
+echo Note!  Your existing cache and config file look earlier than
 echo 2.6 version. There have been several major changes in config
 echo file and some minor changes in cache handling. Read the file
 echo NEWS and following at a pinch for details. All the necessary
