@@ -45,14 +45,14 @@ case "$1" in
 	$0 start
         ;;
   reload)
-	if [ ! -f /var/lock/subsys/wwwoffled ]; then
+	if [ -f /var/lock/subsys/wwwoffled ]; then
 		show Reload wwwoffled
 		busy
 		killproc wwwoffled -HUP
 		deltext
 		ok		
 	else
-		echo "wwwoffled already is running"
+		echo "wwwoffled is not running"
 	fi
 	;;
   status)
