@@ -19,6 +19,8 @@ Requires(pre):	fileutils
 Requires(pre):	sh-utils
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
+%define		specflags_ia32	"-fomit-frame-pointer"
+
 %description
 A proxy HTTP/FTP server for computers with dial-up internet access.
 - Caching of pages viewed while connected for review later.
