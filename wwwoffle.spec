@@ -7,6 +7,7 @@ License:	GPL
 Group:		Networking/Daemons
 #Source0:	ftp://ftp.demon.co.uk/pub/unix/httpd/%{name}-%{version}.tgz
 Source0:	ftp://ftp.ibiblio.org/pub/Linux/apps/www/servers/%{name}-%{version}.tgz
+# Source0-md5:	3226cbe65feca747f92393114d9de5f0
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-replacement.patch
