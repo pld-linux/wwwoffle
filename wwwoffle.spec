@@ -1,7 +1,7 @@
 Summary:	WWW Offline Explorer - Caching Web Proxy Server (IPv6)
 Summary(pl):	Eksplorator Offline World Wide Web (IPv6)
 Name:		wwwoffle
-Version:	2.7e
+Version:	2.7f
 Release:	1
 License:	GPL
 Group:		Networking/Daemons
@@ -14,6 +14,8 @@ URL:		http://www.gedanken.demon.co.uk/wwwoffle/
 BuildRequires:	flex
 BuildRequires:	zlib-devel
 PreReq:		rc-scripts >= 0.2.0
+Requires(pre):	fileutils
+Requires(pre):	sh-utils
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -92,9 +94,12 @@ dial-up.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig}
+install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig} \
+	$RPM_BUILD_ROOT%{_var}/cache/%{name}/{ftp,prev{out,time}{1,2,3,4,5,6,7},temp}
 
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
+mv -f $RPM_BUILD_ROOT%{_var}/cache/%{name}/html $RPM_BUILD_ROOT%{_datadir}/%{name}
+ln -s %{_datadir}/%{name} $RPM_BUILD_ROOT%{_var}/cache/%{name}/html
 
 install src/uncompress-cache $RPM_BUILD_ROOT%{_bindir}
 install -s src/convert-cache conf
@@ -121,6 +126,9 @@ echo files are available from within your documentation directory.
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%pre
+test -h %{_var}/cache/%{name}/html || rm -rf %{_var}/cache/%{name}/html
+
 %files
 %defattr(644,root,root,755)
 %lang(de) %doc doc/de
@@ -136,19 +144,18 @@ rm -rf $RPM_BUILD_ROOT
 %attr(660,http,http) %config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/%{name}.conf
 %{_mandir}/man[158]/*
 %lang(fr) %{_mandir}/fr/man5/*
+%dir %{_datadir}/%{name}
+%{_datadir}/%{name}/default
+%{_datadir}/%{name}/en
+%lang(de) %{_datadir}/%{name}/de
+%lang(es) %{_datadir}/%{name}/es
+%lang(fr) %{_datadir}/%{name}/fr
+%lang(it) %{_datadir}/%{name}/it
+%lang(nl) %{_datadir}/%{name}/nl
+%lang(pl) %{_datadir}/%{name}/pl
+%lang(ru) %{_datadir}/%{name}/ru
 %defattr(664,http,http,775)
 %dir %{_var}/cache/%{name}
-%{_var}/cache/%{name}/[!ho]*
-%dir %{_var}/cache/%{name}/html
-%{_var}/cache/%{name}/html/default
-%{_var}/cache/%{name}/html/en
-%lang(de) %{_var}/cache/%{name}/html/de
-%lang(es) %{_var}/cache/%{name}/html/es
-%lang(fr) %{_var}/cache/%{name}/html/fr
-%lang(it) %{_var}/cache/%{name}/html/it
-%lang(nl) %{_var}/cache/%{name}/html/nl
-%lang(pl) %{_var}/cache/%{name}/html/pl
-%lang(ru) %{_var}/cache/%{name}/html/ru
-%{_var}/cache/%{name}/http
+%{_var}/cache/%{name}/[!o]*
 %dir %{_var}/cache/%{name}/outgoing
 %config(missingok) %{_var}/cache/%{name}/outgoing/*
