@@ -1,13 +1,13 @@
-diff -urN wwwoffle-2.7b.old/cache/html/en/local/dontget/replacement.html wwwoffle-2.7b/cache/html/en/local/dontget/replacement.html
---- wwwoffle-2.7b.old/cache/html/en/local/dontget/replacement.html	Thu Jan  1 01:00:00 1970
-+++ wwwoffle-2.7b/cache/html/en/local/dontget/replacement.html	Wed Apr 10 01:55:37 2002
+diff -urN wwwoffle-2.7e.old/cache/html/en/local/dontget/replacement.html wwwoffle-2.7e/cache/html/en/local/dontget/replacement.html
+--- wwwoffle-2.7e.old/cache/html/en/local/dontget/replacement.html	Thu Jan  1 01:00:00 1970
++++ wwwoffle-2.7e/cache/html/en/local/dontget/replacement.html	Wed Apr 10 01:55:37 2002
 @@ -0,0 +1,2 @@
 +<HTML>
 +</HTML>
-diff -urN wwwoffle-2.7b.old/conf/wwwoffle.conf wwwoffle-2.7b/conf/wwwoffle.conf
---- wwwoffle-2.7b.old/conf/wwwoffle.conf	Sun Mar 10 16:54:34 2002
-+++ wwwoffle-2.7b/conf/wwwoffle.conf	Wed Apr 10 01:55:58 2002
-@@ -523,7 +523,7 @@
+diff -urN wwwoffle-2.7e.old/conf/wwwoffle.conf wwwoffle-2.7e/conf/wwwoffle.conf
+--- wwwoffle-2.7e.old/conf/wwwoffle.conf	Sun Mar 10 16:54:34 2002
++++ wwwoffle-2.7e/conf/wwwoffle.conf	Wed Apr 10 01:55:58 2002
+@@ -533,7 +533,7 @@
  #
  # [<URL-SPEC>] replacement-dontget-image = (URL)
  #         The replacement image to use for URLs that are in the DontGet section
@@ -16,7 +16,7 @@ diff -urN wwwoffle-2.7b.old/conf/wwwoffle.conf wwwoffle-2.7b/conf/wwwoffle.conf
  #
  # [<URL-SPEC>] replace-webbug-images = yes | no
  #         Replaces image URLs that are 1 pixel square with a static URL
-@@ -533,7 +533,7 @@
+@@ -543,7 +543,7 @@
  #
  # [<URL-SPEC>] replacement-webbug-image = (URL)
  #         The replacement image to use for images that are 1 pixel square
@@ -25,7 +25,7 @@ diff -urN wwwoffle-2.7b.old/conf/wwwoffle.conf wwwoffle-2.7b/conf/wwwoffle.conf
  #
  # [<URL-SPEC>] disable-animated-gif = yes | no
  #         Disables the animation in animated GIF files (default=no).
-@@ -572,10 +572,10 @@
+@@ -582,10 +582,10 @@
  
   disable-dontget-links     = no
   replace-dontget-images    = no
@@ -38,7 +38,7 @@ diff -urN wwwoffle-2.7b.old/conf/wwwoffle.conf wwwoffle-2.7b/conf/wwwoffle.conf
  
   demoronise-ms-chars       = no
  
-@@ -753,10 +753,10 @@
+@@ -763,10 +763,10 @@
  {
   location-error = no
  
@@ -51,10 +51,10 @@ diff -urN wwwoffle-2.7b.old/conf/wwwoffle.conf wwwoffle-2.7b/conf/wwwoffle.conf
  
  #### Example ####
  # Don't get from any hosts in the barfoo.com domain.
-diff -urN wwwoffle-2.7b.old/conf/wwwoffle.conf.template wwwoffle-2.7b/conf/wwwoffle.conf.template
---- wwwoffle-2.7b.old/conf/wwwoffle.conf.template	Sat Mar  9 11:46:22 2002
-+++ wwwoffle-2.7b/conf/wwwoffle.conf.template	Wed Apr 10 01:56:04 2002
-@@ -147,10 +147,10 @@
+diff -urN wwwoffle-2.7e.old/conf/wwwoffle.conf.template wwwoffle-2.7e/conf/wwwoffle.conf.template
+--- wwwoffle-2.7e.old/conf/wwwoffle.conf.template	Sat Mar  9 11:46:22 2002
++++ wwwoffle-2.7e/conf/wwwoffle.conf.template	Wed Apr 10 01:56:04 2002
+@@ -149,10 +149,10 @@
  
   disable-dontget-links     = no
   replace-dontget-images    = no
@@ -67,7 +67,7 @@ diff -urN wwwoffle-2.7b.old/conf/wwwoffle.conf.template wwwoffle-2.7b/conf/wwwof
  
   demoronise-ms-chars       = no
  
-@@ -224,10 +224,10 @@
+@@ -226,10 +226,10 @@
  {
   location-error = no
  
