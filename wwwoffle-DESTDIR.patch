@@ -1,0 +1,187 @@
+--- Makefile~	Tue May  4 20:49:34 1999
++++ Makefile	Fri May 21 18:47:02 1999
+@@ -16,9 +16,13 @@
+ 
+ LOCALHOST=localhost:8080
+ 
++DESTDIR=
+ INSTDIR=/usr/local
+ SPOOLDIR=/var/spool/wwwoffle
+ CONFDIR=/var/spool/wwwoffle
++BINDIR=$(INSTDIR)/bin
++SBINDIR=$(INSTDIR)/sbin
++MANDIR=$(INSTDIR)/man
+ 
+ # For Cygwin (win32)
+ #INSTDIR=/wwwoffle
+@@ -224,16 +228,16 @@
+ ########
+ 
+ install_binary : programs
+-	[ -x $(INSTDIR)/bin ] || $(INSTALL) -d $(INSTDIR)/bin
+-	$(INSTALL) -c -m 755 wwwoffle $(INSTDIR)/bin
+-	$(INSTALL) -c -m 755 wwwoffle-tools $(INSTDIR)/bin
+-	ln -sf wwwoffle-tools $(INSTDIR)/bin/wwwoffle-ls
+-	ln -sf wwwoffle-tools $(INSTDIR)/bin/wwwoffle-mv
+-	ln -sf wwwoffle-tools $(INSTDIR)/bin/wwwoffle-rm
+-	ln -sf wwwoffle-tools $(INSTDIR)/bin/wwwoffle-read
+-	ln -sf wwwoffle-tools $(INSTDIR)/bin/wwwoffle-write
+-	[ -x $(INSTDIR)/sbin ] || $(INSTALL) -d $(INSTDIR)/sbin
+-	$(INSTALL) -c -m 755 wwwoffled $(INSTDIR)/sbin
++	[ -x $(DESTDIR)$(BINDIR) ] || $(INSTALL) -d $(DESTDIR)$(BINDIR)
++	$(INSTALL) -c -m 755 wwwoffle $(DESTDIR)$(BINDIR)
++	$(INSTALL) -c -m 755 wwwoffle-tools $(DESTDIR)$(BINDIR)
++	ln -sf wwwoffle-tools $(DESTDIR)$(BINDIR)/wwwoffle-ls
++	ln -sf wwwoffle-tools $(DESTDIR)$(BINDIR)/wwwoffle-mv
++	ln -sf wwwoffle-tools $(DESTDIR)$(BINDIR)/wwwoffle-rm
++	ln -sf wwwoffle-tools $(DESTDIR)$(BINDIR)/wwwoffle-read
++	ln -sf wwwoffle-tools $(DESTDIR)$(BINDIR)/wwwoffle-write
++	[ -x $(DESTDIR)$(SBINDIR) ] || $(INSTALL) -d $(DESTDIR)$(SBINDIR)
++	$(INSTALL) -c -m 755 wwwoffled $(DESTDIR)$(SBINDIR)
+ 
+ install_binary-win32 : programs
+ 	[ -x $(INSTDIR)/bin ] || $(INSTALL) -d  $(INSTDIR)/bin
+@@ -249,22 +253,22 @@
+ 	$(INSTALL) -c -m 755 cygwin1.dll $(INSTDIR)/bin
+ 
+ install_doc :
+-	[ -x $(INSTDIR)/man ] || $(INSTALL) -d $(INSTDIR)/man
+-	[ -x $(INSTDIR)/man/man1 ] || $(INSTALL) -d $(INSTDIR)/man/man1
+-	$(INSTALL) -c -m 644 wwwoffle.man $(INSTDIR)/man/man1/wwwoffle.1
+-	[ -x $(INSTDIR)/man/man5 ] || $(INSTALL) -d $(INSTDIR)/man/man5
++	[ -x $(DESTDIR)$(MANDIR) ] || $(INSTALL) -d $(DESTDIR)$(MANDIR)
++	[ -x $(DESTDIR)$(MANDIR)/man1 ] || $(INSTALL) -d $(DESTDIR)$(MANDIR)/man1
++	$(INSTALL) -c -m 644 wwwoffle.man $(DESTDIR)$(MANDIR)/man1/wwwoffle.1
++	[ -x $(DESTDIR)$(MANDIR)/man5 ] || $(INSTALL) -d $(DESTDIR)$(MANDIR)/man5
+ 	sed -e 's%SPOOLDIR%$(SPOOLDIR)%' -e 's%CONFDIR%$(CONFDIR)%' < wwwoffle.conf.man > wwwoffle.conf.man.install
+-	$(INSTALL) -c -m 644 wwwoffle.conf.man.install $(INSTDIR)/man/man5/wwwoffle.conf.5
+-	[ -x $(INSTDIR)/man/man8 ] || $(INSTALL) -d $(INSTDIR)/man/man8
+-	$(INSTALL) -c -m 644 wwwoffled.man $(INSTDIR)/man/man8/wwwoffled.8
+-	[ -x $(INSTDIR)/doc/wwwoffle ] || $(INSTALL) -d $(INSTDIR)/doc/wwwoffle
+-	for file in CHANGES.CONF CONVERT COPYING FAQ INSTALL NEWS README* UPGRADE ; do \
+-	  $(INSTALL) -c -m 644 $$file $(INSTDIR)/doc/wwwoffle/$$file ;\
+-	done
+-	[ "x$(LANG)" = "x" ] || ( cd lang-$(LANG) && \
+-	  for file in CHANGES.CONF CONVERT COPYING FAQ INSTALL NEWS README* UPGRADE ; do \
+-	    [ ! -f $$file ] || $(INSTALL) -c -m 644 $$file $(INSTDIR)/doc/wwwoffle/$$file-$(LANG) ;\
+-	  done )
++	$(INSTALL) -c -m 644 wwwoffle.conf.man.install $(DESTDIR)$(MANDIR)/man5/wwwoffle.conf.5
++	[ -x $(DESTDIR)$(MANDIR)/man8 ] || $(INSTALL) -d $(DESTDIR)$(MANDIR)/man8
++	$(INSTALL) -c -m 644 wwwoffled.man $(DESTDIR)$(MANDIR)/man8/wwwoffled.8
++#	[ -x $(INSTDIR)/doc/wwwoffle ] || $(INSTALL) -d $(INSTDIR)/doc/wwwoffle
++#	for file in CHANGES.CONF CONVERT COPYING FAQ INSTALL NEWS README* UPGRADE ; do \
++#	  $(INSTALL) -c -m 644 $$file $(INSTDIR)/doc/wwwoffle/$$file ;\
++#	done
++#	[ "x$(LANG)" = "x" ] || ( cd lang-$(LANG) && \
++#	  for file in CHANGES.CONF CONVERT COPYING FAQ INSTALL NEWS README* UPGRADE ; do \
++#	    [ ! -f $$file ] || $(INSTALL) -c -m 644 $$file $(INSTDIR)/doc/wwwoffle/$$file-$(LANG) ;\
++#	  done )
+ 
+ 
+ install_doc-win32 :
+@@ -279,58 +283,58 @@
+ 	  done )
+ 
+ install_cache : endian-cache
+-	@[ ! -d $(SPOOLDIR) -o -d $(SPOOLDIR)/http ] || \
+-	 (echo "WWWOFFLE: " ;\
+-	  echo "WWWOFFLE: You MUST upgrade the existing cache before you can use this version." ;\
+-	  echo "WWWOFFLE: Read the file UPGRADE for details." ;\
+-	  echo "WWWOFFLE: " ;\
+-	  exit 1 )
+-	@([ ! -d $(SPOOLDIR) -o -d $(SPOOLDIR)/prevtime1 ] || ./endian-cache > /dev/null 2>&1 ) || \
+-	 (echo "WWWOFFLE: " ;\
+-	  echo "WWWOFFLE: You MUST convert the existing cache to the correct endian format." ;\
+-	  echo "WWWOFFLE: Read the file CONVERT for details." ;\
+-	  echo "WWWOFFLE: " ;\
+-	  exit 0 )
+-	[ -x $(SPOOLDIR) ] || $(INSTALL) -d $(SPOOLDIR)
+-	[ -x $(SPOOLDIR)/http ] || $(INSTALL) -d $(SPOOLDIR)/http
+-	[ -x $(SPOOLDIR)/outgoing ] || $(INSTALL) -d $(SPOOLDIR)/outgoing
+-	[ -x $(SPOOLDIR)/monitor ] || $(INSTALL) -d $(SPOOLDIR)/monitor
+-	[ -x $(SPOOLDIR)/lasttime ] || $(INSTALL) -d $(SPOOLDIR)/lasttime
+-	[ -x $(SPOOLDIR)/prevtime1 ] || $(INSTALL) -d $(SPOOLDIR)/prevtime1
+-	@echo 'GET http://www.gedanken.demon.co.uk/wwwoffle/version-2.4/user.html HTTP/1.0'        > $(SPOOLDIR)/outgoing/Owwwoffle-user ;\
+-	 echo 'Host: www.gedanken.demon.co.uk'                                                    >> $(SPOOLDIR)/outgoing/Owwwoffle-user ;\
+-	 echo 'Accept: */*'                                                                       >> $(SPOOLDIR)/outgoing/Owwwoffle-user ;\
+-	 echo ''                                                                                  >> $(SPOOLDIR)/outgoing/Owwwoffle-user ;\
+-	 awk 'BEGIN{printf("http://www.gedanken.demon.co.uk/wwwoffle/version-2.4/user.html");}'    > $(SPOOLDIR)/outgoing/Uwwwoffle-user < /dev/null
+-	@echo 'GET http://www.gedanken.demon.co.uk/wwwoffle/version-2.4/browser.html HTTP/1.0'     > $(SPOOLDIR)/outgoing/Owwwoffle-browser ;\
+-	 echo 'Host: www.gedanken.demon.co.uk'                                                    >> $(SPOOLDIR)/outgoing/Owwwoffle-browser ;\
+-	 echo 'Accept: */*'                                                                       >> $(SPOOLDIR)/outgoing/Owwwoffle-browser ;\
+-	 echo ''                                                                                  >> $(SPOOLDIR)/outgoing/Owwwoffle-browser ;\
+-	 awk 'BEGIN{printf("http://www.gedanken.demon.co.uk/wwwoffle/version-2.4/browser.html");}' > $(SPOOLDIR)/outgoing/Uwwwoffle-browser < /dev/null
++#	@[ ! -d $(SPOOLDIR) -o -d $(SPOOLDIR)/http ] || \
++#	 (echo "WWWOFFLE: " ;\
++#	  echo "WWWOFFLE: You MUST upgrade the existing cache before you can use this version." ;\
++#	  echo "WWWOFFLE: Read the file UPGRADE for details." ;\
++#	  echo "WWWOFFLE: " ;\
++#	  exit 1 )
++#	@([ ! -d $(SPOOLDIR) -o -d $(SPOOLDIR)/prevtime1 ] || ./endian-cache > /dev/null 2>&1 ) || \
++#	 (echo "WWWOFFLE: " ;\
++#	  echo "WWWOFFLE: You MUST convert the existing cache to the correct endian format." ;\
++#	  echo "WWWOFFLE: Read the file CONVERT for details." ;\
++#	  echo "WWWOFFLE: " ;\
++#	  exit 0 )
++	[ -x $(DESTDIR)$(SPOOLDIR) ] || $(INSTALL) -d $(DESTDIR)$(SPOOLDIR)
++	[ -x $(DESTDIR)$(SPOOLDIR)/http ] || $(INSTALL) -d $(DESTDIR)$(SPOOLDIR)/http
++	[ -x $(DESTDIR)$(SPOOLDIR)/outgoing ] || $(INSTALL) -d $(DESTDIR)$(SPOOLDIR)/outgoing
++	[ -x $(DESTDIR)$(SPOOLDIR)/monitor ] || $(INSTALL) -d $(DESTDIR)$(SPOOLDIR)/monitor
++	[ -x $(DESTDIR)$(SPOOLDIR)/lasttime ] || $(INSTALL) -d $(DESTDIR)$(SPOOLDIR)/lasttime
++	[ -x $(DESTDIR)$(SPOOLDIR)/prevtime1 ] || $(INSTALL) -d $(DESTDIR)$(SPOOLDIR)/prevtime1
++	@echo 'GET http://www.gedanken.demon.co.uk/wwwoffle/version-2.4/user.html HTTP/1.0'        > $(DESTDIR)$(SPOOLDIR)/outgoing/Owwwoffle-user ;\
++	 echo 'Host: www.gedanken.demon.co.uk'                                                    >> $(DESTDIR)$(SPOOLDIR)/outgoing/Owwwoffle-user ;\
++	 echo 'Accept: */*'                                                                       >> $(DESTDIR)$(SPOOLDIR)/outgoing/Owwwoffle-user ;\
++	 echo ''                                                                                  >> $(DESTDIR)$(SPOOLDIR)/outgoing/Owwwoffle-user ;\
++	 awk 'BEGIN{printf("http://www.gedanken.demon.co.uk/wwwoffle/version-2.4/user.html");}'    > $(DESTDIR)$(SPOOLDIR)/outgoing/Uwwwoffle-user < /dev/null
++	@echo 'GET http://www.gedanken.demon.co.uk/wwwoffle/version-2.4/browser.html HTTP/1.0'     > $(DESTDIR)$(SPOOLDIR)/outgoing/Owwwoffle-browser ;\
++	 echo 'Host: www.gedanken.demon.co.uk'                                                    >> $(DESTDIR)$(SPOOLDIR)/outgoing/Owwwoffle-browser ;\
++	 echo 'Accept: */*'                                                                       >> $(DESTDIR)$(SPOOLDIR)/outgoing/Owwwoffle-browser ;\
++	 echo ''                                                                                  >> $(DESTDIR)$(SPOOLDIR)/outgoing/Owwwoffle-browser ;\
++	 awk 'BEGIN{printf("http://www.gedanken.demon.co.uk/wwwoffle/version-2.4/browser.html");}' > $(DESTDIR)$(SPOOLDIR)/outgoing/Uwwwoffle-browser < /dev/null
+ 
+ install_html : html
+-	@[ ! -x $(SPOOLDIR)/html.old ] || \
+-	 (echo "WWWOFFLE: " ;\
+-	  echo "WWWOFFLE: There is already a directory $(SPOOLDIR)/html.old - remove it and re-run make" ;\
+-	  echo "WWWOFFLE: " ;\
+-	  exit 1 )
+-	[ ! -x $(SPOOLDIR)/html ] || mv $(SPOOLDIR)/html $(SPOOLDIR)/html.old
+-	[ -x $(SPOOLDIR)/html ] || mkdir $(SPOOLDIR)/html
+-	tar cf $(SPOOLDIR)/html.tar html && cd $(SPOOLDIR) && tar xf html.tar && rm html.tar
+-	[ "x$(LANG)" = "x" ] || ( cd lang-$(LANG) && \
+-	  tar cf $(SPOOLDIR)/html.tar html && cd $(SPOOLDIR) && tar xf html.tar && rm html.tar )
+-	cd $(SPOOLDIR)/html && ./fixup-install.sh $(SPOOLDIR) $(LOCALHOST) && rm ./fixup-install.sh
++#	@[ ! -x $(SPOOLDIR)/html.old ] || \
++#	 (echo "WWWOFFLE: " ;\
++#	  echo "WWWOFFLE: There is already a directory $(SPOOLDIR)/html.old - remove it and re-run make" ;\
++#	  echo "WWWOFFLE: " ;\
++#	  exit 1 )
++#	[ ! -x $(SPOOLDIR)/html ] || mv $(SPOOLDIR)/html $(SPOOLDIR)/html.old
++	[ -x $(DESTDIR)$(SPOOLDIR)/html ] || mkdir $(DESTDIR)$(SPOOLDIR)/html
++	tar cf $(DESTDIR)$(SPOOLDIR)/html.tar html && cd $(DESTDIR)$(SPOOLDIR) && tar xf html.tar && rm html.tar
++#	[ "x$(LANG)" = "x" ] || ( cd lang-$(LANG) && \
++#	  tar cf $(DESTDIR)$(SPOOLDIR)/html.tar html && cd $(DESTDIR)$(SPOOLDIR) && tar xf html.tar && rm html.tar )
++#	cd $(DESTDIR)$(SPOOLDIR)/html && ./fixup-install.sh $(DESTDIR)$(SPOOLDIR) $(LOCALHOST) && rm ./fixup-install.sh
+ 
+ install_config :
+ 	sed -e 's%SPOOLDIR%$(SPOOLDIR)%' -e 's%CONFDIR%$(CONFDIR)%' < wwwoffle.conf > wwwoffle.conf.install
+-	[ -x $(CONFDIR) ] || $(INSTALL) -d $(CONFDIR)
+-	@[ ! -f $(CONFDIR)/wwwoffle.conf ] || \
+-	 (echo "WWWOFFLE: " ;\
+-	  echo "WWWOFFLE: There is already a configuration file $(CONFDIR)/wwwoffle.conf." ;\
+-	  echo "WWWOFFLE: Run 'perl upgrade-config.pl $(CONFDIR)/wwwoffle.conf' to upgrade it." ;\
+-	  echo "WWWOFFLE: " )
+-	[  ! -f $(CONFDIR)/wwwoffle.conf ] || $(INSTALL) -c -m 644 wwwoffle.conf.install $(CONFDIR)/wwwoffle.conf.install
+-	[    -f $(CONFDIR)/wwwoffle.conf ] || $(INSTALL) -c -m 644 wwwoffle.conf.install $(CONFDIR)/wwwoffle.conf
++	[ -x $(DESTDIR)$(CONFDIR) ] || $(INSTALL) -d $(DESTDIR)$(CONFDIR)
++#	@[ ! -f $(CONFDIR)/wwwoffle.conf ] || \
++#	 (echo "WWWOFFLE: " ;\
++#	  echo "WWWOFFLE: There is already a configuration file $(CONFDIR)/wwwoffle.conf." ;\
++#	  echo "WWWOFFLE: Run 'perl upgrade-config.pl $(CONFDIR)/wwwoffle.conf' to upgrade it." ;\
++#	  echo "WWWOFFLE: " )
++#	[  ! -f $(CONFDIR)/wwwoffle.conf ] || $(INSTALL) -c -m 644 wwwoffle.conf.install $(CONFDIR)/wwwoffle.conf.install
++	[    -f $(DESTDIR)$(CONFDIR)/wwwoffle.conf ] || $(INSTALL) -c -m 644 wwwoffle.conf.install $(DESTDIR)$(CONFDIR)/wwwoffle.conf
+ 
+ install_fixup-win32:
+ 	for file in $(INSTDIR)/doc/* $(CONFDIR)/README.win32 ; do \
