@@ -32,7 +32,7 @@ stron przeznaczonych do ¶ci±gniêcia po nawi±zaniu po³±czenia.
 %build
 make all \
 	INSTDIR=%{_prefix} \
-	SPOOLDIR=/var/spool/wwwoffle \
+	SPOOLDIR=/var/chache/wwwoffle \
 	CONFDIR=%{_sysconfdir} \
 	CFLAGS="$RPM_OPT_FLAGS" \
 	LDFLAGS="-s"
@@ -48,27 +48,27 @@ make install \
 	BINDIR=%{_bindir} \
 	SBINDIR=%{_sbindir} \
 	MANDIR=%{_mandir} \
-	SPOOLDIR=/var/spool/wwwoffle
+	SPOOLDIR=/var/chache/wwwoffle
 
 strip $RPM_BUILD_ROOT{%{_bindir},%{_sbindir}}/*
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 
 gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man*/* \
-	README* NEWS ChangeLog CHANGES.CONF INSTALL
+	README* NEWS ChangeLog CHANGES.CONF
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc {README*,NEWS,ChangeLog,CHANGES.CONF,INSTALL}.gz
+%doc {README*,NEWS,ChangeLog,CHANGES.CONF}.gz
 %attr(600,root,root) %config %{_sysconfdir}/%{name}.conf
 
-%attr(751,root,root) /etc/rc.d/init.d/%{name}
+%attr(754,root,root) /etc/rc.d/init.d/%{name}
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_sbindir}/*
 
 %{_mandir}/man*/*
 
-/var/spool/%{name}
+/var/chache/%{name}
