@@ -13,7 +13,7 @@ Patch0:		wwwoffle-DESTDIR.patch
 Patch1:		http://www.misiek.eu.org/ipv6/wwwoffle-2.5d-ipv6-01032000.patch.gz
 Requires:	rc-scripts
 URL:		http://www.gedanken.demon.co.uk/wwwoffle/
-Buildroot:	/tmp/%{name}-%{version}-root
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		_sysconfdir	/etc
 
