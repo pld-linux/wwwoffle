@@ -44,6 +44,9 @@ make 	INSTDIR=$RPM_BUILD_ROOT/usr \
 	install
 strip ${RPM_BUILD_ROOT}/usr/{bin,sbin}/*
 
+%clean
+rm -rf $RPM_BUILD_ROOT
+
 %files
 %defattr(644, root, root, 755)
 %doc README* NEWS ChangeLog CHANGES.CONF
