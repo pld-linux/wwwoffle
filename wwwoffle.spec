@@ -19,9 +19,9 @@ Patch1:		%{name}-conf_settings.patch
 Patch2:		%{name}-namazu.patch
 URL:		http://www.gedanken.demon.co.uk/wwwoffle/
 BuildRequires:	autoconf
+BuildRequires:	automake
 BuildRequires:	flex
 BuildRequires:	zlib-devel
-BuildRequires:	fileutils
 PreReq:		rc-scripts >= 0.2.0
 Requires(pre):	fileutils
 Requires(pre):	sh-utils
