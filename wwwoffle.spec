@@ -5,13 +5,13 @@
 Summary:	WWW Offline Explorer - Caching Web Proxy Server (IPv6)
 Summary(pl):	Eksplorator Offline World Wide Web (IPv6)
 Name:		wwwoffle
-Version:	2.8b
+Version:	2.8c
 Release:	1
 Epoch:		0
 License:	GPL
 Group:		Networking/Daemons
 Source0:	http://www.gedanken.freeserve.co.uk/download-wwwoffle/%{name}-%{version}.tgz
-# Source0-md5:	ef5a756adc8b8c37b9684b3155494227
+# Source0-md5:	bf1cfba5f37cc0545c536a899713a8ee
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-replacement.patch
