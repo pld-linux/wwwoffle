@@ -1,0 +1,16 @@
+diff -urN wwwoffle-2.6d.org/Makefile wwwoffle-2.6d/Makefile
+--- wwwoffle-2.6d.org/Makefile	Sun Aug  5 00:23:05 2001
++++ wwwoffle-2.6d/Makefile	Sun Aug  5 00:26:31 2001
+@@ -86,10 +86,10 @@
+ #USE_ZLIB=0
+ 
+ # The option to use IPv6 sockets if required.
+-#USE_IPV6=1
++USE_IPV6=1
+ 
+ # The option to use IPv6 sockets if required.
+-USE_IPV6=0
++#USE_IPV6=0
+ 
+ ########
+ 
