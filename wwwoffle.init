@@ -1,28 +1,36 @@
 #!/bin/bash
 #
-# wwwoffle	Starts/stops wwwoffled.
+# wwwoffle	WWW proxy allowing offline view of cached pages
 #
-# chkconfig: 2345 85 20
+# chkconfig:	2345 85 20
+#
 # description:	WWW proxy allowing offline view of cached pages 
-#
 
-# Source function library.
+
+# Source function library
 . /etc/rc.d/init.d/functions
 
-# Source networking configuration.
+# Get network config
 . /etc/sysconfig/network
 
-# Check that networking is up.
-[ ${NETWORKING} = "no" ] && exit 0
+# Get service config
+[ -f /etc/sysconfig/wwwoffled ] && . /etc/sysconfig/wwwoffled
 
-[ -f /usr/sbin/wwwoffled ] || exit 0
+# Check that networking is up.
+[ "${NETWORKING}" = "no" ] && echo "Error: Networking is down"; exit 0
+
 
 # See how we were called.
 case "$1" in
   start)
-        # Start daemons.
-        show Starting wwwoffled
-        daemon wwwoffled -c /etc/wwwoffle.conf
+	# Check if the service is already running?
+	if [ ! -f /var/lock/subsys/wwwoffled ]; then
+		show Starting wwwoffled
+		daemon httpd
+	else
+		echo "wwwoffled already is running"
+	fi
+	touch /var/lock/subsys/wwwoffled
         ;;
   stop)
         # Stop daemons.
@@ -37,7 +45,7 @@ case "$1" in
 	status wwwoffled
         ;;
   *)
-        echo "Usage: wwwoffle {start|stop|restart|reload|status}"
+        echo "Usage: wwwoffle {start|stop|status|restart|reload}"
         exit 1
 esac
 
