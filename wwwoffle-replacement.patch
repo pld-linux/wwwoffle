@@ -1,14 +1,14 @@
-diff -urN wwwoffle-2.6c.old/html/local/dontget/replacement.html wwwoffle-2.6c/html/local/dontget/replacement.html
---- wwwoffle-2.6c.old/html/local/dontget/replacement.html	Thu Jan  1 01:00:00 1970
-+++ wwwoffle-2.6c/html/local/dontget/replacement.html	Sat Apr 21 10:20:13 2001
+diff -urN wwwoffle-2.6d.old/html/local/dontget/replacement.html wwwoffle-2.6d/html/local/dontget/replacement.html
+--- wwwoffle-2.6d.old/html/local/dontget/replacement.html	Thu Jan  1 01:00:00 1970
++++ wwwoffle-2.6d/html/local/dontget/replacement.html	Sat Apr 21 10:20:13 2001
 @@ -0,0 +1,2 @@
 +<HTML>
 +</HTML>
 \ No newline at end of file
-diff -urN wwwoffle-2.6c.old/wwwoffle.conf wwwoffle-2.6c/wwwoffle.conf
---- wwwoffle-2.6c.old/wwwoffle.conf	Mon Mar 19 20:11:43 2001
-+++ wwwoffle-2.6c/wwwoffle.conf	Sat Apr 21 10:19:15 2001
-@@ -699,7 +699,7 @@
+diff -urN wwwoffle-2.6d.old/wwwoffle.conf wwwoffle-2.6d/wwwoffle.conf
+--- wwwoffle-2.6d.old/wwwoffle.conf	Mon Mar 19 20:11:43 2001
++++ wwwoffle-2.6d/wwwoffle.conf	Sat Apr 21 10:19:15 2001
+@@ -713,7 +713,7 @@
  # <*://*/*.gif> replacement = /local/dontget/replacement.gif
  # <*://*/*.png> replacement = /local/dontget/replacement.png
  # <*://*/*.js>  replacement = /local/dontget/replacement.js

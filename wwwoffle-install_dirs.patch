@@ -1,6 +1,6 @@
-diff -urN wwwoffle-2.6c.old/Makefile wwwoffle-2.6c/Makefile
---- wwwoffle-2.6c.old/Makefile	Fri Apr 27 01:19:14 2001
-+++ wwwoffle-2.6c/Makefile	Fri Apr 27 10:17:35 2001
+diff -urN wwwoffle-2.6d.old/Makefile wwwoffle-2.6d/Makefile
+--- wwwoffle-2.6d.old/Makefile	Tue Jul 17 11:22:01 2001
++++ wwwoffle-2.6d/Makefile	Tue Jul 17 11:43:08 2001
 @@ -20,7 +20,9 @@
  # For UNIX.
  INSTDIR=/usr/local
@@ -11,12 +11,12 @@ diff -urN wwwoffle-2.6c.old/Makefile wwwoffle-2.6c/Makefile
  MANDIR=$(INSTDIR)/man
  DOCDIR=$(INSTDIR)/doc/wwwoffle
  
-@@ -347,55 +349,55 @@
+@@ -356,55 +358,55 @@
  	  done )
  
  install_cache :
--	@[ ! -d $(SPOOLDIR) -o -d $(SPOOLDIR)/prevtime1 ] || \
-+	@[ ! -d $(SPOOLDIR_BUILD) -o -d $(SPOOLDIR_BUILD)/prevtime1 ] || \
+-	@[ ! -d $(SPOOLDIR) ] || [ ! -d $(SPOOLDIR)/outgoing ] || [ -d $(SPOOLDIR)/prevtime1 ] || \
++	@[ ! -d $(SPOOLDIR_BUILD) ] || [ ! -d $(SPOOLDIR_BUILD)/outgoing ] || [ -d $(SPOOLDIR_BUILD)/prevtime1 ] || \
  	 (echo "WWWOFFLE: " ;\
  	  echo "WWWOFFLE: Your existing cache looks earlier than version 2.2, cannot continue." ;\
  	  echo "WWWOFFLE: Read the file NEWS for details." ;\
