@@ -89,7 +89,7 @@ Serwer proxy HTTP/FTP dla komputerów z dostêpem do internetu typu
 dial-up.
 - Buforowanie stron przegl±danych podczas po³±czenia.
 - Przegl±danie buforowanych stron bez potrzeby po³±czenia, z
-  mo¿liwo¶cia pod±¿ania za ³±czami i oznaczania innych stron do
+  mo¿liwo¶ci± pod±¿ania za ³±czami i oznaczania innych stron do
   pobrania.
 - Pobieranie okre¶lonych stron nieinteraktywnie.
 - Monitorowanie stron dla regularnego pobierania.
