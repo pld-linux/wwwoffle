@@ -1,5 +1,7 @@
+#
 # Conditional build:
 # _without_ipv6	- without support for IPv6
+#
 Summary:	WWW Offline Explorer - Caching Web Proxy Server (IPv6)
 Summary(pl):	Eksplorator Offline World Wide Web (IPv6)
 Name:		wwwoffle
@@ -27,6 +29,9 @@ Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
+Requires(post,preun):	/sbin/chkconfig
+Requires(postun):	/usr/sbin/groupdel
+Requires(postun):	/usr/sbin/userdel
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		specflags_ia32	"-fomit-frame-pointer"
@@ -129,20 +134,20 @@ install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig,%{name}/namazu} \
 	$RPM_BUILD_ROOT%{_var}/cache/%{name}/{ftp,prev{out,time}{1,2,3,4,5,6,7},temp} \
 	$RPM_BUILD_ROOT%{_libexecdir}/%{name}
 	
-%{__make} install DESTDIR=$RPM_BUILD_ROOT
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT
+
 mv -f $RPM_BUILD_ROOT%{_var}/cache/%{name}/html $RPM_BUILD_ROOT%{_datadir}/%{name}
 ln -s %{_datadir}/%{name} $RPM_BUILD_ROOT%{_var}/cache/%{name}/html
 
 # changes for wwwoffle-namazu
-mv -f \
-	$RPM_BUILD_ROOT%{_var}/cache/%{name}/search/namazu/conf/*rc \
-		$RPM_BUILD_ROOT%{_sysconfdir}/%{name}/namazu/
-mv -f \
-	$RPM_BUILD_ROOT%{_var}/cache/%{name}/search/namazu/scripts/wwwoffle-mknmz-* \
-		$RPM_BUILD_ROOT%{_bindir}/	
+mv -f $RPM_BUILD_ROOT%{_var}/cache/%{name}/search/namazu/conf/*rc \
+	$RPM_BUILD_ROOT%{_sysconfdir}/%{name}/namazu
+mv -f $RPM_BUILD_ROOT%{_var}/cache/%{name}/search/namazu/scripts/wwwoffle-mknmz-* \
+	$RPM_BUILD_ROOT%{_bindir}/	
 
 install src/uncompress-cache $RPM_BUILD_ROOT%{_bindir}
-install -s src/convert-cache conf
+install src/convert-cache conf
 
 install -d $RPM_BUILD_ROOT%{_mandir}/fr/man5
 install doc/fr/wwwoffle.conf.man $RPM_BUILD_ROOT%{_mandir}/fr/man5/wwwoffle.conf.5
@@ -180,7 +185,7 @@ if [ -n "`getgid %{name}`" ]; then
 		exit 1
 	fi
 else
-	/usr/sbin/groupadd -g 119 -r -f %{name} 1>&2 || :
+	/usr/sbin/groupadd -g 119 -r -f %{name} 1>&2
 fi
 if [ -n "`id -u %{name} 2>/dev/null`" ]; then
 	if [ "`id -u %{name}`" != "119" ]; then
@@ -189,7 +194,7 @@ if [ -n "`id -u %{name} 2>/dev/null`" ]; then
 	fi
 else
 	/usr/sbin/useradd -M -o -r -u 119 -s /bin/false \
-		-g %{name} -c "%{name} daemon" -d /var/cache/%{name} %{name} 1>&2 || :
+		-g %{name} -c "%{name} daemon" -d /var/cache/%{name} %{name} 1>&2
 fi
 
 %post
