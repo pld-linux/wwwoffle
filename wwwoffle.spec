@@ -14,7 +14,6 @@ Source2:	%{name}.sysconfig
 Patch0:		%{name}-replacement.patch
 Patch1:		%{name}-install_dirs.patch
 Patch2:		%{name}-ipv6.patch
-Patch3:		%{name}-conf.patch
 BuildRequires:	flex
 BuildRequires:	zlib-devel
 Prereq:		rc-scripts >= 0.2.0
@@ -86,7 +85,6 @@ dial-up.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
-%patch3 -p1
 
 %build
 %{__make} all \
@@ -94,7 +92,8 @@ dial-up.
 	SPOOLDIR=%{_var}/cache/%{name} \
 	CONFDIR=%{_sysconfdir} \
 	CFLAGS="%{rpmcflags}" \
-	LDFLAGS="%{rpmldflags}"
+	LDFLAGS="%{rpmldflags}" \
+	USE_IPV6=1
 
 %install
 rm -rf $RPM_BUILD_ROOT
