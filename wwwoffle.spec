@@ -11,6 +11,7 @@ Source1:	wwwoffle.init
 Source2:	wwwoffle.sysconfig
 Patch0:		wwwoffle-DESTDIR.patch
 Patch1:		http://www.misiek.eu.org/ipv6/wwwoffle-2.5d-ipv6-01032000.patch.gz
+Patch2:		wwwoffle-SPOOLDIR.patch
 Requires:	rc-scripts >= 0.2.0
 URL:		http://www.gedanken.demon.co.uk/wwwoffle/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -31,6 +32,7 @@ stron przeznaczonych do ¶ci±gniêcia po nawi±zaniu po³±czenia.
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
 make all \
@@ -50,7 +52,8 @@ make install \
 	BINDIR=$RPM_BUILD_ROOT%{_bindir} \
 	SBINDIR=$RPM_BUILD_ROOT%{_sbindir} \
 	MANDIR=$RPM_BUILD_ROOT%{_mandir} \
-	SPOOLDIR=$RPM_BUILD_ROOT%{_var}/cache/wwwoffle
+	SPOOLDIR_INST=$RPM_BUILD_ROOT%{_var}/cache/wwwoffle
+	SPOOLDIR=%{_var}/cache/wwwoffle
 
 strip $RPM_BUILD_ROOT{%{_bindir},%{_sbindir}}/*
 

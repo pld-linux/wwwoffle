@@ -1,0 +1,96 @@
+--- wwwoffle-2.5d/Makefile	Sat Apr 29 01:25:43 2000
++++ wwwoffle-2.5dnew/Makefile	Sat Apr 29 01:30:02 2000
+@@ -302,54 +302,55 @@
+ 	  done )
+ 
+ install_cache : endian-cache
+-	@[ ! -d $(SPOOLDIR) -o -d $(SPOOLDIR)/http ] || \
++	
++	@[ ! -d $(SPOOLDIR_INST) -o -d $(SPOOLDIR_INST)/http ] || \
+ 	 (echo "WWWOFFLE: " ;\
+ 	  echo "WWWOFFLE: You MUST upgrade the existing cache before you can use this version." ;\
+ 	  echo "WWWOFFLE: Read the file UPGRADE for details." ;\
+ 	  echo "WWWOFFLE: " ;\
+ 	  exit 1 )
+-	@([ ! -d $(SPOOLDIR) -o -d $(SPOOLDIR)/prevtime1 ] || ./endian-cache > /dev/null 2>&1 ) || \
++	@([ ! -d $(SPOOLDIR_INST) -o -d $(SPOOLDIR_INST)/prevtime1 ] || ./endian-cache > /dev/null 2>&1 ) || \
+ 	 (echo "WWWOFFLE: " ;\
+ 	  echo "WWWOFFLE: You MUST convert the existing cache to the correct endian format." ;\
+ 	  echo "WWWOFFLE: Read the file CONVERT for details." ;\
+ 	  echo "WWWOFFLE: " ;\
+ 	  exit 0 )
+-	[ -x $(SPOOLDIR) ] || $(INSTALL) -d -m 750 $(SPOOLDIR)
+-	[ -x $(SPOOLDIR)/http ] || $(INSTALL) -d -m 750 $(SPOOLDIR)/http
+-	[ -x $(SPOOLDIR)/outgoing ] || $(INSTALL) -d -m 750 $(SPOOLDIR)/outgoing
+-	[ -x $(SPOOLDIR)/monitor ] || $(INSTALL) -d -m 750 $(SPOOLDIR)/monitor
+-	[ -x $(SPOOLDIR)/lasttime ] || $(INSTALL) -d -m 750 $(SPOOLDIR)/lasttime
+-	[ -x $(SPOOLDIR)/prevtime1 ] || $(INSTALL) -d -m 750 $(SPOOLDIR)/prevtime1
+-	@echo 'GET http://www.gedanken.demon.co.uk/wwwoffle/version-2.5/user.html HTTP/1.0'        > $(SPOOLDIR)/outgoing/Owwwoffle-user ;\
+-	 echo 'Host: www.gedanken.demon.co.uk'                                                    >> $(SPOOLDIR)/outgoing/Owwwoffle-user ;\
+-	 echo 'Accept: */*'                                                                       >> $(SPOOLDIR)/outgoing/Owwwoffle-user ;\
+-	 echo ''                                                                                  >> $(SPOOLDIR)/outgoing/Owwwoffle-user ;\
+-	 awk 'BEGIN{printf("http://www.gedanken.demon.co.uk/wwwoffle/version-2.5/user.html");}'    > $(SPOOLDIR)/outgoing/Uwwwoffle-user < /dev/null
+-	@echo 'GET http://www.gedanken.demon.co.uk/wwwoffle/version-2.5/browser.html HTTP/1.0'     > $(SPOOLDIR)/outgoing/Owwwoffle-browser ;\
+-	 echo 'Host: www.gedanken.demon.co.uk'                                                    >> $(SPOOLDIR)/outgoing/Owwwoffle-browser ;\
+-	 echo 'Accept: */*'                                                                       >> $(SPOOLDIR)/outgoing/Owwwoffle-browser ;\
+-	 echo ''                                                                                  >> $(SPOOLDIR)/outgoing/Owwwoffle-browser ;\
+-	 awk 'BEGIN{printf("http://www.gedanken.demon.co.uk/wwwoffle/version-2.5/browser.html");}' > $(SPOOLDIR)/outgoing/Uwwwoffle-browser < /dev/null
++	[ -x $(SPOOLDIR_INST) ] || $(INSTALL) -d -m 750 $(SPOOLDIR_INST)
++	[ -x $(SPOOLDIR_INST)/http ] || $(INSTALL) -d -m 750 $(SPOOLDIR_INST)/http
++	[ -x $(SPOOLDIR_INST)/outgoing ] || $(INSTALL) -d -m 750 $(SPOOLDIR_INST)/outgoing
++	[ -x $(SPOOLDIR_INST)/monitor ] || $(INSTALL) -d -m 750 $(SPOOLDIR_INST)/monitor
++	[ -x $(SPOOLDIR_INST)/lasttime ] || $(INSTALL) -d -m 750 $(SPOOLDIR_INST)/lasttime
++	[ -x $(SPOOLDIR_INST)/prevtime1 ] || $(INSTALL) -d -m 750 $(SPOOLDIR_INST)/prevtime1
++	@echo 'GET http://www.gedanken.demon.co.uk/wwwoffle/version-2.5/user.html HTTP/1.0'        > $(SPOOLDIR_INST)/outgoing/Owwwoffle-user ;\
++	 echo 'Host: www.gedanken.demon.co.uk'                                                    >> $(SPOOLDIR_INST)/outgoing/Owwwoffle-user ;\
++	 echo 'Accept: */*'                                                                       >> $(SPOOLDIR_INST)/outgoing/Owwwoffle-user ;\
++	 echo ''                                                                                  >> $(SPOOLDIR_INST)/outgoing/Owwwoffle-user ;\
++	 awk 'BEGIN{printf("http://www.gedanken.demon.co.uk/wwwoffle/version-2.5/user.html");}'    > $(SPOOLDIR_INST)/outgoing/Uwwwoffle-user < /dev/null
++	@echo 'GET http://www.gedanken.demon.co.uk/wwwoffle/version-2.5/browser.html HTTP/1.0'     > $(SPOOLDIR_INST)/outgoing/Owwwoffle-browser ;\
++	 echo 'Host: www.gedanken.demon.co.uk'                                                    >> $(SPOOLDIR_INST)/outgoing/Owwwoffle-browser ;\
++	 echo 'Accept: */*'                                                                       >> $(SPOOLDIR_INST)/outgoing/Owwwoffle-browser ;\
++	 echo ''                                                                                  >> $(SPOOLDIR_INST)/outgoing/Owwwoffle-browser ;\
++	 awk 'BEGIN{printf("http://www.gedanken.demon.co.uk/wwwoffle/version-2.5/browser.html");}' > $(SPOOLDIR_INST)/outgoing/Uwwwoffle-browser < /dev/null
+ 
+ install_html : html
+-	@[ ! -x $(SPOOLDIR)/html.old ] || \
++	@[ ! -x $(SPOOLDIR_INST)/html.old ] || \
+ 	 (echo "WWWOFFLE: " ;\
+-	  echo "WWWOFFLE: There is already a directory $(SPOOLDIR)/html.old - remove it and re-run make" ;\
++	  echo "WWWOFFLE: There is already a directory $(SPOOLDIR_INST)/html.old - remove it and re-run make" ;\
+ 	  echo "WWWOFFLE: " ;\
+ 	  exit 1 )
+-	[ ! -x $(SPOOLDIR)/html ] || mv $(SPOOLDIR)/html $(SPOOLDIR)/html.old
+-	[ -x $(SPOOLDIR)/html ] || mkdir $(SPOOLDIR)/html
+-	tar cf $(SPOOLDIR)/html.tar html && cd $(SPOOLDIR) && tar xpf html.tar && rm html.tar
++	[ ! -x $(SPOOLDIR_INST)/html ] || mv $(SPOOLDIR_INST)/html $(SPOOLDIR_INST)/html.old
++	[ -x $(SPOOLDIR_INST)/html ] || mkdir $(SPOOLDIR_INST)/html
++	tar cf $(SPOOLDIR_INST)/html.tar html && cd $(SPOOLDIR_INST) && tar xpf html.tar && rm html.tar
+ 	[ "x$(LANG)" = "x" ] || [ ! -d lang-$(LANG) ] || ( cd lang-$(LANG) && \
+-	  tar cf $(SPOOLDIR)/html.tar html && cd $(SPOOLDIR) && tar xpf html.tar && rm html.tar )
+-	cd $(SPOOLDIR)/html && ./fixup-install.sh $(SPOOLDIR) $(LOCALHOST) && rm ./fixup-install.sh
++	  tar cf $(SPOOLDIR_INST)/html.tar html && cd $(SPOOLDIR_INST) && tar xpf html.tar && rm html.tar )
++	cd $(SPOOLDIR_INST)/html && ./fixup-install.sh $(SPOOLDIR_INST) $(LOCALHOST) && rm ./fixup-install.sh
+ # Now fix the permissions that tar preserved, we needed to use 'tar xpf' to get round root's umask.
+ # These two will fail unless you are root, that is OK because the owner is already you.
+-	-chown -R 0 $(SPOOLDIR)/html > /dev/null 2>&1
+-	-chgrp -R 0 $(SPOOLDIR)/html > /dev/null 2>&1
+-
++	-chown -R 0 $(SPOOLDIR_INST)/html > /dev/null 2>&1
++	-chgrp -R 0 $(SPOOLDIR_INST)/html > /dev/null 2>&1
++	
+ install_config :
+-	sed -e 's#SPOOLDIR#$(SPOOLDIR)#' -e 's#CONFDIR#$(CONFDIR)#' < wwwoffle.conf > wwwoffle.conf.install
++	sed -e 's#SPOOLDIR#$(SPOOLDIR)#' -e 's#CONFDIR#$(CONFDIR)#' < wwwoffle.conf > wwwoffle.conf.install
+ 	[ -x $(CONFDIR) ] || $(INSTALL) -d -m 750 $(CONFDIR)
+ 	@[ ! -f $(CONFDIR)/wwwoffle.conf ] || \
+ 	 (echo "WWWOFFLE: " ;\
+@@ -363,7 +364,7 @@
+ 	for file in $(INSTDIR)/doc/* $(CONFDIR)/README.win32 ; do \
+ 	  [ -f $$file ] && awk '{print $$0 "\r";}' < $$file > $$file.txt && rm -f $$file ;\
+ 	done
+-	rm -f $(SPOOLDIR)/html/index.html && ln $(SPOOLDIR)/html/Welcome.html $(SPOOLDIR)/html/index.html
++	rm -f $(SPOOLDIR_INST)/html/index.html && ln $(SPOOLDIR_INST)/html/Welcome.html $(SPOOLDIR_INST)/html/index.html
+ 	cp ./contrib-win32/*.bat $(INSTDIR)
+ 
+ ########
