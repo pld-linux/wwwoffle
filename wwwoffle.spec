@@ -1,6 +1,6 @@
 #
 # Conditional build:
-# _without_ipv6	- without support for IPv6
+%bcond_without  ipv6	# without support for IPv6
 #
 Summary:	WWW Offline Explorer - Caching Web Proxy Server (IPv6)
 Summary(pl):	Eksplorator Offline World Wide Web (IPv6)
@@ -122,7 +122,7 @@ Indeksowanie i przeszukiwanie cache'u WWWOFFLE przez Namazu.
 %{__autoconf}
 %configure2_13 \
 	--with-zlib \
-	%{!?_without_ipv6:--with-ipv6} \
+	%{?with_ipv6:--with-ipv6} \
 	--with-spooldir=%{_var}/cache/%{name}
 %{__make} \
 	CFLAGS="%{rpmcflags}" \
