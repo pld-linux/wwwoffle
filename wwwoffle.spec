@@ -46,7 +46,7 @@ make 	INSTDIR=$RPM_BUILD_ROOT/usr \
 
 strip ${RPM_BUILD_ROOT}/usr/{bin,sbin}/*
 
-gzip -9nf $RPM_BUILD_ROOT/usr/man/man*/* \
+gzip -9nf $RPM_BUILD_ROOT%{_mandir}/man*/* \
 	README* NEWS ChangeLog CHANGES.CONF
 
 %clean
@@ -61,7 +61,7 @@ rm -rf $RPM_BUILD_ROOT
 %attr(755,root,root) /usr/bin/*
 %attr(755,root,root) /usr/sbin/*
 
-/usr/man/man*/*
+%{_mandir}/man*/*
 
 /var/spool/wwwoffle
 
