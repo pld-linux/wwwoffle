@@ -40,10 +40,21 @@ case "$1" in
         show Shutting down wwwoffled
 	killproc wwwoffled
         ;;
-  restart|reload)
+  restart)
         $0 stop
 	$0 start
         ;;
+  reload)
+	if [ ! -f /var/lock/subsys/wwwoffled ]; then
+		show Reload wwwoffled
+		busy
+		killproc wwwoffled -HUP
+		deltext
+		ok		
+	else
+		echo "wwwoffled already is running"
+	fi
+	;;
   status)
 	status wwwoffled
         ;;
