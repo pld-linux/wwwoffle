@@ -7,6 +7,7 @@ License:	GPL
 Group:		Networking/Daemons
 Group(de):	Netzwerkwesen/Server
 Group(pl):	Sieciowe/Serwery
+URL:		http://www.gedanken.demon.co.uk/wwwoffle/
 Source0:	ftp://ftp.demon.co.uk/pub/unix/httpd/%{name}-%{version}.tgz
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
@@ -14,7 +15,6 @@ Patch0:		%{name}-replacement.patch
 Patch1:		%{name}-install_dirs.patch
 Patch2:		%{name}-ipv6.patch
 Patch3:		%{name}-conf.patch
-URL:		http://www.gedanken.demon.co.uk/wwwoffle/
 BuildRequires:	flex
 BuildRequires:	zlib-devel
 Prereq:		rc-scripts >= 0.2.0
