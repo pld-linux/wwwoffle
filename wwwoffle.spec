@@ -6,7 +6,7 @@ Summary:	WWW Offline Explorer - Caching Web Proxy Server (IPv6)
 Summary(pl):	Eksplorator Offline World Wide Web (IPv6)
 Name:		wwwoffle
 Version:	2.8c
-Release:	1
+Release:	2
 Epoch:		0
 License:	GPL
 Group:		Networking/Daemons
@@ -118,6 +118,7 @@ Indeksowanie i przeszukiwanie cache'u WWWOFFLE przez Namazu.
 %patch2 -p1
 
 %build
+cp /usr/share/automake/config.sub .
 %{__aclocal}
 %{__autoconf}
 %configure2_13 \
