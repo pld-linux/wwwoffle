@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/bin/sh 
 #
 # wwwoffle	WWW proxy allowing offline view of cached pages
 #
@@ -35,9 +35,9 @@ case "$1" in
 		msg_starting wwwoffle
 		daemon wwwoffled
 		RETVAL=$?
-		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/wwwoffle
-		if [ -n "$ACTION" ] && [ $RETVAL -eq 0 ]; then
-			wwwoffle "$ACTION" 2>&1 > /dev/null &
+		if [ $RETVAL -eq 0 ]; then
+			touch /var/lock/subsys/wwwoffle
+			[ -n "$ACTION" ] && wwwoffle "$ACTION" 2>&1 > /dev/null &
 		fi
 	else
 		msg_already_running wwwoffled
