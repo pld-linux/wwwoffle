@@ -111,15 +111,9 @@ rm -f doc/fr/wwwoffle.conf.man*
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 
-gzip -9nf doc/de/{CHANGES.CONF,INSTALL,LSM,NEWS,README.1st}
 mv doc/es/contrib/README doc/es/README-contrib
 mv doc/es/testprogs/README doc/es/README-testprogs
 rm -rf doc/es/{contrib,testprogs}
-gzip -9nf doc/es/*
-gzip -9nf doc/fr/*
-gzip -9nf doc/pl/*
-gzip -9nf doc/{ANNOUNCE,CHANGES.CONF,CONVERT,FAQ,NEWS,README*} \
-	ChangeLog* conf/{convert-cache,upgrade-config*}
 
 %triggerpostun -- wwwoffle < 2.7
 
@@ -138,7 +132,8 @@ rm -rf $RPM_BUILD_ROOT
 %lang(es) %doc doc/es
 %lang(fr) %doc doc/fr
 %lang(pl) %doc doc/pl
-%doc doc/*.gz *.gz conf/*.gz
+%doc doc/{ANNOUNCE,CHANGES.CONF,CONVERT,FAQ,NEWS,README*}
+%doc ChangeLog* conf/{convert-cache,upgrade-config*}
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_sbindir}/*
