@@ -10,18 +10,6 @@ diff -urN wwwoffle-2.8.orig/cache/search/namazu/conf/mknmzrc wwwoffle-2.8/cache/
  
  #
  # This pattern specifies PATHNAMEs which will NOT be targeted.
-diff -urN wwwoffle-2.8.orig/cache/search/namazu/conf/namazurc wwwoffle-2.8/cache/search/namazu/conf/namazurc
---- wwwoffle-2.8.orig/cache/search/namazu/conf/namazurc	Sun Aug 12 09:54:53 2001
-+++ wwwoffle-2.8/cache/search/namazu/conf/namazurc	Mon Oct 13 03:42:45 2003
-@@ -24,7 +24,7 @@
- ## Template: Set the template directory containing
- ## NMZ.{head,foot,body,tips,result} files.
- ##
--Template      SPOOLDIR/search/namazu/conf
-+Template      SPOOLDIR/search/namazu/db
- 
- 
- ##
 diff -urN wwwoffle-2.8.orig/cache/search/namazu/scripts/wwwoffle-mknmz-full wwwoffle-2.8/cache/search/namazu/scripts/wwwoffle-mknmz-full
 --- wwwoffle-2.8.orig/cache/search/namazu/scripts/wwwoffle-mknmz-full	Sun Aug 12 16:06:47 2001
 +++ wwwoffle-2.8/cache/search/namazu/scripts/wwwoffle-mknmz-full	Mon Oct 13 04:22:06 2003
@@ -74,10 +62,9 @@ diff -urN wwwoffle-2.8.orig/cache/search/namazu/scripts/wwwoffle-mknmz-lasttime 
                 -O search/namazu/db \
                 -V \
                 lasttime \
-diff -urN wwwoffle-2.8.orig/cache/search/namazu/scripts/wwwoffle-namazu wwwoffle-2.8/cache/search/namazu/scripts/wwwoffle-namazu
---- wwwoffle-2.8.orig/cache/search/namazu/scripts/wwwoffle-namazu	Sun Aug 12 14:58:04 2001
-+++ wwwoffle-2.8/cache/search/namazu/scripts/wwwoffle-namazu	Mon Oct 13 03:51:45 2003
-@@ -1,23 +1,12 @@
+--- wwwoffle-2.8b/cache/search/namazu/scripts/wwwoffle-namazu	2004-03-01 02:33:23.000000000 +0100
++++ wwwoffle-2.8/cache/search/namazu/scripts/wwwoffle-namazu	2004-03-01 02:35:36.000000000 +0100
+@@ -1,25 +1,12 @@
  #!/bin/sh
  
 -#### THE SPOOL DIR IS "SPOOLDIR" IN THE LINE BELOW ####
@@ -91,8 +78,10 @@ diff -urN wwwoffle-2.8.orig/cache/search/namazu/scripts/wwwoffle-namazu wwwoffle
  # Set the path to include the namazu.cgi executable
  
 -PATH=$PATH:/usr/local/bin
--PATH=$PATH:/usr/local/cgi-bin  # A possible location
+-PATH=$PATH:/usr/local/cgi-bin
+-PATH=$PATH:/usr/local/libexec
 -PATH=$PATH:/usr/lib/cgi-bin    # The Debian location
+-PATH=$PATH:/opt/www/cgi-bin    # The Suse location
 -export PATH
 +export PATH=$PATH:/usr/lib/namazu
  
