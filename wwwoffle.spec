@@ -2,7 +2,7 @@ Summary:	WWW Offline Explorer - Caching Web Proxy Server (IPv6)
 Summary(pl):	Eksplorator Offline World Wide Web (IPv6)
 Name:		wwwoffle
 Version:	2.6d
-Release:	2
+Release:	3
 License:	GPL
 Group:		Networking/Daemons
 Group(de):	Netzwerkwesen/Server
@@ -14,6 +14,7 @@ Source2:	%{name}.sysconfig
 Patch0:		%{name}-replacement.patch
 Patch1:		%{name}-install_dirs.patch
 Patch2:		%{name}-ipv6.patch
+Patch3:		%{name}-ftp.patch
 BuildRequires:	flex
 BuildRequires:	zlib-devel
 Prereq:		rc-scripts >= 0.2.0
@@ -85,6 +86,7 @@ dial-up.
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 %{__make} all \
