@@ -8,8 +8,7 @@ Release:	1
 Epoch:		0
 License:	GPL
 Group:		Networking/Daemons
-#Source0:	ftp://ftp.demon.co.uk/pub/unix/httpd/%{name}-%{version}.tgz
-Source0:	ftp://ftp.ibiblio.org/pub/Linux/apps/www/servers/%{name}-%{version}.tgz
+Source0:	http://www.gedanken.freeserve.co.uk/download-wwwoffle/%{name}-%{version}.tgz
 # Source0-md5:	cdd8cf0011e34e9d67ecfeefeecd4584
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
