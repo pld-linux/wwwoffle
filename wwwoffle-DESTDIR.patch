@@ -1,45 +1,85 @@
-diff -urN wwwoffle-2.5d.org/Makefile wwwoffle-2.5d/Makefile
---- wwwoffle-2.5d.org/Makefile	Wed Mar  1 18:04:39 2000
-+++ wwwoffle-2.5d/Makefile	Wed Mar  1 18:28:11 2000
-@@ -16,7 +16,8 @@
- 
+diff -urN wwwoffle-2.6d.old/Makefile wwwoffle-2.6d/Makefile
+--- wwwoffle-2.6d.old/Makefile	Tue Jul 17 11:22:01 2001
++++ wwwoffle-2.6d/Makefile	Sun Dec  9 17:55:49 2001
+@@ -18,6 +18,7 @@
  LOCALHOST=localhost:8080
  
--INSTDIR=/usr/local
+ # For UNIX.
 +DESTDIR=
-+INSTDIR=$(DESTDIR)/usr/local
+ INSTDIR=/usr/local
  SPOOLDIR=/var/spool/wwwoffle
  CONFDIR=/var/spool/wwwoffle
+@@ -356,55 +358,55 @@
+ 	  done )
  
-@@ -271,14 +272,14 @@
- 	$(INSTALL) -c -m 755 cygwin1.dll $(INSTDIR)/bin
+ install_cache :
+-	@[ ! -d $(SPOOLDIR) ] || [ ! -d $(SPOOLDIR)/outgoing ] || [ -d $(SPOOLDIR)/prevtime1 ] || \
++	@[ ! -d $(DESTDIR)$(SPOOLDIR) ] || [ ! -d $(DESTDIR)$(SPOOLDIR)/outgoing ] || [ -d $(DESTDIR)$(SPOOLDIR)/prevtime1 ] || \
+ 	 (echo "WWWOFFLE: " ;\
+ 	  echo "WWWOFFLE: Your existing cache looks earlier than version 2.2, cannot continue." ;\
+ 	  echo "WWWOFFLE: Read the file NEWS for details." ;\
+ 	  echo "WWWOFFLE: " ;\
+ 	  exit 1 )
+-	[ -x $(SPOOLDIR) ] || $(INSTALL) -d -m 750 $(SPOOLDIR)
+-	[ -x $(SPOOLDIR)/http ] || $(INSTALL) -d -m 750 $(SPOOLDIR)/http
+-	[ -x $(SPOOLDIR)/outgoing ] || $(INSTALL) -d -m 750 $(SPOOLDIR)/outgoing
+-	[ -x $(SPOOLDIR)/monitor ] || $(INSTALL) -d -m 750 $(SPOOLDIR)/monitor
+-	[ -x $(SPOOLDIR)/lasttime ] || $(INSTALL) -d -m 750 $(SPOOLDIR)/lasttime
+-	[ -x $(SPOOLDIR)/prevtime1 ] || $(INSTALL) -d -m 750 $(SPOOLDIR)/prevtime1
++	[ -x $(DESTDIR)$(SPOOLDIR) ] || $(INSTALL) -d -m 750 $(DESTDIR)$(SPOOLDIR)
++	[ -x $(DESTDIR)$(SPOOLDIR)/http ] || $(INSTALL) -d -m 750 $(DESTDIR)$(SPOOLDIR)/http
++	[ -x $(DESTDIR)$(SPOOLDIR)/outgoing ] || $(INSTALL) -d -m 750 $(DESTDIR)$(SPOOLDIR)/outgoing
++	[ -x $(DESTDIR)$(SPOOLDIR)/monitor ] || $(INSTALL) -d -m 750 $(DESTDIR)$(SPOOLDIR)/monitor
++	[ -x $(DESTDIR)$(SPOOLDIR)/lasttime ] || $(INSTALL) -d -m 750 $(DESTDIR)$(SPOOLDIR)/lasttime
++	[ -x $(DESTDIR)$(SPOOLDIR)/prevtime1 ] || $(INSTALL) -d -m 750 $(DESTDIR)$(SPOOLDIR)/prevtime1
+ 	for file in outgoing/* ; do \
+-	  $(INSTALL) -c -m 644 $$file $(SPOOLDIR)/outgoing ;\
++	  $(INSTALL) -c -m 644 $$file $(DESTDIR)$(SPOOLDIR)/outgoing ;\
+ 	done
  
- install_doc :
--	[ -x $(INSTDIR)/man ] || $(INSTALL) -d -m 755 $(INSTDIR)/man
--	[ -x $(INSTDIR)/man/man1 ] || $(INSTALL) -d -m 755 $(INSTDIR)/man/man1
--	$(INSTALL) -c -m 644 wwwoffle.man $(INSTDIR)/man/man1/wwwoffle.1
--	[ -x $(INSTDIR)/man/man5 ] || $(INSTALL) -d -m 755 $(INSTDIR)/man/man5
--	sed -e 's%SPOOLDIR%$(SPOOLDIR)%' -e 's%CONFDIR%$(CONFDIR)%' < wwwoffle.conf.man > wwwoffle.conf.man.install
--	$(INSTALL) -c -m 644 wwwoffle.conf.man.install $(INSTDIR)/man/man5/wwwoffle.conf.5
--	[ -x $(INSTDIR)/man/man8 ] || $(INSTALL) -d -m 755 $(INSTDIR)/man/man8
--	$(INSTALL) -c -m 644 wwwoffled.man $(INSTDIR)/man/man8/wwwoffled.8
-+	[ -x $(MANDIR) ] || $(INSTALL) -d -m 755 $(MANDIR)
-+	[ -x $(MANDIR)/man1 ] || $(INSTALL) -d -m 755 $(MANDIR)/man1
-+	$(INSTALL) -c -m 644 wwwoffle.man $(MANDIR)/man1/wwwoffle.1
-+	[ -x $(MANDIR)/man5 ] || $(INSTALL) -d -m 755 $(MANDIR)/man5
-+	sed -e 's#SPOOLDIR#$(SPOOLDIR)#' -e 's#CONFDIR#$(CONFDIR)#' < wwwoffle.conf.man > wwwoffle.conf.man.install
-+	$(INSTALL) -c -m 644 wwwoffle.conf.man.install $(MANDIR)/man5/wwwoffle.conf.5
-+	[ -x $(MANDIR)/man8 ] || $(INSTALL) -d -m 755 $(MANDIR)/man8
-+	$(INSTALL) -c -m 644 wwwoffled.man $(MANDIR)/man8/wwwoffled.8
- 	[ -x $(INSTDIR)/doc/wwwoffle ] || $(INSTALL) -d -m 755 $(INSTDIR)/doc/wwwoffle
- 	for file in CHANGES.CONF CONVERT COPYING FAQ INSTALL NEWS README* UPGRADE ; do \
- 	  $(INSTALL) -c -m 644 $$file $(INSTDIR)/doc/wwwoffle/$$file ;\
-@@ -348,7 +349,7 @@
- 	-chgrp -R 0 $(SPOOLDIR)/html > /dev/null 2>&1
+ install_html : html
+-	@[ ! -x $(SPOOLDIR)/html.old ] || \
++	@[ ! -x $(DESTDIR)$(SPOOLDIR)/html.old ] || \
+ 	 (echo "WWWOFFLE: " ;\
+-	  echo "WWWOFFLE: There is already a directory $(SPOOLDIR)/html.old." ;\
++	  echo "WWWOFFLE: There is already a directory $(DESTDIR)$(SPOOLDIR)/html.old." ;\
+ 	  echo "WWWOFFLE: Remove it and re-run make." ;\
+ 	  echo "WWWOFFLE: " ;\
+ 	  exit 1 )
+-	[ ! -x $(SPOOLDIR)/html ] || mv $(SPOOLDIR)/html $(SPOOLDIR)/html.old
+-	[ -x $(SPOOLDIR)/html ] || mkdir $(SPOOLDIR)/html
+-	tar cf $(SPOOLDIR)/html.tar html && cd $(SPOOLDIR) && tar xpf html.tar && rm html.tar
++	[ ! -x $(DESTDIR)$(SPOOLDIR)/html ] || mv $(DESTDIR)$(SPOOLDIR)/html $(DESTDIR)$(SPOOLDIR)/html.old
++	[ -x $(DESTDIR)$(SPOOLDIR)/html ] || mkdir $(DESTDIR)$(SPOOLDIR)/html
++	tar cf $(DESTDIR)$(SPOOLDIR)/html.tar html && cd $(DESTDIR)$(SPOOLDIR) && tar xpf html.tar && rm html.tar
+ 	[ "x$(LANG)" = "x" ] || [ ! -d lang-$(LANG) ] || ( cd lang-$(LANG) && \
+-	  tar cf $(SPOOLDIR)/html.tar html && cd $(SPOOLDIR) && tar xpf html.tar && rm html.tar )
+-	cd $(SPOOLDIR)/html && ./fixup-install.sh $(SPOOLDIR) $(LOCALHOST) && rm ./fixup-install.sh
++	  tar cf $(DESTDIR)$(SPOOLDIR)/html.tar html && cd $(DESTDIR)$(SPOOLDIR) && tar xpf html.tar && rm html.tar )
++	cd $(DESTDIR)$(SPOOLDIR)/html && ./fixup-install.sh $(DESTDIR)$(SPOOLDIR) $(LOCALHOST) && rm ./fixup-install.sh
+ # Now fix the permissions that tar preserved, we needed to use 'tar xpf' to get round root's umask.
+ # These two will fail unless you are root, that is OK because the owner is already you.
+-	-chown -R 0 $(SPOOLDIR)/html > /dev/null 2>&1
+-	-chgrp -R 0 $(SPOOLDIR)/html > /dev/null 2>&1
++	-chown -R 0 $(DESTDIR)$(SPOOLDIR)/html > /dev/null 2>&1
++	-chgrp -R 0 $(DESTDIR)$(SPOOLDIR)/html > /dev/null 2>&1
  
  install_config :
--	sed -e 's%SPOOLDIR%$(SPOOLDIR)%' -e 's%CONFDIR%$(CONFDIR)%' < wwwoffle.conf > wwwoffle.conf.install
-+	sed -e 's#SPOOLDIR#$(SPOOLDIR)#' -e 's#CONFDIR#$(CONFDIR)#' < wwwoffle.conf > wwwoffle.conf.install
- 	[ -x $(CONFDIR) ] || $(INSTALL) -d -m 750 $(CONFDIR)
- 	@[ ! -f $(CONFDIR)/wwwoffle.conf ] || \
+ 	sed -e 's%SPOOLDIR%$(SPOOLDIR)%' -e 's%CONFDIR%$(CONFDIR)%' < wwwoffle.conf > wwwoffle.conf.install
+-	[ -x $(CONFDIR) ] || $(INSTALL) -d -m 750 $(CONFDIR)
+-	@[ ! -f $(CONFDIR)/wwwoffle.conf ] || \
++	[ -x $(DESTDIR)$(CONFDIR) ] || $(INSTALL) -d -m 750 $(DESTDIR)$(CONFDIR)
++	@[ ! -f $(DESTDIR)$(CONFDIR)/wwwoffle.conf ] || \
  	 (echo "WWWOFFLE: " ;\
+-	  echo "WWWOFFLE: There is already a config file $(CONFDIR)/wwwoffle.conf." ;\
+-	  echo "WWWOFFLE: Run 'upgrade-config.pl $(CONFDIR)/wwwoffle.conf' to upgrade it." ;\
++	  echo "WWWOFFLE: There is already a config file $(DESTDIR)$(CONFDIR)/wwwoffle.conf." ;\
++	  echo "WWWOFFLE: Run 'upgrade-config.pl $(DESTDIR)$(CONFDIR)/wwwoffle.conf' to upgrade it." ;\
+ 	  echo "WWWOFFLE: " )
+-	[  ! -f $(CONFDIR)/wwwoffle.conf ] || $(INSTALL) -c -m 640 wwwoffle.conf.install $(CONFDIR)/wwwoffle.conf.install
+-	[    -f $(CONFDIR)/wwwoffle.conf ] || $(INSTALL) -c -m 640 wwwoffle.conf.install $(CONFDIR)/wwwoffle.conf
++	[  ! -f $(DESTDIR)$(CONFDIR)/wwwoffle.conf ] || $(INSTALL) -c -m 640 wwwoffle.conf.install $(DESTDIR)$(CONFDIR)/wwwoffle.conf.install
++	[    -f $(DESTDIR)$(CONFDIR)/wwwoffle.conf ] || $(INSTALL) -c -m 640 wwwoffle.conf.install $(DESTDIR)$(CONFDIR)/wwwoffle.conf
+ 
+ install_fixup-win32:
+ 	for file in $(DOCDIR)/* ; do \
