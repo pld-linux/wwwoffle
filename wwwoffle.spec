@@ -21,6 +21,7 @@ URL:		http://www.gedanken.demon.co.uk/wwwoffle/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	flex
+BuildRequires:	rpmbuild(macros) >= 1.159
 BuildRequires:	zlib-devel
 PreReq:		rc-scripts >= 0.2.0
 Requires(pre):	fileutils
@@ -32,6 +33,8 @@ Requires(pre):	/usr/sbin/useradd
 Requires(post,preun):	/sbin/chkconfig
 Requires(postun):	/usr/sbin/groupdel
 Requires(postun):	/usr/sbin/userdel
+Provides:	group(wwwoffle)
+Provides:	user(wwwoffle)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		specflags_ia32	 -fomit-frame-pointer 
@@ -124,7 +127,7 @@ cp /usr/share/automake/config.sub .
 %configure2_13 \
 	--with-zlib \
 	%{?with_ipv6:--with-ipv6} \
-	--with-spooldir=%{_var}/cache/%{name}
+	--with-spooldir=%{_var}/cache/wwwoffle
 %{__make} \
 	CFLAGS="%{rpmcflags}" \
 	LDFLAGS="%{rpmldflags}"
@@ -132,19 +135,19 @@ cp /usr/share/automake/config.sub .
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig,%{name}/namazu} \
-	$RPM_BUILD_ROOT%{_var}/cache/%{name}/{ftp,prev{out,time}{1,2,3,4,5,6,7},temp} \
+	$RPM_BUILD_ROOT%{_var}/cache/wwwoffle/{ftp,prev{out,time}{1,2,3,4,5,6,7},temp} \
 	$RPM_BUILD_ROOT%{_libexecdir}/%{name}
 	
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-mv -f $RPM_BUILD_ROOT%{_var}/cache/%{name}/html $RPM_BUILD_ROOT%{_datadir}/%{name}
-ln -s %{_datadir}/%{name} $RPM_BUILD_ROOT%{_var}/cache/%{name}/html
+mv -f $RPM_BUILD_ROOT%{_var}/cache/wwwoffle/html $RPM_BUILD_ROOT%{_datadir}/%{name}
+ln -s %{_datadir}/%{name} $RPM_BUILD_ROOT%{_var}/cache/wwwoffle/html
 
 # changes for wwwoffle-namazu
-mv -f $RPM_BUILD_ROOT%{_var}/cache/%{name}/search/namazu/conf/*rc \
+mv -f $RPM_BUILD_ROOT%{_var}/cache/wwwoffle/search/namazu/conf/*rc \
 	$RPM_BUILD_ROOT%{_sysconfdir}/%{name}/namazu
-mv -f $RPM_BUILD_ROOT%{_var}/cache/%{name}/search/namazu/scripts/wwwoffle-mknmz-* \
+mv -f $RPM_BUILD_ROOT%{_var}/cache/wwwoffle/search/namazu/scripts/wwwoffle-mknmz-* \
 	$RPM_BUILD_ROOT%{_bindir}/	
 
 install src/uncompress-cache $RPM_BUILD_ROOT%{_bindir}
@@ -172,30 +175,30 @@ echo files are available from within your documentation directory.
 %triggerpostun -- %{name} < 2.8
 
 chown wwwoffle:wwwoffle -R \
-	%{_var}/cache/%{name}/{ftp,http,lastout,lasttime,local,monitor,outgoing,temp,prevout[1-7],prevtime[1-7]}
+	%{_var}/cache/wwwoffle/{ftp,http,lastout,lasttime,local,monitor,outgoing,temp,prevout[1-7],prevtime[1-7]}
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %pre
-test -h %{_var}/cache/%{name}/html || rm -rf %{_var}/cache/%{name}/html
+test -h %{_var}/cache/wwwoffle/html || rm -rf %{_var}/cache/wwwoffle/html
 
-if [ -n "`getgid %{name}`" ]; then
-	if [ "`getgid %{name}`" != "119" ]; then
-		echo "Error: group %{name} doesn't have gid=119. Correct this before installing %{name}." 1>&2
+if [ -n "`/usr/bin/getgid wwwoffle`" ]; then
+	if [ "`/usr/bin/getgid wwwoffle`" != "119" ]; then
+		echo "Error: group wwwoffle doesn't have gid=119. Correct this before installing %{name}." 1>&2
 		exit 1
 	fi
 else
-	/usr/sbin/groupadd -g 119 -r -f %{name} 1>&2
+	/usr/sbin/groupadd -g 119 -r -f wwwoffle 1>&2
 fi
-if [ -n "`id -u %{name} 2>/dev/null`" ]; then
-	if [ "`id -u %{name}`" != "119" ]; then
-		echo "Error: user %{name} doesn't have uid=119. Correct this before installing %{name}." 1>&2
+if [ -n "`/bin/id -u wwwoffle 2>/dev/null`" ]; then
+	if [ "`/bin/id -u wwwoffle`" != "119" ]; then
+		echo "Error: user wwwoffle doesn't have uid=119. Correct this before installing %{name}." 1>&2
 		exit 1
 	fi
 else
 	/usr/sbin/useradd -M -o -r -u 119 -s /bin/false \
-		-g %{name} -c "%{name} daemon" -d /var/cache/%{name} %{name} 1>&2
+		-g wwwoffle -c "%{name} daemon" -d /var/cache/wwwoffle wwwoffle 1>&2
 fi
 
 %post
@@ -216,8 +219,8 @@ fi
 
 %postun
 if [ "$1" = "0" ]; then
-	/usr/sbin/userdel %{name}
-	/usr/sbin/groupdel %{name}
+	%userremove wwwoffle
+	%groupremove wwwoffle
 fi
 
 %files
@@ -246,42 +249,42 @@ fi
 %lang(pl) %{_datadir}/%{name}/pl
 %lang(ru) %{_datadir}/%{name}/ru
 %defattr(664,wwwoffle,wwwoffle,775)
-%dir %{_var}/cache/%{name}
-#%%{_var}/cache/%{name}/[!o]*
-%{_var}/cache/%{name}/html
-%dir %{_var}/cache/%{name}/ftp
-%dir %{_var}/cache/%{name}/http
-%dir %{_var}/cache/%{name}/lastout
-%dir %{_var}/cache/%{name}/lasttime
-%dir %{_var}/cache/%{name}/local
-%dir %{_var}/cache/%{name}/monitor
-%dir %{_var}/cache/%{name}/outgoing
-%config(missingok) %{_var}/cache/%{name}/outgoing/*
-%dir %{_var}/cache/%{name}/prevout[1-7]
-%dir %{_var}/cache/%{name}/prevtime[1-7]
-%dir %{_var}/cache/%{name}/temp
-%dir %{_var}/cache/%{name}/search
-%dir %{_var}/cache/%{name}/search/htdig
-%dir %{_var}/cache/%{name}/search/htdig/db
-%dir %{_var}/cache/%{name}/search/htdig/db-lasttime
-%dir %{_var}/cache/%{name}/search/htdig/tmp
-%dir %{_var}/cache/%{name}/search/htdig/conf
-%attr(644,root,root) %config(noreplace) %verify(not md5 size mtime) %{_var}/cache/%{name}/search/htdig/conf/*
-%dir %{_var}/cache/%{name}/search/htdig/scripts
-%attr(654,root,root) %config(noreplace) %verify(not md5 size mtime) %{_var}/cache/%{name}/search/htdig/scripts/*
+%dir %{_var}/cache/wwwoffle
+#%%{_var}/cache/wwwoffle/[!o]*
+%{_var}/cache/wwwoffle/html
+%dir %{_var}/cache/wwwoffle/ftp
+%dir %{_var}/cache/wwwoffle/http
+%dir %{_var}/cache/wwwoffle/lastout
+%dir %{_var}/cache/wwwoffle/lasttime
+%dir %{_var}/cache/wwwoffle/local
+%dir %{_var}/cache/wwwoffle/monitor
+%dir %{_var}/cache/wwwoffle/outgoing
+%config(missingok) %{_var}/cache/wwwoffle/outgoing/*
+%dir %{_var}/cache/wwwoffle/prevout[1-7]
+%dir %{_var}/cache/wwwoffle/prevtime[1-7]
+%dir %{_var}/cache/wwwoffle/temp
+%dir %{_var}/cache/wwwoffle/search
+%dir %{_var}/cache/wwwoffle/search/htdig
+%dir %{_var}/cache/wwwoffle/search/htdig/db
+%dir %{_var}/cache/wwwoffle/search/htdig/db-lasttime
+%dir %{_var}/cache/wwwoffle/search/htdig/tmp
+%dir %{_var}/cache/wwwoffle/search/htdig/conf
+%attr(644,root,root) %config(noreplace) %verify(not md5 size mtime) %{_var}/cache/wwwoffle/search/htdig/conf/*
+%dir %{_var}/cache/wwwoffle/search/htdig/scripts
+%attr(654,root,root) %config(noreplace) %verify(not md5 size mtime) %{_var}/cache/wwwoffle/search/htdig/scripts/*
 
-%dir %{_var}/cache/%{name}/search/mnogosearch
-%dir %{_var}/cache/%{name}/search/mnogosearch/db
-%dir %{_var}/cache/%{name}/search/mnogosearch/conf
-%attr(644,root,root) %config(noreplace) %verify(not md5 size mtime) %{_var}/cache/%{name}/search/mnogosearch/conf/*
-%dir %{_var}/cache/%{name}/search/mnogosearch/scripts
-%attr(654,root,root) %config(noreplace) %verify(not md5 size mtime) %{_var}/cache/%{name}/search/mnogosearch/scripts/*
+%dir %{_var}/cache/wwwoffle/search/mnogosearch
+%dir %{_var}/cache/wwwoffle/search/mnogosearch/db
+%dir %{_var}/cache/wwwoffle/search/mnogosearch/conf
+%attr(644,root,root) %config(noreplace) %verify(not md5 size mtime) %{_var}/cache/wwwoffle/search/mnogosearch/conf/*
+%dir %{_var}/cache/wwwoffle/search/mnogosearch/scripts
+%attr(654,root,root) %config(noreplace) %verify(not md5 size mtime) %{_var}/cache/wwwoffle/search/mnogosearch/scripts/*
 
 
 %files namazu
 %defattr(644,root,root,755)
 %config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/%{name}/namazu 
 %attr(755,root,root) %{_bindir}/wwwoffle-mknmz-*
-%attr(755,root,root) %{_var}/cache/%{name}/search/namazu/scripts/wwwoffle-namazu
-%dir %{_var}/cache/%{name}/search/namazu
-%dir %{_var}/cache/%{name}/search/namazu/db
+%attr(755,root,root) %{_var}/cache/wwwoffle/search/namazu/scripts/wwwoffle-namazu
+%dir %{_var}/cache/wwwoffle/search/namazu
+%dir %{_var}/cache/wwwoffle/search/namazu/db
