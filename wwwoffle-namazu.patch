@@ -1,0 +1,106 @@
+diff -urN wwwoffle-2.8.orig/cache/search/namazu/conf/mknmzrc wwwoffle-2.8/cache/search/namazu/conf/mknmzrc
+--- wwwoffle-2.8.orig/cache/search/namazu/conf/mknmzrc	Sun Aug 12 10:06:33 2001
++++ wwwoffle-2.8/cache/search/namazu/conf/mknmzrc	Mon Oct 13 03:40:56 2003
+@@ -47,7 +47,7 @@
+ #       Do NOT use `$' or `^' anchors.
+ #       Case-insensitive.
+ #
+-# $DENY_FILE = ".*\\.(gif|png|jpg|jpeg)|.*\\.tar\\.gz|core|.*\\.bak|.*~|\\..*|\x23.*";
++ $DENY_FILE = ".*\\.(gif|png|jpg|jpeg)|.*\\.tar\\.gz|core|.*\\.bak|.*~|\\..*|\x23.*";
+ 
+ #
+ # This pattern specifies PATHNAMEs which will NOT be targeted.
+diff -urN wwwoffle-2.8.orig/cache/search/namazu/conf/namazurc wwwoffle-2.8/cache/search/namazu/conf/namazurc
+--- wwwoffle-2.8.orig/cache/search/namazu/conf/namazurc	Sun Aug 12 09:54:53 2001
++++ wwwoffle-2.8/cache/search/namazu/conf/namazurc	Mon Oct 13 03:42:45 2003
+@@ -24,7 +24,7 @@
+ ## Template: Set the template directory containing
+ ## NMZ.{head,foot,body,tips,result} files.
+ ##
+-Template      SPOOLDIR/search/namazu/conf
++Template      SPOOLDIR/search/namazu/db
+ 
+ 
+ ##
+diff -urN wwwoffle-2.8.orig/cache/search/namazu/scripts/wwwoffle-mknmz-full wwwoffle-2.8/cache/search/namazu/scripts/wwwoffle-mknmz-full
+--- wwwoffle-2.8.orig/cache/search/namazu/scripts/wwwoffle-mknmz-full	Sun Aug 12 16:06:47 2001
++++ wwwoffle-2.8/cache/search/namazu/scripts/wwwoffle-mknmz-full	Mon Oct 13 04:22:06 2003
+@@ -8,10 +8,7 @@
+ 
+ cd $wwwoffle_spool
+ 
+-# Set the path to include the mknmz executable
+-
+-PATH=$PATH:/usr/local/bin
+-export PATH
++umask 022
+ 
+ # Set up a log file.
+ 
+@@ -19,8 +16,8 @@
+ 
+ # Do the indexing
+ 
+-mknmz-wwwoffle -f search/namazu/conf/mknmzrc \
+-               -T search/namazu/conf \
++mknmz-wwwoffle -f /etc/wwwoffle/namazu/mknmzrc \
++               -T /etc/wwwoffle/namazu \
+                -O search/namazu/db \
+                -V \
+                http ftp \
+diff -urN wwwoffle-2.8.orig/cache/search/namazu/scripts/wwwoffle-mknmz-lasttime wwwoffle-2.8/cache/search/namazu/scripts/wwwoffle-mknmz-lasttime
+--- wwwoffle-2.8.orig/cache/search/namazu/scripts/wwwoffle-mknmz-lasttime	Thu Sep 26 21:25:48 2002
++++ wwwoffle-2.8/cache/search/namazu/scripts/wwwoffle-mknmz-lasttime	Mon Oct 13 04:22:22 2003
+@@ -8,10 +8,7 @@
+ 
+ cd $wwwoffle_spool
+ 
+-# Set the path to include the mknmz executable
+-
+-PATH=$PATH:/usr/local/bin
+-export PATH
++umask 022
+ 
+ # Set up a log file.
+ 
+@@ -19,8 +16,8 @@
+ 
+ # Do the indexing
+ 
+-mknmz-wwwoffle -f search/namazu/conf/mknmzrc \
+-               -T search/namazu/conf \
++mknmz-wwwoffle -f /etc/wwwoffle/namazu/mknmzrc \
++               -T /etc/wwwoffle/namazu \
+                -O search/namazu/db \
+                -V \
+                lasttime \
+diff -urN wwwoffle-2.8.orig/cache/search/namazu/scripts/wwwoffle-namazu wwwoffle-2.8/cache/search/namazu/scripts/wwwoffle-namazu
+--- wwwoffle-2.8.orig/cache/search/namazu/scripts/wwwoffle-namazu	Sun Aug 12 14:58:04 2001
++++ wwwoffle-2.8/cache/search/namazu/scripts/wwwoffle-namazu	Mon Oct 13 03:51:45 2003
+@@ -1,23 +1,12 @@
+ #!/bin/sh
+ 
+-#### THE SPOOL DIR IS "SPOOLDIR" IN THE LINE BELOW ####
+-
+-wwwoffle_spool=SPOOLDIR
+-
+-####
+-
+-cd $wwwoffle_spool
+-
+ # Set the path to include the namazu.cgi executable
+ 
+-PATH=$PATH:/usr/local/bin
+-PATH=$PATH:/usr/local/cgi-bin  # A possible location
+-PATH=$PATH:/usr/lib/cgi-bin    # The Debian location
+-export PATH
++export PATH=$PATH:/usr/lib/namazu
+ 
+ # Do the searching
+ 
+-NAMAZURC=search/namazu/conf/namazurc
++NAMAZURC=/etc/wwwoffle/namazu/namazurc
+ export NAMAZURC
+ 
+-namazu.cgi
++/usr/lib/namazu/namazu.cgi
