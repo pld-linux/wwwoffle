@@ -71,26 +71,3 @@ rm -rf $RPM_BUILD_ROOT
 %{_mandir}/man*/*
 
 /var/spool/%{name}
-
-%changelog
-* Fri May 21 1999 Piotr Czerwiñski <pius@pld.org.pl> 
-  [2.4d-1]
-- package is FHS 2.0 compliant,
-- added using more rpm macros,
-- added wwwoffle-DESTDIR.patch,
-- added wwwoffle.init,
-- minor changes.
-
-* Sun Mar 21 1999 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
-  [2.4b-1]
-- changed base Source Url to:
-  http://www.gedanken.demon.co.uk/download-wwwoffle/
-
-* Thu Mar 18 1999 Micha³ Kuratczyk <kura@pld.org.pl>
-  [2.3a-2]
-- added gzipping documentation and man pages
-- added Group(pl)
-
-* Tue Sep 22 1998 Piotr Dembiñski <hector@kki.net.pl>
-  [2.3a-1]
-- first release in rpm package.
