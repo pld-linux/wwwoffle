@@ -1,8 +1,8 @@
-Summary:	WWW Offline Explorer - Caching Web Proxy Server (IPv6)
-Summary(pl):	Eksplorator Offline World Wide Web ze wsparciem dla IPv6
+Summary:	WWW Offline Explorer - Caching Web Proxy Server
+Summary(pl):	Eksplorator Offline World Wide Web
 Name:		wwwoffle
-Version:	2.6b
-Release:	2
+Version:	2.6c
+Release:	1
 License:	GPL
 Group:		Networking/Daemons
 Group(pl):	Sieciowe/Serwery
@@ -73,7 +73,7 @@ Serwer proxy HTTP/FTP dla komputerów z dostêpem do internetu typu dial-up.
 %build
 %{__make} all \
 	INSTDIR=%{_prefix} \
-	SPOOLDIR=%{_var}/cache/wwwoffle \
+	SPOOLDIR=%{_var}/cache/%{name} \
 	CONFDIR=%{_sysconfdir} \
 	CFLAGS="$RPM_OPT_FLAGS" \
 	LDFLAGS="-s"
@@ -84,28 +84,37 @@ Serwer proxy HTTP/FTP dla komputerów z dostêpem do internetu typu dial-up.
 
 %{__make} install \
 	INSTDIR=$RPM_BUILD_ROOT%{_prefix} \
-	INST_CONFDIR=$RPM_BUILD_ROOT%{_sysconfdir} \
+	SPOOLDIR=%{_var}/cache/%{name} \
+	SPOOLDIR_BUILD=$RPM_BUILD_ROOT%{_var}/cache/%{name} \
 	CONFDIR=%{_sysconfdir} \
-	BINDIR=$RPM_BUILD_ROOT%{_bindir} \
-	SBINDIR=$RPM_BUILD_ROOT%{_sbindir} \
+	CONFDIR_BUILD=$RPM_BUILD_ROOT%{_sysconfdir} \
 	MANDIR=$RPM_BUILD_ROOT%{_mandir} \
-	INST_SPOOLDIR=$RPM_BUILD_ROOT%{_var}/cache/wwwoffle \
-	SPOOLDIR=%{_var}/cache/wwwoffle
+	BINDIR=$RPM_BUILD_ROOT%{_bindir} \
+	SBINDIR=$RPM_BUILD_ROOT%{_sbindir}
 %{__install} %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
-%{__install} %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/wwwoffle
+%{__install} %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 
-%{__gzip} -9nf ANNOUNCE CHANGES.CONF CONVERT ChangeLog* FAQ NEWS README*
+%{__gzip} -9nf ANNOUNCE CHANGES.CONF CONVERT ChangeLog* FAQ NEWS \
+    README README.* convert-cache upgrade-config*
+
+%triggerpostun -- wwwoffle < 2.6
+
+echo Your existing cache and config file are looking earlier than
+echo 2.6 version. There have been several major changes in config
+echo file and some minor changes in cache handling. Read the file
+echo NEWS and following at a pinch for details. All the necessary
+echo files are available from within your documentation directory.
 
 %clean
 %{__rm} -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc {ANNOUNCE,CHANGES.CONF,CONVERT,ChangeLog*,FAQ,NEWS,README*}.gz
+%doc *.gz
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_sbindir}/*
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/wwwoffle
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}
 %attr(600,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}.conf
 %{_mandir}/man[158]/*
 %dir %{_var}/cache/%{name}
