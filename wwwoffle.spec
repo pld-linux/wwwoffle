@@ -1,15 +1,15 @@
 Summary:	WWW Offline Explorer - Caching Web Proxy Server (IPv6)
 Summary(pl):	Eksplorator Offline World Wide Web (IPv6)
 Name:		wwwoffle
-Version:	2.7b
+Version:	2.7d
 Release:	1
 License:	GPL
 Group:		Networking/Daemons
-URL:		http://www.gedanken.demon.co.uk/wwwoffle/
 Source0:	ftp://ftp.demon.co.uk/pub/unix/httpd/%{name}-%{version}.tgz
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-replacement.patch
+URL:		http://www.gedanken.demon.co.uk/wwwoffle/
 BuildRequires:	flex
 BuildRequires:	zlib-devel
 PreReq:		rc-scripts >= 0.2.0
