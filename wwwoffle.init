@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/sh
 #
 # wwwoffle	WWW proxy allowing offline view of cached pages
 #
