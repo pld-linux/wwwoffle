@@ -125,9 +125,4 @@ echo files are available from within your documentation directory.
 %dir %{_var}/cache/%{name}
 %{_var}/cache/%{name}/[!o]*
 %dir %{_var}/cache/%{name}/outgoing
-%config(missingok) %{_var}/cache/%{name}/outgoing/O98hgItueyIbW8udnZuMjpg
-%config(missingok) %{_var}/cache/%{name}/outgoing/Oh-W1UuCia4-wLoZYEnRrXw
-%config(missingok) %{_var}/cache/%{name}/outgoing/Ox3oAN7UMcBN5bQi-qYGkoA
-%config(missingok) %{_var}/cache/%{name}/outgoing/U98hgItueyIbW8udnZuMjpg
-%config(missingok) %{_var}/cache/%{name}/outgoing/Uh-W1UuCia4-wLoZYEnRrXw
-%config(missingok) %{_var}/cache/%{name}/outgoing/Ux3oAN7UMcBN5bQi-qYGkoA
+%config(missingok) %{_var}/cache/%{name}/outgoing/*
