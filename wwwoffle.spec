@@ -5,6 +5,7 @@ Version:	2.6c
 Release:	1
 License:	GPL
 Group:		Networking/Daemons
+Group(de):	Netzwerkwesen/Server
 Group(pl):	Sieciowe/Serwery
 Source0:	ftp://ftp.demon.co.uk/pub/unix/httpd/%{name}-%{version}.tgz
 Source1:	%{name}.init
@@ -75,8 +76,8 @@ Serwer proxy HTTP/FTP dla komputerów z dostêpem do internetu typu dial-up.
 	INSTDIR=%{_prefix} \
 	SPOOLDIR=%{_var}/cache/%{name} \
 	CONFDIR=%{_sysconfdir} \
-	CFLAGS="$RPM_OPT_FLAGS" \
-	LDFLAGS="-s"
+	CFLAGS="%{rpmcflags}" \
+	LDFLAGS="%{rpmldflags}"
 
 %install
 %{__rm} -rf $RPM_BUILD_ROOT
