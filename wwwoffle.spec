@@ -11,7 +11,7 @@ Source1:	wwwoffle.init
 Source2:	wwwoffle.sysconfig
 Patch0:		wwwoffle-DESTDIR.patch
 Patch1:		http://www.misiek.eu.org/ipv6/wwwoffle-2.5d-ipv6-01032000.patch.gz
-Requires:	rc-scripts
+Requires:	rc-scripts >= 0.2.0
 URL:		http://www.gedanken.demon.co.uk/wwwoffle/
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
