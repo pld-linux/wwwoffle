@@ -1,23 +1,33 @@
+# Conditional build:
+# _without_ipv6	- without support for IPv6
 Summary:	WWW Offline Explorer - Caching Web Proxy Server (IPv6)
 Summary(pl):	Eksplorator Offline World Wide Web (IPv6)
 Name:		wwwoffle
-Version:	2.7h
+Version:	2.8
 Release:	1
+Epoch:		0
 License:	GPL
 Group:		Networking/Daemons
 #Source0:	ftp://ftp.demon.co.uk/pub/unix/httpd/%{name}-%{version}.tgz
 Source0:	ftp://ftp.ibiblio.org/pub/Linux/apps/www/servers/%{name}-%{version}.tgz
-# Source0-md5:	3226cbe65feca747f92393114d9de5f0
+# Source0-md5:	cdd8cf0011e34e9d67ecfeefeecd4584
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-replacement.patch
-Patch1:		%{name}-flex.patch
+Patch1:		%{name}-conf_settings.patch
+Patch2:		%{name}-namazu.patch
 URL:		http://www.gedanken.demon.co.uk/wwwoffle/
+BuildRequires:	autoconf
 BuildRequires:	flex
 BuildRequires:	zlib-devel
+BuildRequires:	fileutils
 PreReq:		rc-scripts >= 0.2.0
 Requires(pre):	fileutils
 Requires(pre):	sh-utils
+Requires(pre):	/bin/id
+Requires(pre):	/usr/bin/getgid
+Requires(pre):	/usr/sbin/groupadd
+Requires(pre):	/usr/sbin/useradd
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %define		specflags_ia32	"-fomit-frame-pointer"
@@ -83,15 +93,32 @@ dial-up.
 - Wszystkie opcje s± kontrolowane przy u¿yciu prostego pliku
   konfiguracji z mo¿liwo¶ci± edycji z poziomu strony web.
 
+%package namazu 
+Summary:	Indexing and searching WWWOFFLE's cache by Namazu
+Summary(pl):	Indeksowanie i przeszukiwanie cache'a WWWOFFLE przez Namazu
+Group:		Networking/Daemons
+Requires:	namazu-cgi >= 2.0.12-3
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+Requires:	mknmz-wwwoffle >= 0.7.2-2
+
+%description namazu
+Indexing and searching WWWOFFLE's cache by Namazu.
+
+%description namazu -l pl
+Indeksowanie i przeszukiwanie cache'u WWWOFFLE przez Namazu.
+
 %prep
 %setup -q
 %patch0 -p1
 %patch1 -p1
+%patch2 -p1
 
 %build
+%{__aclocal}
+%{__autoconf}
 %configure2_13 \
 	--with-zlib \
-	--with-ipv6 \
+	%{!?_without_ipv6:--with-ipv6} \
 	--with-spooldir=%{_var}/cache/%{name}
 %{__make} \
 	CFLAGS="%{rpmcflags}" \
@@ -99,12 +126,24 @@ dial-up.
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig} \
-	$RPM_BUILD_ROOT%{_var}/cache/%{name}/{ftp,prev{out,time}{1,2,3,4,5,6,7},temp}
-
+install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig,%{name}/namazu} \
+	$RPM_BUILD_ROOT%{_var}/cache/%{name}/{ftp,prev{out,time}{1,2,3,4,5,6,7},temp} \
+	$RPM_BUILD_ROOT%{_libexecdir}/%{name}
+	
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
 mv -f $RPM_BUILD_ROOT%{_var}/cache/%{name}/html $RPM_BUILD_ROOT%{_datadir}/%{name}
 ln -s %{_datadir}/%{name} $RPM_BUILD_ROOT%{_var}/cache/%{name}/html
+
+# changes for wwwoffle-namazu
+mv -f \
+	$RPM_BUILD_ROOT%{_var}/cache/%{name}/search/namazu/conf/* \
+		$RPM_BUILD_ROOT%{_sysconfdir}/%{name}/namazu/
+mv -f \
+	$RPM_BUILD_ROOT%{_var}/cache/%{name}/search/namazu/scripts/wwwoffle-mknmz-* \
+		$RPM_BUILD_ROOT%{_bindir}/	
+#mv -f \
+#	$RPM_BUILD_ROOT%{_var}/cache/%{name}/search/namazu/scripts/wwwoffle-namazu \
+#		$RPM_BUILD_ROOT%{_libexecdir}/%{name}/
 
 install src/uncompress-cache $RPM_BUILD_ROOT%{_bindir}
 install -s src/convert-cache conf
@@ -134,6 +173,46 @@ rm -rf $RPM_BUILD_ROOT
 %pre
 test -h %{_var}/cache/%{name}/html || rm -rf %{_var}/cache/%{name}/html
 
+if [ -n "`getgid %{name}`" ]; then
+	if [ "`getgid %{name}`" != "119" ]; then
+		echo "Error: group %{name} doesn't have gid=119. Correct this before installing %{name}." 1>&2
+		exit 1
+	fi
+else
+	/usr/sbin/groupadd -g 119 -r -f %{name} 1>&2 || :
+fi
+if [ -n "`id -u %{name} 2>/dev/null`" ]; then
+	if [ "`id -u %{name}`" != "119" ]; then
+		echo "Error: user %{name} doesn't have uid=119. Correct this before installing %{name}." 1>&2
+		exit 1
+	fi
+else
+	/usr/sbin/useradd -M -o -r -u 119 -s /bin/false \
+		-g %{name} -c "%{name} daemon" -d /var/cache/%{name} %{name} 1>&2 || :
+fi
+
+%post
+/sbin/chkconfig --add %{name}
+if [ -f /var/lock/subsys/%{name} ]; then
+	/etc/rc.d/init.d/%{name} restart 1>&2
+else
+	echo "Run \"/etc/rc.d/init.d/%{name} start\" to start %{name} daemon."
+fi
+
+%preun
+if [ "$1" = "0" ]; then
+	if [ -f /var/lock/subsys/%{name} ]; then
+		/etc/rc.d/init.d/%{name} stop 1>&2
+	fi
+	/sbin/chkconfig --del %{name}
+fi
+
+%postun
+if [ "$1" = "0" ]; then
+	/usr/sbin/userdel %{name}
+	/usr/sbin/groupdel %{name}
+fi
+
 %files
 %defattr(644,root,root,755)
 %lang(de) %doc doc/de
@@ -146,7 +225,7 @@ test -h %{_var}/cache/%{name}/html || rm -rf %{_var}/cache/%{name}/html
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_sbindir}/*
 %attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/%{name}
-%attr(660,http,http) %config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/%{name}.conf
+%attr(644,root,root) %config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/%{name}/%{name}.conf
 %{_mandir}/man[158]/*
 %lang(fr) %{_mandir}/fr/man5/*
 %dir %{_datadir}/%{name}
@@ -159,7 +238,7 @@ test -h %{_var}/cache/%{name}/html || rm -rf %{_var}/cache/%{name}/html
 %lang(nl) %{_datadir}/%{name}/nl
 %lang(pl) %{_datadir}/%{name}/pl
 %lang(ru) %{_datadir}/%{name}/ru
-%defattr(664,http,http,775)
+%defattr(664,wwwoffle,wwwoffle,775)
 %dir %{_var}/cache/%{name}
 #%%{_var}/cache/%{name}/[!o]*
 %dir %{_var}/cache/%{name}/ftp
@@ -192,20 +271,22 @@ test -h %{_var}/cache/%{name}/html || rm -rf %{_var}/cache/%{name}/html
 %dir %{_var}/cache/%{name}/search/htdig/db-lasttime
 %dir %{_var}/cache/%{name}/search/htdig/tmp
 %dir %{_var}/cache/%{name}/search/htdig/conf
-%attr(644,http,http) %config(noreplace) %verify(not md5 size mtime) %{_var}/cache/%{name}/search/htdig/conf/*
+%attr(644,root,root) %config(noreplace) %verify(not md5 size mtime) %{_var}/cache/%{name}/search/htdig/conf/*
 %dir %{_var}/cache/%{name}/search/htdig/scripts
-%attr(655,http,http) %config(noreplace) %verify(not md5 size mtime) %{_var}/cache/%{name}/search/htdig/scripts/*
+%attr(654,root,root) %config(noreplace) %verify(not md5 size mtime) %{_var}/cache/%{name}/search/htdig/scripts/*
 
 %dir %{_var}/cache/%{name}/search/mnogosearch
 %dir %{_var}/cache/%{name}/search/mnogosearch/db
 %dir %{_var}/cache/%{name}/search/mnogosearch/conf
-%attr(644,http,http) %config(noreplace) %verify(not md5 size mtime) %{_var}/cache/%{name}/search/mnogosearch/conf/*
+%attr(644,root,root) %config(noreplace) %verify(not md5 size mtime) %{_var}/cache/%{name}/search/mnogosearch/conf/*
 %dir %{_var}/cache/%{name}/search/mnogosearch/scripts
-%attr(655,http,http) %config(noreplace) %verify(not md5 size mtime) %{_var}/cache/%{name}/search/mnogosearch/scripts/*
+%attr(654,root,root) %config(noreplace) %verify(not md5 size mtime) %{_var}/cache/%{name}/search/mnogosearch/scripts/*
 
+
+%files namazu
+%defattr(644,root,root,755)
+%config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/%{name}/namazu 
+%attr(755,root,root) %{_bindir}/wwwoffle-mknmz-*
+%attr(755,root,root) %{_var}/cache/%{name}/search/namazu/scripts/wwwoffle-namazu
 %dir %{_var}/cache/%{name}/search/namazu
 %dir %{_var}/cache/%{name}/search/namazu/db
-%dir %{_var}/cache/%{name}/search/namazu/conf
-%attr(644,http,http) %config(noreplace) %verify(not md5 size mtime) %{_var}/cache/%{name}/search/namazu/conf/*
-%dir %{_var}/cache/%{name}/search/namazu/scripts
-%attr(655,http,http) %config(noreplace) %verify(not md5 size mtime) %{_var}/cache/%{name}/search/namazu/scripts/*
