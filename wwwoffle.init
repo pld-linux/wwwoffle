@@ -26,7 +26,7 @@ else
 	exit 0
 fi
 
-
+RETVAL=0
 # See how we were called.
 case "$1" in
   start)
@@ -38,7 +38,6 @@ case "$1" in
 		[ $RETVAL -eq 0 ] && touch /var/lock/subsys/wwwoffle
 	else
 		msg_already_running wwwoffled
-		exit 1
 	fi
 	;;
   stop)
@@ -50,12 +49,12 @@ case "$1" in
 		rm -f /var/lock/subsys/wwwoffle 2>&1 > /dev/null
 	else
 		msg_not_running wwwoffled
-		exit 1
 	fi
 	;;
   restart)
 	$0 stop
 	$0 start
+	exit $?
 	;;
   reload|force-reload)
 	if [ -f /var/lock/subsys/wwwoffle ]; then
@@ -63,16 +62,17 @@ case "$1" in
 		killproc wwwoffled -HUP
 		RETVAL=$?
 	else
-		msg_not_running wwwoffled
-		exit 1
+		msg_not_running wwwoffled >&2
+		exit 7
 	fi
 	;;
   status)
 	status wwwoffled
+	exit $?
 	;;
   *)
 	msg_usage "$0 {start|stop|restart|reload|force-reload|status}"
-	exit 1
+	exit 3
 esac
 
 exit $RETVAL
