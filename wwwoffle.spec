@@ -1,7 +1,7 @@
 Summary:	WWW Offline Explorer - Caching Web Proxy Server (IPv6)
 Summary(pl):	Eksplorator Offline World Wide Web (IPv6)
 Name:		wwwoffle
-Version:	2.7a
+Version:	2.7b
 Release:	1
 License:	GPL
 Group:		Networking/Daemons
@@ -10,7 +10,6 @@ Source0:	ftp://ftp.demon.co.uk/pub/unix/httpd/%{name}-%{version}.tgz
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-replacement.patch
-Patch1:		%{name}-DESTDIR.patch
 BuildRequires:	flex
 BuildRequires:	zlib-devel
 PreReq:		rc-scripts >= 0.2.0
@@ -80,26 +79,21 @@ dial-up.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
 
 %build
-%configure2_13
-%{__make} all \
-	SPOOLDIR=%{_var}/cache/%{name} \
-	CONFDIR=%{_sysconfdir} \
+%configure2_13 \
+	--with-zlib \
+	--with-ipv6 \
+	--with-spooldir=%{_var}/cache/%{name}
+%{__make} \
 	CFLAGS="%{rpmcflags}" \
-	LDFLAGS="%{rpmldflags}" \
-	USE_ZLIB=1 \
-	USE_IPV6=1
+	LDFLAGS="%{rpmldflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig}
 
-%{__make} install \
-	DESTDIR=$RPM_BUILD_ROOT \
-	SPOOLDIR=%{_var}/cache/%{name} \
-	CONFDIR=%{_sysconfdir}
+%{__make} install DESTDIR=$RPM_BUILD_ROOT
 
 install src/uncompress-cache $RPM_BUILD_ROOT%{_bindir}
 install -s src/convert-cache conf
