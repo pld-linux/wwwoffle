@@ -1,37 +1,35 @@
 Summary:	WWW Offline Explorer - Caching Web Proxy Server (IPv6)
 Summary(pl):	Eksplorator Offline World Wide Web (IPv6)
 Name:		wwwoffle
-Version:	2.6d
-Release:	3
+Version:	2.7f
+Release:	1
 License:	GPL
 Group:		Networking/Daemons
-Group(de):	Netzwerkwesen/Server
-Group(pl):	Sieciowe/Serwery
-URL:		http://www.gedanken.demon.co.uk/wwwoffle/
-Source0:	ftp://ftp.demon.co.uk/pub/unix/httpd/%{name}-%{version}.tgz
+#Source0:	ftp://ftp.demon.co.uk/pub/unix/httpd/%{name}-%{version}.tgz
+Source0:	ftp://ftp.ibiblio.org/pub/Linux/apps/www/servers/%{name}-%{version}.tgz
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-replacement.patch
-Patch1:		%{name}-install_dirs.patch
-Patch2:		%{name}-ipv6.patch
-Patch3:		%{name}-ftp.patch
+URL:		http://www.gedanken.demon.co.uk/wwwoffle/
 BuildRequires:	flex
 BuildRequires:	zlib-devel
-Prereq:		rc-scripts >= 0.2.0
+PreReq:		rc-scripts >= 0.2.0
+Requires(pre):	fileutils
+Requires(pre):	sh-utils
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 A proxy HTTP/FTP server for computers with dial-up internet access.
 - Caching of pages viewed while connected for review later.
-- Browsing of cached pages while not connected, with the ability
-  to follow links and mark other pages for download.
+- Browsing of cached pages while not connected, with the ability to
+  follow links and mark other pages for download.
 - Downloading of specified pages non-interactively.
 - Monitoring of pages for regular download.
 - Multiple indices of pages stored in cache for easy selection.
 - Interactive or command line option to select pages for fetching
   individually or recursively.
-- All options controlled using a simple configuration file with a
-  web page to edit it.
+- All options controlled using a simple configuration file with a web
+  page to edit it.
 
 %description -l de
 Ein (HTTP/FTP) Proxy Server für Computer mit Wählverbindungen ins
@@ -84,43 +82,43 @@ dial-up.
 %prep
 %setup -q
 %patch0 -p1
-%patch1 -p1
-%patch2 -p1
-%patch3 -p1
 
 %build
-%{__make} all \
-	INSTDIR=%{_prefix} \
-	SPOOLDIR=%{_var}/cache/%{name} \
-	CONFDIR=%{_sysconfdir} \
+%configure2_13 \
+	--with-zlib \
+	--with-ipv6 \
+	--with-spooldir=%{_var}/cache/%{name}
+%{__make} \
 	CFLAGS="%{rpmcflags}" \
-	LDFLAGS="%{rpmldflags}" \
-	USE_ZLIB=1 \
-	USE_IPV6=1
+	LDFLAGS="%{rpmldflags}"
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig}
+install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig} \
+	$RPM_BUILD_ROOT%{_var}/cache/%{name}/{ftp,prev{out,time}{1,2,3,4,5,6,7},temp}
 
-%{__make} install \
-	INSTDIR=$RPM_BUILD_ROOT%{_prefix} \
-	SPOOLDIR=%{_var}/cache/%{name} \
-	SPOOLDIR_BUILD=$RPM_BUILD_ROOT%{_var}/cache/%{name} \
-	CONFDIR=%{_sysconfdir} \
-	CONFDIR_BUILD=$RPM_BUILD_ROOT%{_sysconfdir} \
-	MANDIR=$RPM_BUILD_ROOT%{_mandir} \
-	BINDIR=$RPM_BUILD_ROOT%{_bindir} \
-	SBINDIR=$RPM_BUILD_ROOT%{_sbindir}
+%{__make} install DESTDIR=$RPM_BUILD_ROOT
+mv -f $RPM_BUILD_ROOT%{_var}/cache/%{name}/html $RPM_BUILD_ROOT%{_datadir}/%{name}
+ln -s %{_datadir}/%{name} $RPM_BUILD_ROOT%{_var}/cache/%{name}/html
+
+install src/uncompress-cache $RPM_BUILD_ROOT%{_bindir}
+install -s src/convert-cache conf
+
+install -d $RPM_BUILD_ROOT%{_mandir}/fr/man5
+install doc/fr/wwwoffle.conf.man $RPM_BUILD_ROOT%{_mandir}/fr/man5/wwwoffle.conf.5
+rm -f doc/fr/wwwoffle.conf.man*
+
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 
-gzip -9nf ANNOUNCE CHANGES.CONF CONVERT ChangeLog* FAQ NEWS \
-	README README.* convert-cache upgrade-config*
+mv doc/es/contrib/README doc/es/README-contrib
+mv doc/es/testprogs/README doc/es/README-testprogs
+rm -rf doc/es/{contrib,testprogs}
 
-%triggerpostun -- wwwoffle < 2.6
+%triggerpostun -- wwwoffle < 2.7
 
 echo Note!  Your existing cache and config file look earlier than
-echo 2.6 version. There have been several major changes in config
+echo 2.7 version. There have been several major changes in config
 echo file and some minor changes in cache handling. Read the file
 echo NEWS and following at a pinch for details. All the necessary
 echo files are available from within your documentation directory.
@@ -128,15 +126,35 @@ echo files are available from within your documentation directory.
 %clean
 rm -rf $RPM_BUILD_ROOT
 
+%pre
+test -h %{_var}/cache/%{name}/html || rm -rf %{_var}/cache/%{name}/html
+
 %files
 %defattr(644,root,root,755)
-%doc *.gz
+%lang(de) %doc doc/de
+%lang(es) %doc doc/es
+%lang(fr) %doc doc/fr
+%lang(pl) %doc doc/pl
+%doc doc/{ANNOUNCE,CHANGES.CONF,CONVERT,FAQ,NEWS,README*}
+%doc ChangeLog* conf/{convert-cache,upgrade-config*}
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_sbindir}/*
 %attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/%{name}
-%attr(600,root,root) %config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/%{name}.conf
+%attr(660,http,http) %config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/%{name}.conf
 %{_mandir}/man[158]/*
+%lang(fr) %{_mandir}/fr/man5/*
+%dir %{_datadir}/%{name}
+%{_datadir}/%{name}/default
+%{_datadir}/%{name}/en
+%lang(de) %{_datadir}/%{name}/de
+%lang(es) %{_datadir}/%{name}/es
+%lang(fr) %{_datadir}/%{name}/fr
+%lang(it) %{_datadir}/%{name}/it
+%lang(nl) %{_datadir}/%{name}/nl
+%lang(pl) %{_datadir}/%{name}/pl
+%lang(ru) %{_datadir}/%{name}/ru
+%defattr(664,http,http,775)
 %dir %{_var}/cache/%{name}
 %{_var}/cache/%{name}/[!o]*
 %dir %{_var}/cache/%{name}/outgoing
