@@ -21,7 +21,7 @@ URL:		http://www.gedanken.demon.co.uk/wwwoffle/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	flex
-BuildRequires:	rpmbuild(macros) >= 1.159
+BuildRequires:	rpmbuild(macros) >= 1.202
 BuildRequires:	zlib-devel
 PreReq:		rc-scripts >= 0.2.0
 Requires(pre):	fileutils
@@ -183,23 +183,8 @@ rm -rf $RPM_BUILD_ROOT
 %pre
 test -h %{_var}/cache/wwwoffle/html || rm -rf %{_var}/cache/wwwoffle/html
 
-if [ -n "`/usr/bin/getgid wwwoffle`" ]; then
-	if [ "`/usr/bin/getgid wwwoffle`" != "119" ]; then
-		echo "Error: group wwwoffle doesn't have gid=119. Correct this before installing %{name}." 1>&2
-		exit 1
-	fi
-else
-	/usr/sbin/groupadd -g 119 -r -f wwwoffle 1>&2
-fi
-if [ -n "`/bin/id -u wwwoffle 2>/dev/null`" ]; then
-	if [ "`/bin/id -u wwwoffle`" != "119" ]; then
-		echo "Error: user wwwoffle doesn't have uid=119. Correct this before installing %{name}." 1>&2
-		exit 1
-	fi
-else
-	/usr/sbin/useradd -M -o -r -u 119 -s /bin/false \
-		-g wwwoffle -c "%{name} daemon" -d /var/cache/wwwoffle wwwoffle 1>&2
-fi
+%groupadd -g 119 -r -f wwwoffle
+%useradd -M -o -r -u 119 -s /bin/false -g wwwoffle -c "%{name} daemon" -d /var/cache/wwwoffle wwwoffle
 
 %post
 /sbin/chkconfig --add %{name}
