@@ -6,7 +6,7 @@ Summary:	WWW Offline Explorer - Caching Web Proxy Server (IPv6)
 Summary(pl):	Eksplorator Offline World Wide Web (IPv6)
 Name:		wwwoffle
 Version:	2.8e
-Release:	2
+Release:	3
 Epoch:		0
 License:	GPL
 Group:		Networking/Daemons
@@ -220,6 +220,7 @@ fi
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_sbindir}/*
 %attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/%{name}
+%dir %{_sysconfdir}/%{name}
 %attr(644,root,root) %config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/%{name}/%{name}.conf
 %{_mandir}/man[158]/*
 %lang(fr) %{_mandir}/fr/man5/*
@@ -268,6 +269,7 @@ fi
 
 %files namazu
 %defattr(644,root,root,755)
+%dir %{_sysconfdir}/%{name}/namazu
 %config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/%{name}/namazu 
 %attr(755,root,root) %{_bindir}/wwwoffle-mknmz-*
 %attr(755,root,root) %{_var}/cache/wwwoffle/search/namazu/scripts/wwwoffle-namazu
