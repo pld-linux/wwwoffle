@@ -23,16 +23,16 @@ BuildRequires:	automake
 BuildRequires:	flex
 BuildRequires:	rpmbuild(macros) >= 1.202
 BuildRequires:	zlib-devel
-PreReq:		rc-scripts >= 0.2.0
-Requires(pre):	fileutils
-Requires(pre):	sh-utils
+Requires(post,preun):	/sbin/chkconfig
+Requires(postun):	/usr/sbin/groupdel
+Requires(postun):	/usr/sbin/userdel
 Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
 Requires(pre):	/usr/sbin/useradd
-Requires(post,preun):	/sbin/chkconfig
-Requires(postun):	/usr/sbin/groupdel
-Requires(postun):	/usr/sbin/userdel
+Requires(pre):	fileutils
+Requires(pre):	sh-utils
+Requires:	rc-scripts >= 0.2.0
 Provides:	group(wwwoffle)
 Provides:	user(wwwoffle)
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
@@ -100,13 +100,13 @@ dial-up.
 - Wszystkie opcje s± kontrolowane przy u¿yciu prostego pliku
   konfiguracji z mo¿liwo¶ci± edycji z poziomu strony web.
 
-%package namazu 
+%package namazu
 Summary:	Indexing and searching WWWOFFLE's cache by Namazu
 Summary(pl):	Indeksowanie i przeszukiwanie cache'a WWWOFFLE przez Namazu
 Group:		Networking/Daemons
-Requires:	namazu-cgi >= 2.0.12-3
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	mknmz-wwwoffle >= 0.7.2-2
+Requires:	namazu-cgi >= 2.0.12-3
 
 %description namazu
 Indexing and searching WWWOFFLE's cache by Namazu.
@@ -137,7 +137,7 @@ rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig,%{name}/namazu} \
 	$RPM_BUILD_ROOT%{_var}/cache/wwwoffle/{ftp,prev{out,time}{1,2,3,4,5,6,7},temp} \
 	$RPM_BUILD_ROOT%{_libexecdir}/%{name}
-	
+
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
@@ -148,7 +148,7 @@ ln -s %{_datadir}/%{name} $RPM_BUILD_ROOT%{_var}/cache/wwwoffle/html
 mv -f $RPM_BUILD_ROOT%{_var}/cache/wwwoffle/search/namazu/conf/*rc \
 	$RPM_BUILD_ROOT%{_sysconfdir}/%{name}/namazu
 mv -f $RPM_BUILD_ROOT%{_var}/cache/wwwoffle/search/namazu/scripts/wwwoffle-mknmz-* \
-	$RPM_BUILD_ROOT%{_bindir}/	
+	$RPM_BUILD_ROOT%{_bindir}/
 
 install src/uncompress-cache $RPM_BUILD_ROOT%{_bindir}
 install src/convert-cache conf
@@ -219,9 +219,9 @@ fi
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_sbindir}/*
-%attr(640,root,root) %config(noreplace) %verify(not md5 size mtime) /etc/sysconfig/%{name}
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}
 %dir %{_sysconfdir}/%{name}
-%attr(644,root,root) %config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/%{name}/%{name}.conf
+%attr(644,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/%{name}.conf
 %{_mandir}/man[158]/*
 %lang(fr) %{_mandir}/fr/man5/*
 %dir %{_datadir}/%{name}
@@ -255,22 +255,22 @@ fi
 %dir %{_var}/cache/wwwoffle/search/htdig/db-lasttime
 %dir %{_var}/cache/wwwoffle/search/htdig/tmp
 %dir %{_var}/cache/wwwoffle/search/htdig/conf
-%attr(644,root,root) %config(noreplace) %verify(not md5 size mtime) %{_var}/cache/wwwoffle/search/htdig/conf/*
+%attr(644,root,root) %config(noreplace) %verify(not md5 mtime size) %{_var}/cache/wwwoffle/search/htdig/conf/*
 %dir %{_var}/cache/wwwoffle/search/htdig/scripts
-%attr(654,root,root) %config(noreplace) %verify(not md5 size mtime) %{_var}/cache/wwwoffle/search/htdig/scripts/*
+%attr(654,root,root) %config(noreplace) %verify(not md5 mtime size) %{_var}/cache/wwwoffle/search/htdig/scripts/*
 
 %dir %{_var}/cache/wwwoffle/search/mnogosearch
 %dir %{_var}/cache/wwwoffle/search/mnogosearch/db
 %dir %{_var}/cache/wwwoffle/search/mnogosearch/conf
-%attr(644,root,root) %config(noreplace) %verify(not md5 size mtime) %{_var}/cache/wwwoffle/search/mnogosearch/conf/*
+%attr(644,root,root) %config(noreplace) %verify(not md5 mtime size) %{_var}/cache/wwwoffle/search/mnogosearch/conf/*
 %dir %{_var}/cache/wwwoffle/search/mnogosearch/scripts
-%attr(654,root,root) %config(noreplace) %verify(not md5 size mtime) %{_var}/cache/wwwoffle/search/mnogosearch/scripts/*
+%attr(654,root,root) %config(noreplace) %verify(not md5 mtime size) %{_var}/cache/wwwoffle/search/mnogosearch/scripts/*
 
 
 %files namazu
 %defattr(644,root,root,755)
 %dir %{_sysconfdir}/%{name}/namazu
-%config(noreplace) %verify(not md5 size mtime) %{_sysconfdir}/%{name}/namazu 
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/namazu
 %attr(755,root,root) %{_bindir}/wwwoffle-mknmz-*
 %attr(755,root,root) %{_var}/cache/wwwoffle/search/namazu/scripts/wwwoffle-namazu
 %dir %{_var}/cache/wwwoffle/search/namazu
