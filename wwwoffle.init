@@ -1,10 +1,10 @@
-#!/bin/sh 
+#!/bin/sh
 #
 # wwwoffle	WWW proxy allowing offline view of cached pages
 #
 # chkconfig:	2345 85 20
 #
-# description:	WWW proxy allowing offline view of cached pages 
+# description:	WWW proxy allowing offline view of cached pages
 
 
 # Source function library
