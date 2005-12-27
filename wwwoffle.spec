@@ -221,7 +221,7 @@ fi
 %attr(755,root,root) %{_sbindir}/*
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}
 %dir %{_sysconfdir}/%{name}
-%attr(644,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/%{name}.conf
+%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/%{name}.conf
 %{_mandir}/man[158]/*
 %lang(fr) %{_mandir}/fr/man5/*
 %dir %{_datadir}/%{name}
