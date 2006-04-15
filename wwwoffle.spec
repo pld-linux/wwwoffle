@@ -163,6 +163,7 @@ install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 mv doc/es/contrib/README doc/es/README-contrib
 mv doc/es/testprogs/README doc/es/README-testprogs
 rm -rf doc/es/{contrib,testprogs}
+rm -rf $RPM_BUILD_ROOT%{_prefix}/doc
 
 %triggerpostun -- %{name} < 2.7
 
