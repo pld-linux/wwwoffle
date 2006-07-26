@@ -250,14 +250,14 @@ fi
 %dir %{_var}/cache/wwwoffle/search/htdig/db-lasttime
 %dir %{_var}/cache/wwwoffle/search/htdig/tmp
 %dir %{_var}/cache/wwwoffle/search/htdig/conf
-%attr(644,root,root) %config(noreplace) %verify(not md5 mtime size) %{_var}/cache/wwwoffle/search/htdig/conf/*
+%config(noreplace) %verify(not md5 mtime size) %{_var}/cache/wwwoffle/search/htdig/conf/*
 %dir %{_var}/cache/wwwoffle/search/htdig/scripts
 %attr(654,root,root) %config(noreplace) %verify(not md5 mtime size) %{_var}/cache/wwwoffle/search/htdig/scripts/*
 
 %dir %{_var}/cache/wwwoffle/search/mnogosearch
 %dir %{_var}/cache/wwwoffle/search/mnogosearch/db
 %dir %{_var}/cache/wwwoffle/search/mnogosearch/conf
-%attr(644,root,root) %config(noreplace) %verify(not md5 mtime size) %{_var}/cache/wwwoffle/search/mnogosearch/conf/*
+%config(noreplace) %verify(not md5 mtime size) %{_var}/cache/wwwoffle/search/mnogosearch/conf/*
 %dir %{_var}/cache/wwwoffle/search/mnogosearch/scripts
 %attr(654,root,root) %config(noreplace) %verify(not md5 mtime size) %{_var}/cache/wwwoffle/search/mnogosearch/scripts/*
 
