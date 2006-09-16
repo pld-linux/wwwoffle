@@ -5,27 +5,30 @@
 Summary:	WWW Offline Explorer - Caching Web Proxy Server (IPv6)
 Summary(pl):	Eksplorator Offline World Wide Web (IPv6)
 Name:		wwwoffle
-Version:	2.8e
-Release:	5
+Version:	2.9a
+Release:	1
 Epoch:		0
 License:	GPL
 Group:		Networking/Daemons
 Source0:	http://www.gedanken.freeserve.co.uk/download-wwwoffle/%{name}-%{version}.tgz
-# Source0-md5:	30828cc5a8a459f04f719bbb220003e7
+# Source0-md5:	3ba32fc842a6af96b28cd3c7ff8f6f56
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-replacement.patch
 Patch1:		%{name}-conf_settings.patch
 Patch2:		%{name}-namazu.patch
+Patch3:		%{name}-hyperestraier.patch
 URL:		http://www.gedanken.demon.co.uk/wwwoffle/
 BuildRequires:	autoconf
 BuildRequires:	automake
 BuildRequires:	flex
+BuildRequires:	gnutls-devel
 BuildRequires:	rpmbuild(macros) >= 1.268
 BuildRequires:	zlib-devel
 Requires(post,preun):	/sbin/chkconfig
 Requires(postun):	/usr/sbin/groupdel
 Requires(postun):	/usr/sbin/userdel
+Requires(postun):	sed > 4.0
 Requires(pre):	/bin/id
 Requires(pre):	/usr/bin/getgid
 Requires(pre):	/usr/sbin/groupadd
@@ -114,17 +117,32 @@ Indexing and searching WWWOFFLE's cache by Namazu.
 %description namazu -l pl
 Indeksowanie i przeszukiwanie cache'u WWWOFFLE przez Namazu.
 
+%package hyperestraier
+Summary:	Indexing and searching WWWOFFLE's cache by Hyperestraier
+Summary(pl):	Indeksowanie i przeszukiwanie cache'a WWWOFFLE przez Hyperestraier
+Group:		Networking/Daemons
+Requires:	%{name} = %{epoch}:%{version}-%{release}
+Requires:	hyperestraier
+
+%description hyperestraier
+Indexing and searching WWWOFFLE's cache by Hyperestraier.
+
+%description hyperestraier -l pl
+Indeksowanie i przeszukiwanie cache'u WWWOFFLE przez Hyperestraier.
+
 %prep
 %setup -q
 %patch0 -p1
 %patch1 -p1
 %patch2 -p1
+%patch3 -p1
 
 %build
 cp /usr/share/automake/config.sub .
 %{__aclocal}
 %{__autoconf}
 %configure2_13 \
+	--with-gnutls \
 	--with-zlib \
 	%{?with_ipv6:--with-ipv6} \
 	--with-spooldir=%{_var}/cache/wwwoffle
@@ -134,9 +152,8 @@ cp /usr/share/automake/config.sub .
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig,%{name}/namazu} \
-	$RPM_BUILD_ROOT%{_var}/cache/wwwoffle/{ftp,prev{out,time}{1,2,3,4,5,6,7},temp} \
-	$RPM_BUILD_ROOT%{_libexecdir}/%{name}
+install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig,%{name}/{hyperestraier,namazu}} \
+	$RPM_BUILD_ROOT%{_var}/cache/wwwoffle/{ftp,prev{out,time}{1,2,3,4,5,6,7},temp} 
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -148,10 +165,19 @@ ln -s %{_datadir}/%{name} $RPM_BUILD_ROOT%{_var}/cache/wwwoffle/html
 mv -f $RPM_BUILD_ROOT%{_var}/cache/wwwoffle/search/namazu/conf/*rc \
 	$RPM_BUILD_ROOT%{_sysconfdir}/%{name}/namazu
 mv -f $RPM_BUILD_ROOT%{_var}/cache/wwwoffle/search/namazu/scripts/wwwoffle-mknmz-* \
-	$RPM_BUILD_ROOT%{_bindir}/
+	$RPM_BUILD_ROOT%{_bindir}
 
-install src/uncompress-cache $RPM_BUILD_ROOT%{_bindir}
-install src/convert-cache conf
+# changes for wwwoffle-hyperestraier
+mv -f $RPM_BUILD_ROOT%{_var}/cache/wwwoffle/search/hyperestraier/conf/estseek.{conf,tmpl,top} \
+	$RPM_BUILD_ROOT%{_sysconfdir}/%{name}/hyperestraier
+ln -sf %{_sysconfdir}/%{name}/hyperestraier/estseek.conf \
+	$RPM_BUILD_ROOT%{_var}/cache/wwwoffle/search/hyperestraier/conf/estseek.conf 
+ln -sf %{_sysconfdir}/%{name}/hyperestraier/estseek.tmpl \
+	$RPM_BUILD_ROOT%{_var}/cache/wwwoffle/search/hyperestraier/conf/estseek.tmpl
+ln -sf %{_sysconfdir}/%{name}/hyperestraier/estseek.top \
+	$RPM_BUILD_ROOT%{_var}/cache/wwwoffle/search/hyperestraier/conf/estseek.top
+mv -f $RPM_BUILD_ROOT%{_var}/cache/wwwoffle/search/hyperestraier/scripts/wwwoffle-estcmd-full \
+	$RPM_BUILD_ROOT%{_bindir}
 
 install -d $RPM_BUILD_ROOT%{_mandir}/fr/man5
 install doc/fr/wwwoffle.conf.man $RPM_BUILD_ROOT%{_mandir}/fr/man5/wwwoffle.conf.5
@@ -209,8 +235,8 @@ fi
 %lang(es) %doc doc/es
 %lang(fr) %doc doc/fr
 %lang(pl) %doc doc/pl
-%doc doc/{ANNOUNCE,CHANGES.CONF,CONVERT,FAQ,NEWS,README*}
-%doc ChangeLog* conf/{convert-cache,upgrade-config*}
+%doc doc/{ANNOUNCE,CHANGES.CONF,FAQ,NEWS,README*}
+%doc ChangeLog* conf/upgrade-config*
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
 %attr(755,root,root) %{_bindir}/*
 %attr(755,root,root) %{_sbindir}/*
@@ -252,20 +278,33 @@ fi
 %dir %{_var}/cache/wwwoffle/search/htdig/conf
 %config(noreplace) %verify(not md5 mtime size) %{_var}/cache/wwwoffle/search/htdig/conf/*
 %dir %{_var}/cache/wwwoffle/search/htdig/scripts
-%attr(654,root,root) %config(noreplace) %verify(not md5 mtime size) %{_var}/cache/wwwoffle/search/htdig/scripts/*
+%attr(754,root,root) %{_var}/cache/wwwoffle/search/htdig/scripts/*
 
 %dir %{_var}/cache/wwwoffle/search/mnogosearch
 %dir %{_var}/cache/wwwoffle/search/mnogosearch/db
 %dir %{_var}/cache/wwwoffle/search/mnogosearch/conf
 %config(noreplace) %verify(not md5 mtime size) %{_var}/cache/wwwoffle/search/mnogosearch/conf/*
 %dir %{_var}/cache/wwwoffle/search/mnogosearch/scripts
-%attr(654,root,root) %config(noreplace) %verify(not md5 mtime size) %{_var}/cache/wwwoffle/search/mnogosearch/scripts/*
+%attr(754,root,root) %{_var}/cache/wwwoffle/search/mnogosearch/scripts/*
 
+%files hyperestraier
+%dir %{_var}/cache/wwwoffle/search/hyperestraier
+%dir %{_var}/cache/wwwoffle/search/hyperestraier/conf
+%dir %{_var}/cache/wwwoffle/search/hyperestraier/db
+%dir %{_var}/cache/wwwoffle/search/hyperestraier/scripts
+%attr(644,root,wwwoffle) %{_var}/cache/wwwoffle/search/hyperestraier/conf/estseek.conf
+%attr(644,root,wwwoffle) %{_var}/cache/wwwoffle/search/hyperestraier/conf/estseek.tmpl
+%attr(644,root,wwwoffle) %{_var}/cache/wwwoffle/search/hyperestraier/conf/estseek.top
+%attr(640,root,wwwoffle) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/hyperestraier/estseek.conf
+%attr(640,root,wwwoffle) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/hyperestraier/estseek.tmpl
+%attr(640,root,wwwoffle) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/hyperestraier/estseek.top
+%attr(750,root,root) %{_bindir}/wwwoffle-estcmd-full
+%attr(750,root,wwwoffle) %{_var}/cache/wwwoffle/search/hyperestraier/scripts/wwwoffle-estseek
 
 %files namazu
 %defattr(644,root,root,755)
 %dir %{_sysconfdir}/%{name}/namazu
-%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/namazu
+%config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/namazu/*
 %attr(755,root,root) %{_bindir}/wwwoffle-mknmz-*
 %attr(755,root,root) %{_var}/cache/wwwoffle/search/namazu/scripts/wwwoffle-namazu
 %dir %{_var}/cache/wwwoffle/search/namazu
