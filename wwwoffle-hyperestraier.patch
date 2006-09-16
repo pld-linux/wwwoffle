@@ -1,0 +1,55 @@
+--- wwwoffle-2.9/cache/search/hyperestraier/scripts/wwwoffle-estseek~	2005-09-05 19:45:50.000000000 +0200
++++ wwwoffle-2.9/cache/search/hyperestraier/scripts/wwwoffle-estseek	2006-04-20 20:26:13.000000000 +0200
+@@ -10,9 +10,7 @@
+ 
+ # Set the path to include the estseek.cgi executables
+ 
+-PATH=$PATH:/usr/local/bin
+-PATH=$PATH:/usr/local/libexec  # A possible location
+-PATH=$PATH:/usr/lib/estraier   # The Debian location
++PATH=$PATH:/usr/lib/hyperestraier   # The PLD location
+ export PATH
+ 
+ # Do the searching
+--- wwwoffle-2.9/cache/search/hyperestraier/scripts/wwwoffle-estcmd-full	2005-09-05 19:45:59.000000000 +0200
++++ n/cache/search/hyperestraier/scripts/wwwoffle-estcmd-full	2006-05-21 21:00:38.000000000 +0200
+@@ -8,16 +8,8 @@
+ 
+ cd $wwwoffle_spool
+ 
+-# Set the path to include the hyperestraier executables
+-
+-PATH=$PATH:/usr/local/bin
+-export PATH
+-
+-# Set up a log file.
+-
+-echo > search/hyperestraier/wwwoffle-estcmd.log
+-
+ # Do the gathering
+ 
+-estwolefind . | estcmd gather -cl -fm -px @uri -sd -cm search/hyperestraier/db - \
+-    >> search/hyperestraier/wwwoffle-estcmd.log 2>&1
++umask 022 ; estwolefind . | \
++								estcmd gather -cl -fm -px @uri -sd -cm search/hyperestraier/db - \
++								 > search/hyperestraier/wwwoffle-estcmd.log 2>&1
+--- /home/users/inter/my/devel/wwwoffle/BUILD/wwwoffle-2.9a/cache/search/hyperestraier/conf/estseek.conf	2005-09-04 17:34:30.000000000 +0200
++++ n/cache/search/hyperestraier/conf/estseek.conf	2006-09-15 20:55:29.000000000 +0200
+@@ -7,7 +7,7 @@
+ gsuffix:
+ dirindex: index.html
+ replace: 
+-perpage: 10,20,30,40,50,100
++perpage: 10
+ attrselect: false
+ showscore: false
+ extattr: author|Author
+@@ -24,3 +24,8 @@
+ candetail: true
+ smlrvnum: 0
+ spcache:
++scancheck: 1
++phraseform: 2
++smlrtune: 16 1024 4096 
++wildmax: 256
++qxpndcmd:  
