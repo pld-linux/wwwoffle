@@ -115,7 +115,7 @@ Requires:	namazu-cgi >= 2.0.12-3
 Indexing and searching WWWOFFLE's cache by Namazu.
 
 %description namazu -l pl
-Indeksowanie i przeszukiwanie cache'u WWWOFFLE przez Namazu.
+Indeksowanie i przeszukiwanie cache'a WWWOFFLE przez Namazu.
 
 %package hyperestraier
 Summary:	Indexing and searching WWWOFFLE's cache by Hyperestraier
@@ -128,7 +128,7 @@ Requires:	hyperestraier
 Indexing and searching WWWOFFLE's cache by Hyperestraier.
 
 %description hyperestraier -l pl
-Indeksowanie i przeszukiwanie cache'u WWWOFFLE przez Hyperestraier.
+Indeksowanie i przeszukiwanie cache'a WWWOFFLE przez Hyperestraier.
 
 %prep
 %setup -q
