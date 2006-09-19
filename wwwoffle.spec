@@ -6,7 +6,7 @@ Summary:	WWW Offline Explorer - Caching Web Proxy Server (IPv6)
 Summary(pl):	Eksplorator Offline World Wide Web (IPv6)
 Name:		wwwoffle
 Version:	2.9a
-Release:	1
+Release:	2
 Epoch:		0
 License:	GPL
 Group:		Networking/Daemons
@@ -209,9 +209,8 @@ rm -rf $RPM_BUILD_ROOT
 
 %pre
 test -h %{_var}/cache/wwwoffle/html || rm -rf %{_var}/cache/wwwoffle/html
-
 %groupadd -g 119 -r -f wwwoffle
-%useradd -M -o -r -u 119 -s /bin/false -g wwwoffle -c "%{name} daemon" -d /var/cache/wwwoffle wwwoffle
+%useradd -o -r -u 119 -s /bin/false -g wwwoffle -c "%{name} daemon" -d /var/cache/wwwoffle wwwoffle
 
 %post
 /sbin/chkconfig --add %{name}
