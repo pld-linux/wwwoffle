@@ -3,7 +3,7 @@
 %bcond_without	ipv6	# without support for IPv6
 #
 Summary:	WWW Offline Explorer - Caching Web Proxy Server (IPv6)
-Summary(pl.UTF-8):   Eksplorator Offline World Wide Web (IPv6)
+Summary(pl.UTF-8):	Eksplorator Offline World Wide Web (IPv6)
 Name:		wwwoffle
 Version:	2.9a
 Release:	2
@@ -105,7 +105,7 @@ dial-up.
 
 %package namazu
 Summary:	Indexing and searching WWWOFFLE's cache by Namazu
-Summary(pl.UTF-8):   Indeksowanie i przeszukiwanie cache'a WWWOFFLE przez Namazu
+Summary(pl.UTF-8):	Indeksowanie i przeszukiwanie cache'a WWWOFFLE przez Namazu
 Group:		Networking/Daemons
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	mknmz-wwwoffle >= 0.7.2-2
@@ -119,7 +119,7 @@ Indeksowanie i przeszukiwanie cache'a WWWOFFLE przez Namazu.
 
 %package hyperestraier
 Summary:	Indexing and searching WWWOFFLE's cache by Hyperestraier
-Summary(pl.UTF-8):   Indeksowanie i przeszukiwanie cache'a WWWOFFLE przez Hyperestraier
+Summary(pl.UTF-8):	Indeksowanie i przeszukiwanie cache'a WWWOFFLE przez Hyperestraier
 Group:		Networking/Daemons
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	hyperestraier
