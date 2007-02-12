@@ -3,7 +3,7 @@
 %bcond_without	ipv6	# without support for IPv6
 #
 Summary:	WWW Offline Explorer - Caching Web Proxy Server (IPv6)
-Summary(pl):	Eksplorator Offline World Wide Web (IPv6)
+Summary(pl.UTF-8):   Eksplorator Offline World Wide Web (IPv6)
 Name:		wwwoffle
 Version:	2.9a
 Release:	2
@@ -55,57 +55,57 @@ A proxy HTTP/FTP server for computers with dial-up internet access.
 - All options controlled using a simple configuration file with a web
   page to edit it.
 
-%description -l de
-Ein (HTTP/FTP) Proxy Server für Computer mit Wählverbindungen ins
-Internet. Folgendes wird unterstützt:
-- Seiten werden lokal gespeichert und können jederzeit erneut
+%description -l de.UTF-8
+Ein (HTTP/FTP) Proxy Server fÃ¼r Computer mit WÃ¤hlverbindungen ins
+Internet. Folgendes wird unterstÃ¼tzt:
+- Seiten werden lokal gespeichert und kÃ¶nnen jederzeit erneut
   abgerufen werden, auch OHNE Verbindung ins Internet
 - Seiten, die nicht lokal vorhanden sind, werden 'bestellt'.
-- Seiten können abonniert, d.h. regelmäßig heruntergeladen, werden;
+- Seiten kÃ¶nnen abonniert, d.h. regelmÃ¤ÃŸig heruntergeladen, werden;
   dies auch rekursiv.
 - Alle lokal vorhandenen Seiten sind auf verschiedene Weisen indiziert
   und durchsuchbar.
 - Steuerung erfolgt per Web-Browser, Kommandozeile und einer einfachen
   Konfigurationsdatei
 - Jede Meldung von WWWOFFLE kann durch eigene ersetzt werden (so wurde
-  auch diese Übersetzung realisiert)
-- WWWOFFLE unterstützt verschiedene Authentifikationsmethoden
+  auch diese Ãœbersetzung realisiert)
+- WWWOFFLE unterstÃ¼tzt verschiedene Authentifikationsmethoden
 
-%description -l es
-Un servidor proxy HTTP/FTP para ordenadores con conexión intermitente
+%description -l es.UTF-8
+Un servidor proxy HTTP/FTP para ordenadores con conexiÃ³n intermitente
 a internet.
-- Almacenado de páginas vistas mientras se estuvo conectado para
-  releerlas más tarde.
-- Revisión de páginas almacenadas mientras no se está conectado, con
-  la habilidad de seguir enlaces y marcar otras páginas para recogida.
-- Recogida de páginas especificadas de forma no interactiva.
-- Monitorizado de páginas para recogida regular.
-- Múltiples índices de las páginas almacenadas para una selección
-  fácil.
-- Opción para seleccionar páginas de forma interactiva o en línea de
+- Almacenado de pÃ¡ginas vistas mientras se estuvo conectado para
+  releerlas mÃ¡s tarde.
+- RevisiÃ³n de pÃ¡ginas almacenadas mientras no se estÃ¡ conectado, con
+  la habilidad de seguir enlaces y marcar otras pÃ¡ginas para recogida.
+- Recogida de pÃ¡ginas especificadas de forma no interactiva.
+- Monitorizado de pÃ¡ginas para recogida regular.
+- MÃºltiples Ã­ndices de las pÃ¡ginas almacenadas para una selecciÃ³n
+  fÃ¡cil.
+- OpciÃ³n para seleccionar pÃ¡ginas de forma interactiva o en lÃ­nea de
   comandos de manera individual o recursiva.
 - Todas las opciones se contralan usando un simple fichero de
-  configuración con una página web para editarlo.
+  configuraciÃ³n con una pÃ¡gina web para editarlo.
 
-%description -l pl
-Serwer proxy HTTP/FTP dla komputerów z dostêpem do internetu typu
+%description -l pl.UTF-8
+Serwer proxy HTTP/FTP dla komputerÃ³w z dostÄ™pem do internetu typu
 dial-up.
-- Buforowanie stron przegl±danych podczas po³±czenia.
-- Przegl±danie buforowanych stron bez potrzeby po³±czenia, z
-  mo¿liwo¶ci± pod±¿ania za ³±czami i oznaczania innych stron do
+- Buforowanie stron przeglÄ…danych podczas poÅ‚Ä…czenia.
+- PrzeglÄ…danie buforowanych stron bez potrzeby poÅ‚Ä…czenia, z
+  moÅ¼liwoÅ›ciÄ… podÄ…Å¼ania za Å‚Ä…czami i oznaczania innych stron do
   pobrania.
-- Pobieranie okre¶lonych stron nieinteraktywnie.
+- Pobieranie okreÅ›lonych stron nieinteraktywnie.
 - Monitorowanie stron dla regularnego pobierania.
-- Wiele indeksów przechowywanych w buforze stron dla ³atwego ich
+- Wiele indeksÃ³w przechowywanych w buforze stron dla Å‚atwego ich
   wyboru.
 - Interaktywne lub z linii komend opcje wyboru stron do pobrania
   indywidualnie lub rekursywnie.
-- Wszystkie opcje s± kontrolowane przy u¿yciu prostego pliku
-  konfiguracji z mo¿liwo¶ci± edycji z poziomu strony web.
+- Wszystkie opcje sÄ… kontrolowane przy uÅ¼yciu prostego pliku
+  konfiguracji z moÅ¼liwoÅ›ciÄ… edycji z poziomu strony web.
 
 %package namazu
 Summary:	Indexing and searching WWWOFFLE's cache by Namazu
-Summary(pl):	Indeksowanie i przeszukiwanie cache'a WWWOFFLE przez Namazu
+Summary(pl.UTF-8):   Indeksowanie i przeszukiwanie cache'a WWWOFFLE przez Namazu
 Group:		Networking/Daemons
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	mknmz-wwwoffle >= 0.7.2-2
@@ -114,12 +114,12 @@ Requires:	namazu-cgi >= 2.0.12-3
 %description namazu
 Indexing and searching WWWOFFLE's cache by Namazu.
 
-%description namazu -l pl
+%description namazu -l pl.UTF-8
 Indeksowanie i przeszukiwanie cache'a WWWOFFLE przez Namazu.
 
 %package hyperestraier
 Summary:	Indexing and searching WWWOFFLE's cache by Hyperestraier
-Summary(pl):	Indeksowanie i przeszukiwanie cache'a WWWOFFLE przez Hyperestraier
+Summary(pl.UTF-8):   Indeksowanie i przeszukiwanie cache'a WWWOFFLE przez Hyperestraier
 Group:		Networking/Daemons
 Requires:	%{name} = %{epoch}:%{version}-%{release}
 Requires:	hyperestraier
@@ -127,7 +127,7 @@ Requires:	hyperestraier
 %description hyperestraier
 Indexing and searching WWWOFFLE's cache by Hyperestraier.
 
-%description hyperestraier -l pl
+%description hyperestraier -l pl.UTF-8
 Indeksowanie i przeszukiwanie cache'a WWWOFFLE przez Hyperestraier.
 
 %prep
