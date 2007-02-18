@@ -44,7 +44,7 @@
  attrselect: false
  showscore: false
  extattr: author|Author
-@@ -24,3 +24,8 @@
+@@ -24,3 +24,13 @@
  candetail: true
  smlrvnum: 0
  spcache:
@@ -52,4 +52,9 @@
 +phraseform: 2
 +smlrtune: 16 1024 4096 
 +wildmax: 256
-+qxpndcmd:  
++qxpndcmd:
++helpfile: estseek.help
++deftitle:
++attrwidth: 200
++dispproxy:
++logformat:
