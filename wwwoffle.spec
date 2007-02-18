@@ -1,4 +1,6 @@
 #
+# NOTE: wwwoffle-2.9b seems broken - each child process ends with sigabrt - don't upgrade!
+#
 # Conditional build:
 %bcond_without	ipv6	# without support for IPv6
 #
@@ -6,7 +8,7 @@ Summary:	WWW Offline Explorer - Caching Web Proxy Server (IPv6)
 Summary(pl):	Eksplorator Offline World Wide Web (IPv6)
 Name:		wwwoffle
 Version:	2.9a
-Release:	2
+Release:	3
 Epoch:		0
 License:	GPL
 Group:		Networking/Daemons
