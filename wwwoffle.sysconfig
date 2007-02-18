@@ -1,11 +1,8 @@
-# Customized setings for wwwoffle
+# Settings for wwwoffle
 
-# Nice level for apache
+# Nice level for wwwoffled
 SERVICE_RUN_NICE_LEVEL="+5"
 
-# Perform action after (re)start passed to wwwoffle program.
-# For valid options see wwwoffle(1) manpage.
-# For many actions are not supported. 
-# For example:
+# Pass option to wwwoffle(1) at the (re)start
 # ACTION="-online"
 ACTION=""
