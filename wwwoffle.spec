@@ -8,7 +8,7 @@ Summary:	WWW Offline Explorer - Caching Web Proxy Server (IPv6)
 Summary(pl.UTF-8):	Eksplorator Offline World Wide Web (IPv6)
 Name:		wwwoffle
 Version:	2.9a
-Release:	4
+Release:	5
 Epoch:		0
 License:	GPL
 Group:		Networking/Daemons
@@ -155,7 +155,7 @@ cp /usr/share/automake/config.sub .
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig,%{name}/{hyperestraier,namazu}} \
-	$RPM_BUILD_ROOT%{_var}/cache/wwwoffle/{ftp,prev{out,time}{1,2,3,4,5,6,7},temp} 
+	$RPM_BUILD_ROOT%{_var}/cache/wwwoffle/{ftp,prev{out,time}{1,2,3,4,5,6,7},temp}
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
@@ -173,7 +173,7 @@ mv -f $RPM_BUILD_ROOT%{_var}/cache/wwwoffle/search/namazu/scripts/wwwoffle-mknmz
 mv -f $RPM_BUILD_ROOT%{_var}/cache/wwwoffle/search/hyperestraier/conf/estseek.{conf,tmpl,top} \
 	$RPM_BUILD_ROOT%{_sysconfdir}/%{name}/hyperestraier
 ln -sf %{_sysconfdir}/%{name}/hyperestraier/estseek.conf \
-	$RPM_BUILD_ROOT%{_var}/cache/wwwoffle/search/hyperestraier/conf/estseek.conf 
+	$RPM_BUILD_ROOT%{_var}/cache/wwwoffle/search/hyperestraier/conf/estseek.conf
 ln -sf %{_sysconfdir}/%{name}/hyperestraier/estseek.tmpl \
 	$RPM_BUILD_ROOT%{_var}/cache/wwwoffle/search/hyperestraier/conf/estseek.tmpl
 ln -sf %{_sysconfdir}/%{name}/hyperestraier/estseek.top \
@@ -289,6 +289,7 @@ fi
 %attr(754,root,root) %{_var}/cache/wwwoffle/search/mnogosearch/scripts/*
 
 %files hyperestraier
+%defattr(644,root,root,755)
 %dir %{_var}/cache/wwwoffle/search/hyperestraier
 %dir %{_var}/cache/wwwoffle/search/hyperestraier/conf
 %dir %{_var}/cache/wwwoffle/search/hyperestraier/db
@@ -296,6 +297,7 @@ fi
 %attr(644,root,wwwoffle) %{_var}/cache/wwwoffle/search/hyperestraier/conf/estseek.conf
 %attr(644,root,wwwoffle) %{_var}/cache/wwwoffle/search/hyperestraier/conf/estseek.tmpl
 %attr(644,root,wwwoffle) %{_var}/cache/wwwoffle/search/hyperestraier/conf/estseek.top
+%dir %{_sysconfdir}/%{name}/hyperestraier
 %attr(640,root,wwwoffle) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/hyperestraier/estseek.conf
 %attr(640,root,wwwoffle) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/hyperestraier/estseek.tmpl
 %attr(640,root,wwwoffle) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/hyperestraier/estseek.top
@@ -307,6 +309,7 @@ fi
 %dir %{_sysconfdir}/%{name}/namazu
 %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/namazu/*
 %attr(755,root,root) %{_bindir}/wwwoffle-mknmz-*
+%dir %{_var}/cache/wwwoffle/search/namazu/scripts
 %attr(755,root,root) %{_var}/cache/wwwoffle/search/namazu/scripts/wwwoffle-namazu
 %dir %{_var}/cache/wwwoffle/search/namazu
 %dir %{_var}/cache/wwwoffle/search/namazu/db
