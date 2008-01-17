@@ -1,5 +1,7 @@
-#
 # NOTE: wwwoffle-2.9b seems broken - each child process ends with sigabrt - don't upgrade!
+# TODO
+# - gnutls patch
+# - update to 2.9c
 #
 # Conditional build:
 %bcond_without	ipv6	# without support for IPv6
