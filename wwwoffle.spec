@@ -211,8 +211,10 @@ chown wwwoffle:wwwoffle -R \
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%pre
+%pretrans
 test -h %{_var}/cache/wwwoffle/html || rm -rf %{_var}/cache/wwwoffle/html
+
+%pre
 %groupadd -g 119 -r -f wwwoffle
 %useradd -o -r -u 119 -s /bin/false -g wwwoffle -c "%{name} daemon" -d /var/cache/wwwoffle wwwoffle
 
