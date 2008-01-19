@@ -1,27 +1,24 @@
-# NOTE: wwwoffle-2.9b seems broken - each child process ends with sigabrt - don't upgrade!
-# TODO
-# - gnutls patch
-# - update to 2.9c
-#
 # Conditional build:
 %bcond_without	ipv6	# without support for IPv6
 #
 Summary:	WWW Offline Explorer - Caching Web Proxy Server (IPv6)
 Summary(pl.UTF-8):	Eksplorator Offline World Wide Web (IPv6)
 Name:		wwwoffle
-Version:	2.9a
-Release:	6
+Version:	2.9c
+Release:	1
 Epoch:		0
 License:	GPL
 Group:		Networking/Daemons
-Source0:	http://www.gedanken.freeserve.co.uk/download-wwwoffle/%{name}-%{version}.tgz
-# Source0-md5:	3ba32fc842a6af96b28cd3c7ff8f6f56
+Source0:	http://www.gedanken.demon.co.uk/download-wwwoffle/%{name}-%{version}.tgz
+# Source0-md5:	50208b5c8d5c125accd18f9760225f9e
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-replacement.patch
 Patch1:		%{name}-conf_settings.patch
 Patch2:		%{name}-namazu.patch
 Patch3:		%{name}-hyperestraier.patch
+# http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=450852
+Patch4:		%{name}-gnutls.patch
 URL:		http://www.gedanken.demon.co.uk/wwwoffle/
 BuildRequires:	autoconf
 BuildRequires:	automake
@@ -140,6 +137,7 @@ Indeksowanie i przeszukiwanie cache'a WWWOFFLE przez Hyperestraier.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
+%patch4 -p1
 
 %build
 cp /usr/share/automake/config.sub .
@@ -247,7 +245,7 @@ fi
 %attr(755,root,root) %{_sbindir}/*
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}
 %dir %{_sysconfdir}/%{name}
-%attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/%{name}.conf
+%attr(660,root,wwwoffle) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/%{name}.conf
 %{_mandir}/man[158]/*
 %lang(fr) %{_mandir}/fr/man5/*
 %dir %{_datadir}/%{name}
