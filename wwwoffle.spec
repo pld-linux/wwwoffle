@@ -17,8 +17,6 @@ Patch0:		%{name}-replacement.patch
 Patch1:		%{name}-conf_settings.patch
 Patch2:		%{name}-namazu.patch
 Patch3:		%{name}-hyperestraier.patch
-# http://bugs.debian.org/cgi-bin/bugreport.cgi?bug=450852
-Patch4:		%{name}-gnutls.patch
 URL:		http://www.gedanken.demon.co.uk/wwwoffle/
 BuildRequires:	autoconf
 BuildRequires:	automake
