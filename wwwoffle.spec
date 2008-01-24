@@ -4,13 +4,13 @@
 Summary:	WWW Offline Explorer - Caching Web Proxy Server (IPv6)
 Summary(pl.UTF-8):	Eksplorator Offline World Wide Web (IPv6)
 Name:		wwwoffle
-Version:	2.9c
+Version:	2.9d
 Release:	1
 Epoch:		0
 License:	GPL
 Group:		Networking/Daemons
 Source0:	http://www.gedanken.demon.co.uk/download-wwwoffle/%{name}-%{version}.tgz
-# Source0-md5:	50208b5c8d5c125accd18f9760225f9e
+# Source0-md5:	29ade3b5994169510e36024680258a1e
 Source1:	%{name}.init
 Source2:	%{name}.sysconfig
 Patch0:		%{name}-replacement.patch
@@ -137,7 +137,6 @@ Indeksowanie i przeszukiwanie cache'a WWWOFFLE przez Hyperestraier.
 %patch1 -p1
 %patch2 -p1
 %patch3 -p1
-%patch4 -p1
 
 %build
 cp /usr/share/automake/config.sub .
@@ -299,6 +298,7 @@ fi
 %attr(644,root,wwwoffle) %{_var}/cache/wwwoffle/search/hyperestraier/conf/estseek.conf
 %attr(644,root,wwwoffle) %{_var}/cache/wwwoffle/search/hyperestraier/conf/estseek.tmpl
 %attr(644,root,wwwoffle) %{_var}/cache/wwwoffle/search/hyperestraier/conf/estseek.top
+%{_var}/cache/wwwoffle/search/hyperestraier/conf/estseek.help
 %dir %{_sysconfdir}/%{name}/hyperestraier
 %attr(640,root,wwwoffle) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/hyperestraier/estseek.conf
 %attr(640,root,wwwoffle) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/hyperestraier/estseek.tmpl

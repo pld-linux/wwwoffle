@@ -33,28 +33,3 @@
 +umask 022 ; estwolefind . | \
 +								estcmd gather -cl -fm -px @uri -sd -cm search/hyperestraier/db - \
 +								 > search/hyperestraier/wwwoffle-estcmd.log 2>&1
---- /home/users/inter/my/devel/wwwoffle/BUILD/wwwoffle-2.9a/cache/search/hyperestraier/conf/estseek.conf	2005-09-04 17:34:30.000000000 +0200
-+++ n/cache/search/hyperestraier/conf/estseek.conf	2006-09-15 20:55:29.000000000 +0200
-@@ -7,7 +7,7 @@
- gsuffix:
- dirindex: index.html
- replace: 
--perpage: 10,20,30,40,50,100
-+perpage: 10
- attrselect: false
- showscore: false
- extattr: author|Author
-@@ -24,3 +24,13 @@
- candetail: true
- smlrvnum: 0
- spcache:
-+scancheck: 1
-+phraseform: 2
-+smlrtune: 16 1024 4096 
-+wildmax: 256
-+qxpndcmd:
-+helpfile: estseek.help
-+deftitle:
-+attrwidth: 200
-+dispproxy:
-+logformat:
