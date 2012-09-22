@@ -5,7 +5,7 @@ Summary:	WWW Offline Explorer - Caching Web Proxy Server (IPv6)
 Summary(pl.UTF-8):	Eksplorator Offline World Wide Web (IPv6)
 Name:		wwwoffle
 Version:	2.9e
-Release:	2
+Release:	3
 Epoch:		0
 License:	GPL
 Group:		Networking/Daemons
@@ -152,22 +152,23 @@ cp /usr/share/automake/config.sub .
 %install
 rm -rf $RPM_BUILD_ROOT
 install -d $RPM_BUILD_ROOT/etc/{rc.d/init.d,sysconfig,%{name}/{hyperestraier,namazu}} \
-	$RPM_BUILD_ROOT%{_var}/cache/wwwoffle/{ftp,prev{out,time}{1,2,3,4,5,6,7},temp}
+	$RPM_BUILD_ROOT%{_var}/cache/wwwoffle/{ftp,prev{out,time}{1,2,3,4,5,6,7},temp} \
+	$RPM_BUILD_ROOT%{_mandir}/fr/man5
 
 %{__make} install \
 	DESTDIR=$RPM_BUILD_ROOT
 
-mv -f $RPM_BUILD_ROOT%{_var}/cache/wwwoffle/html $RPM_BUILD_ROOT%{_datadir}/%{name}
+%{__mv} $RPM_BUILD_ROOT%{_var}/cache/wwwoffle/html $RPM_BUILD_ROOT%{_datadir}/%{name}
 ln -s %{_datadir}/%{name} $RPM_BUILD_ROOT%{_var}/cache/wwwoffle/html
 
 # changes for wwwoffle-namazu
-mv -f $RPM_BUILD_ROOT%{_var}/cache/wwwoffle/search/namazu/conf/*rc \
+%{__mv} $RPM_BUILD_ROOT%{_var}/cache/wwwoffle/search/namazu/conf/*rc \
 	$RPM_BUILD_ROOT%{_sysconfdir}/%{name}/namazu
-mv -f $RPM_BUILD_ROOT%{_var}/cache/wwwoffle/search/namazu/scripts/wwwoffle-mknmz-* \
+%{__mv} $RPM_BUILD_ROOT%{_var}/cache/wwwoffle/search/namazu/scripts/wwwoffle-mknmz-* \
 	$RPM_BUILD_ROOT%{_bindir}
 
 # changes for wwwoffle-hyperestraier
-mv -f $RPM_BUILD_ROOT%{_var}/cache/wwwoffle/search/hyperestraier/conf/estseek.{conf,tmpl,top} \
+%{__mv} $RPM_BUILD_ROOT%{_var}/cache/wwwoffle/search/hyperestraier/conf/estseek.{conf,tmpl,top} \
 	$RPM_BUILD_ROOT%{_sysconfdir}/%{name}/hyperestraier
 ln -sf %{_sysconfdir}/%{name}/hyperestraier/estseek.conf \
 	$RPM_BUILD_ROOT%{_var}/cache/wwwoffle/search/hyperestraier/conf/estseek.conf
@@ -175,19 +176,21 @@ ln -sf %{_sysconfdir}/%{name}/hyperestraier/estseek.tmpl \
 	$RPM_BUILD_ROOT%{_var}/cache/wwwoffle/search/hyperestraier/conf/estseek.tmpl
 ln -sf %{_sysconfdir}/%{name}/hyperestraier/estseek.top \
 	$RPM_BUILD_ROOT%{_var}/cache/wwwoffle/search/hyperestraier/conf/estseek.top
-mv -f $RPM_BUILD_ROOT%{_var}/cache/wwwoffle/search/hyperestraier/scripts/wwwoffle-estcmd-full \
+%{__mv} $RPM_BUILD_ROOT%{_var}/cache/wwwoffle/search/hyperestraier/scripts/wwwoffle-estcmd-full \
 	$RPM_BUILD_ROOT%{_bindir}
-
-install -d $RPM_BUILD_ROOT%{_mandir}/fr/man5
-install doc/fr/wwwoffle.conf.man $RPM_BUILD_ROOT%{_mandir}/fr/man5/wwwoffle.conf.5
-rm -f doc/fr/wwwoffle.conf.man*
 
 install %{SOURCE1} $RPM_BUILD_ROOT/etc/rc.d/init.d/%{name}
 install %{SOURCE2} $RPM_BUILD_ROOT/etc/sysconfig/%{name}
 
-mv doc/es/contrib/README doc/es/README-contrib
-mv doc/es/testprogs/README doc/es/README-testprogs
-rm -rf doc/es/{contrib,testprogs}
+install doc/fr/wwwoffle.conf.man $RPM_BUILD_ROOT%{_mandir}/fr/man5/wwwoffle.conf.5
+
+%{__rm} -rf doc-int
+%{__cp} -a doc doc-int
+%{__mv} doc-int/es/contrib/README doc-int/es/README-contrib
+%{__mv} doc-int/es/testprogs/README doc-int/es/README-testprogs
+%{__rm} -r doc-int/es/{contrib,testprogs}
+%{__rm} doc-int/fr/wwwoffle.conf.man*
+
 rm -rf $RPM_BUILD_ROOT%{_prefix}/doc
 
 %triggerpostun -- %{name} < 2.7
@@ -231,15 +234,25 @@ fi
 
 %files
 %defattr(644,root,root,755)
-%lang(de) %doc doc/de
-%lang(es) %doc doc/es
-%lang(fr) %doc doc/fr
-%lang(pl) %doc doc/pl
+%lang(de) %doc doc-int/de
+%lang(es) %doc doc-int/es
+%lang(fr) %doc doc-int/fr
+%lang(pl) %doc doc-int/pl
 %doc doc/{ANNOUNCE,CHANGES.CONF,FAQ,NEWS,README*}
 %doc ChangeLog* conf/upgrade-config*
 %attr(754,root,root) /etc/rc.d/init.d/%{name}
-%attr(755,root,root) %{_bindir}/*
-%attr(755,root,root) %{_sbindir}/*
+%attr(755,root,root) %{_bindir}/wwwoffle
+%attr(755,root,root) %{_bindir}/wwwoffle-fsck
+%attr(755,root,root) %{_bindir}/wwwoffle-gunzip
+%attr(755,root,root) %{_bindir}/wwwoffle-gzip
+%attr(755,root,root) %{_bindir}/wwwoffle-hash
+%attr(755,root,root) %{_bindir}/wwwoffle-ls
+%attr(755,root,root) %{_bindir}/wwwoffle-mv
+%attr(755,root,root) %{_bindir}/wwwoffle-read
+%attr(755,root,root) %{_bindir}/wwwoffle-rm
+%attr(755,root,root) %{_bindir}/wwwoffle-tools
+%attr(755,root,root) %{_bindir}/wwwoffle-write
+%attr(755,root,root) %{_sbindir}/wwwoffled
 %attr(640,root,root) %config(noreplace) %verify(not md5 mtime size) /etc/sysconfig/%{name}
 %dir %{_sysconfdir}/%{name}
 %attr(660,root,wwwoffle) %config(noreplace) %verify(not md5 mtime size) %{_sysconfdir}/%{name}/%{name}.conf
