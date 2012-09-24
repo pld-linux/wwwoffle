@@ -5,7 +5,7 @@ Summary:	WWW Offline Explorer - Caching Web Proxy Server (IPv6)
 Summary(pl.UTF-8):	Eksplorator Offline World Wide Web (IPv6)
 Name:		wwwoffle
 Version:	2.9e
-Release:	3
+Release:	4
 Epoch:		0
 License:	GPL
 Group:		Networking/Daemons
